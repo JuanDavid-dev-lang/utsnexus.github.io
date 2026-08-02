@@ -16,9 +16,20 @@ Hecho por el **Grupo CIAI**. Desarrollo principal: **Juan David Gómez Vargas**.
 index.html            la página completa
 assets/styles.css     estilos
 assets/app.js         la planilla del hero
-assets/favicon.svg    ícono
+assets/logo.png       logotipo (256 px)
+assets/favicon.png    ícono de pestaña (64 px)
 .nojekyll             desactiva Jekyll en GitHub Pages
 ```
+
+### El logotipo
+
+Es el mismo archivo que usan el escritorio y el móvil
+(`flutter_app/assets/logo.png` y `desktop/src/assets/logo.png` en el
+repositorio de las aplicaciones, idénticos entre sí), reescalado de 1024 px a
+256 px para no cargar 639 KB en una barra de 36 px.
+
+Si la marca cambia, hay que volver a exportarlo desde ese original para que los
+tres clientes y esta página no se desincronicen.
 
 Sin dependencias, sin compilación y sin gestor de paquetes. Se abre
 `index.html` en el navegador y ya.

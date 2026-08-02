@@ -127,13 +127,15 @@ a { color: inherit; }
   gap: 20px; height: 66px;
 }
 .marca { display: flex; align-items: center; gap: 11px; text-decoration: none; }
-.marca__sigla {
-  display: grid; place-items: center;
-  width: 34px; height: 34px;
-  background: var(--verde); color: var(--lima);
-  border-radius: 9px;
-  font-family: var(--display); font-weight: 800; font-size: 14px;
-  letter-spacing: .02em;
+/* El mismo archivo que usan el escritorio y el móvil, no una versión dibujada
+   aparte: si la marca cambia, cambia en los tres sitios y aquí también. Va sin
+   fondo ni recuadro porque el logotipo ya trae su propia forma. */
+.marca__logo {
+  width: 36px; height: 36px;
+  object-fit: contain;
+  flex: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 .marca__nombre { font-family: var(--display); font-weight: 700; font-size: 17px; white-space: nowrap; }
 .marca__nombre em { font-style: normal; font-weight: 500; color: var(--tinta-suave); }
