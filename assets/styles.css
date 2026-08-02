@@ -487,6 +487,8 @@ a { color: inherit; }
   align-items: center; justify-content: space-between;
 }
 .pie__tenue { color: rgb(255 255 255 / .6); }
+.pie__tenue a { text-decoration: underline; text-underline-offset: 3px; }
+.pie__tenue a:hover { color: var(--lima); }
 
 /* ── Adaptación ───────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
