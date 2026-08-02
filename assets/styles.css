@@ -1,0 +1,513 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTS Nexus Académico — página de descarga
+
+   La paleta y la escala tipográfica salen de DESIGN.md, el mismo sistema que
+   usan las tres aplicaciones. La página no inventa una identidad paralela:
+   quien llega aquí y luego abre la app tiene que reconocer el mismo producto.
+
+   Regla heredada del sistema: el lima nunca es color de texto ni fondo de
+   superficie grande. Solo acción, selección y foco.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Color */
+  --verde: #144d37;
+  --verde-noche: #0d3325;
+  --verde-hover: #1c6b4c;
+  --lima: #cad225;
+  --lima-suave: #f1f6ce;
+  --papel: #f4f7f1;
+  --papel-hueso: #eaf0e6;
+  --blanco: #ffffff;
+  --tinta: #12271e;
+  --tinta-suave: #5b6b61;
+  --borde: #d8e2d4;
+  --borde-fuerte: #b9cbb2;
+  --alarma: #dc2626;
+  --alarma-suave: #fee2e2;
+
+  /* Tipografía */
+  --display: 'Archivo', system-ui, sans-serif;
+  --texto: 'Inter', system-ui, sans-serif;
+  --dato: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Ritmo */
+  --radio: 14px;
+  --radio-sm: 9px;
+  --ancho: 1140px;
+  --sombra: 0 1px 2px rgb(18 39 30 / .04), 0 8px 28px rgb(18 39 30 / .07);
+  --sombra-alta: 0 2px 4px rgb(18 39 30 / .06), 0 20px 50px rgb(18 39 30 / .13);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--texto);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
+p { margin: 0; }
+a { color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--lima);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.visualmente-oculto {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.saltar {
+  position: absolute; left: -9999px;
+  background: var(--verde); color: var(--blanco);
+  padding: 12px 18px; border-radius: 0 0 var(--radio-sm) 0;
+  z-index: 100; text-decoration: none; font-weight: 600;
+}
+.saltar:focus { left: 0; top: 0; }
+
+.envoltorio { width: min(100% - 40px, var(--ancho)); margin-inline: auto; }
+.envoltorio--angosto { width: min(100% - 40px, 720px); }
+
+/* ── Botones ──────────────────────────────────────────────────────────────
+   El tamaño base se define una sola vez y los modificadores solo cambian
+   color; así ningún selector posterior pisa el padding de otro. */
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-family: var(--texto);
+  font-size: 15px; font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+.boton svg {
+  width: 18px; height: 18px;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.boton:hover { transform: translateY(-2px); }
+
+.boton--lima { background: var(--lima); color: var(--tinta); box-shadow: 0 6px 20px rgb(202 210 37 / .34); }
+.boton--lima:hover { background: #d8e04a; }
+
+.boton--verde { background: var(--verde); color: var(--blanco); }
+.boton--verde:hover { background: var(--verde-hover); }
+
+.boton--fantasma { background: transparent; border-color: currentColor; }
+.boton--fantasma:hover { background: rgb(255 255 255 / .1); }
+
+.boton--sm { padding: 9px 18px; font-size: 14px; }
+.boton--bloque { display: flex; width: 100%; }
+
+/* ── Barra superior ─────────────────────────────────────────────────────── */
+.barra {
+  position: sticky; top: 0; z-index: 50;
+  background: rgb(244 247 241 / .82);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borde);
+}
+.barra__interior {
+  width: min(100% - 40px, var(--ancho));
+  margin-inline: auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; height: 66px;
+}
+.marca { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+.marca__sigla {
+  display: grid; place-items: center;
+  width: 34px; height: 34px;
+  background: var(--verde); color: var(--lima);
+  border-radius: 9px;
+  font-family: var(--display); font-weight: 800; font-size: 14px;
+  letter-spacing: .02em;
+}
+.marca__nombre { font-family: var(--display); font-weight: 700; font-size: 17px; white-space: nowrap; }
+.marca__nombre em { font-style: normal; font-weight: 500; color: var(--tinta-suave); }
+
+.barra__nav { display: flex; align-items: center; gap: 26px; }
+.barra__nav > a { font-size: 15px; font-weight: 500; text-decoration: none; color: var(--tinta-suave); }
+.barra__nav > a:hover { color: var(--tinta); }
+.barra__nav > .boton { color: var(--tinta); }
+
+/* ── Hero ─────────────────────────────────────────────────────────────────
+   El verde ocupa el campo entero: es el color dominante del sistema, no un
+   acento. El lima entra solo en el botón principal. */
+.hero {
+  background:
+    radial-gradient(120% 90% at 88% 4%, rgb(202 210 37 / .13), transparent 58%),
+    linear-gradient(168deg, var(--verde) 0%, var(--verde-noche) 100%);
+  color: var(--blanco);
+  padding: clamp(56px, 9vw, 104px) 0 clamp(72px, 10vw, 124px);
+  overflow: hidden;
+}
+.hero__interior {
+  width: min(100% - 40px, var(--ancho));
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(36px, 5vw, 68px);
+  align-items: center;
+}
+
+.eyebrow {
+  font-family: var(--dato);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--lima);
+  margin-bottom: 20px;
+}
+
+.titular {
+  font-size: clamp(2.3rem, 5.1vw, 3.9rem);
+  font-weight: 800;
+  letter-spacing: -.024em;
+}
+.titular__acento { color: var(--lima); }
+
+.entradilla {
+  margin-top: 22px;
+  font-size: clamp(1.02rem, 1.5vw, 1.16rem);
+  line-height: 1.65;
+  color: rgb(255 255 255 / .82);
+  max-width: 46ch;
+}
+
+.hero__acciones { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 34px; }
+.hero__nota {
+  margin-top: 20px;
+  font-size: 13.5px;
+  /* .58 caía en 4.5:1 justo, sin margen. Sobre un degradado el fondo no es un
+     solo valor, asi que conviene quedar por encima del mínimo, no encima del filo. */
+  color: rgb(255 255 255 / .68);
+}
+
+/* ── Planilla: el elemento firma ──────────────────────────────────────────
+   No es un adorno ni una captura: calcula la definitiva con los pesos reales
+   y traza el 3.0, que es la línea que de verdad le importa a un docente. */
+.planilla {
+  position: relative;
+  margin: 0;
+  background: var(--blanco);
+  color: var(--tinta);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-alta);
+  padding: 22px 22px 18px;
+  transform: rotate(-.5deg);
+}
+
+.planilla__cab {
+  display: flex; align-items: baseline; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--borde);
+}
+.planilla__materia { font-family: var(--display); font-weight: 700; font-size: 16px; }
+.planilla__periodo { font-family: var(--dato); font-size: 12px; color: var(--tinta-suave); }
+
+.planilla__formula {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 7px;
+  margin: 13px 0 4px;
+  font-family: var(--dato); font-size: 11px;
+  color: var(--tinta-suave);
+}
+.planilla__formula > span {
+  text-transform: uppercase; letter-spacing: .1em;
+  font-weight: 600; color: var(--tinta);
+}
+.planilla__formula b {
+  background: var(--papel-hueso);
+  border-radius: 5px; padding: 3px 7px; font-weight: 500;
+}
+.planilla__formula i { font-style: normal; opacity: .5; }
+
+.tabla { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.tabla th {
+  font-family: var(--dato);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: var(--tinta-suave);
+  text-align: right;
+  padding: 9px 6px;
+  border-bottom: 1px solid var(--borde);
+}
+.tabla .tabla__est { text-align: left; }
+.tabla .tabla__def { color: var(--tinta); font-weight: 600; }
+
+.tabla td {
+  padding: 11px 6px;
+  border-bottom: 1px solid var(--papel-hueso);
+  font-family: var(--dato);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.tabla td:first-child {
+  font-family: var(--texto);
+  font-size: 14.5px; font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+}
+.tabla tbody tr:last-child td { border-bottom: 0; }
+
+/* Entrada escalonada: cada fila aparece como si se fuera llenando la planilla. */
+.fila { opacity: 0; transform: translateY(7px); }
+.fila.esta { opacity: 1; transform: none; transition: opacity .42s ease, transform .42s ease; }
+
+.def { font-weight: 600; }
+.def--alta { color: var(--verde); }
+.def--baja { color: var(--alarma); }
+
+.marca-riesgo {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-left: 8px;
+  background: var(--alarma-suave); color: var(--alarma);
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-family: var(--texto); font-size: 11px; font-weight: 600;
+  opacity: 0;
+}
+.marca-riesgo.esta { opacity: 1; transition: opacity .4s ease .1s; }
+
+/* La línea del 3.0 se dibuja sobre la tabla, no entre filas: es un umbral que
+   atraviesa la lista, igual que en la cabeza del docente. */
+.umbral {
+  position: absolute; left: 22px; right: 22px;
+  height: 0;
+  border-top: 2px dashed var(--lima);
+  opacity: 0;
+  transform: scaleX(.2); transform-origin: left;
+  pointer-events: none;
+}
+.umbral.esta {
+  opacity: 1; transform: scaleX(1);
+  transition: opacity .3s ease, transform .55s cubic-bezier(.22,.61,.36,1);
+}
+/* Centrada sobre la línea y a la izquierda: cabe justo en el espacio entre dos
+   filas, que es el único hueco limpio de la tabla. A la derecha chocaba con la
+   definitiva y con la marca de riesgo, que es lo que hay que poder leer. */
+.umbral__etiqueta {
+  position: absolute; left: 0; top: 0;
+  transform: translateY(-50%);
+  background: var(--lima); color: var(--tinta);
+  border-radius: 999px; padding: 2px 10px;
+  font-family: var(--dato); font-size: 10.5px; font-weight: 600;
+  white-space: nowrap;
+}
+
+.planilla__pie {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 15px;
+  font-family: var(--dato); font-size: 11.5px;
+  color: var(--tinta-suave);
+}
+.punto {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--verde); flex: none;
+}
+
+/* ── Secciones ────────────────────────────────────────────────────────────
+   El padding vertical vive solo aquí. Ninguna clase de contenido lo redefine,
+   para que dos secciones seguidas no acumulen espacios distintos. */
+.seccion { padding: clamp(60px, 8vw, 100px) 0; }
+.seccion--verde { background: var(--verde); color: var(--blanco); }
+
+.seccion__cab { margin-bottom: clamp(30px, 4vw, 46px); }
+.titulo2 {
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+.seccion__sub {
+  margin-top: 12px;
+  font-size: 1.04rem;
+  color: var(--tinta-suave);
+  max-width: 56ch;
+}
+.seccion--verde .seccion__sub { color: rgb(255 255 255 / .75); }
+
+/* ── Descargas ────────────────────────────────────────────────────────────
+   Windows va primero y destacado porque es donde un docente arma el semestre;
+   el teléfono es la herramienta del salón, no la principal. */
+.rejilla-descargas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 20px;
+}
+
+.tarjeta {
+  display: flex; flex-direction: column;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 28px;
+  box-shadow: var(--sombra);
+}
+.tarjeta--destacada { border-color: var(--borde-fuerte); box-shadow: var(--sombra-alta); }
+
+.tarjeta__icono {
+  display: grid; place-items: center;
+  width: 46px; height: 46px;
+  background: var(--papel-hueso);
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+.tarjeta__icono svg {
+  width: 23px; height: 23px;
+  fill: none; stroke: var(--verde); stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.tarjeta--destacada .tarjeta__icono { background: var(--lima-suave); }
+
+.tarjeta__titulo { font-size: 1.32rem; font-weight: 700; }
+.tarjeta__desc {
+  margin: 10px 0 22px;
+  color: var(--tinta-suave);
+  font-size: 15px;
+  flex: 1;
+}
+
+.requisitos { margin: 20px 0 0; display: grid; gap: 9px; }
+.requisitos > div {
+  display: flex; justify-content: space-between; gap: 14px;
+  padding-top: 9px;
+  border-top: 1px solid var(--papel-hueso);
+}
+.requisitos dt { font-size: 13px; color: var(--tinta-suave); }
+.requisitos dd {
+  margin: 0;
+  font-size: 13px; font-weight: 500;
+  text-align: right;
+}
+.requisitos code {
+  font-family: var(--dato); font-size: 12.5px;
+  background: var(--papel-hueso);
+  border-radius: 4px; padding: 1px 5px;
+}
+
+.aviso {
+  margin-top: 24px;
+  background: var(--lima-suave);
+  border-left: 3px solid var(--lima);
+  border-radius: var(--radio-sm);
+  padding: 17px 20px;
+  font-size: 14.5px;
+  color: var(--tinta);
+  max-width: 74ch;
+}
+
+/* ── Capacidades ──────────────────────────────────────────────────────────
+   Sin numerar: son cuatro cosas que la app hace a la vez, no una secuencia.
+   Numerarlas sugeriría un orden que no existe. */
+.rejilla-capacidades {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+  gap: 2px;
+  background: rgb(255 255 255 / .13);
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+.capacidad { background: var(--verde); padding: 28px 26px; }
+.capacidad__titulo {
+  font-size: 1.13rem; font-weight: 700;
+  color: var(--lima);
+  margin-bottom: 11px;
+}
+.capacidad p { color: rgb(255 255 255 / .8); font-size: 15px; }
+
+/* ── Créditos ─────────────────────────────────────────────────────────── */
+.creditos {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: clamp(28px, 4vw, 42px);
+  box-shadow: var(--sombra);
+}
+.creditos__grupo {
+  font-family: var(--display);
+  font-size: 1.5rem; font-weight: 500;
+  color: var(--tinta-suave);
+}
+.creditos__grupo strong { color: var(--verde); font-weight: 800; }
+.creditos__linea { margin-top: 10px; color: var(--tinta-suave); }
+
+.autor {
+  display: flex; align-items: center; gap: 15px;
+  margin: 26px 0;
+  padding: 18px 20px;
+  background: var(--papel);
+  border-radius: var(--radio-sm);
+}
+.autor__inicial {
+  display: grid; place-items: center;
+  width: 46px; height: 46px; flex: none;
+  background: var(--verde); color: var(--lima);
+  border-radius: 50%;
+  font-family: var(--display); font-weight: 700; font-size: 15px;
+}
+.autor__nombre { font-family: var(--display); font-weight: 700; font-size: 1.09rem; }
+.autor__rol {
+  font-family: var(--dato); font-size: 12px;
+  letter-spacing: .05em; text-transform: uppercase;
+  color: var(--tinta-suave);
+  margin-top: 2px;
+}
+
+.creditos__nota {
+  font-size: 14.5px; color: var(--tinta-suave);
+  margin-bottom: 22px;
+}
+.creditos .boton--fantasma { color: var(--verde); }
+.creditos .boton--fantasma:hover { background: var(--papel-hueso); }
+
+/* ── Pie ──────────────────────────────────────────────────────────────── */
+.pie {
+  background: var(--verde-noche);
+  color: rgb(255 255 255 / .68);
+  padding: 30px 0;
+  font-size: 14px;
+}
+.pie__interior {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  align-items: center; justify-content: space-between;
+}
+.pie__tenue { color: rgb(255 255 255 / .6); }
+
+/* ── Adaptación ───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero__interior { grid-template-columns: 1fr; }
+  .planilla { transform: none; }
+  .barra__nav > a:not(.boton) { display: none; }
+}
+
+@media (max-width: 460px) {
+  /* "Académico" sale de la barra antes que partir la marca en dos líneas. */
+  .marca__nombre em { display: none; }
+  .tabla th, .tabla td { padding-inline: 3px; font-size: 13px; }
+  .tabla td:first-child { font-size: 13.5px; }
+  .planilla { padding: 18px 15px 15px; }
+  .umbral { left: 15px; right: 15px; }
+}
+
+/* Sin animación: se muestra el estado final, que es el que informa. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+  .boton:hover { transform: none; }
+}

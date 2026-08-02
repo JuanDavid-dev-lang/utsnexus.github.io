@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UTS Nexus Académico — Descargar</title>
+<meta name="description" content="La planilla del semestre, con las cuentas y las alertas ya hechas. Notas, asistencia y riesgo académico para docentes de las Unidades Tecnológicas de Santander. Descarga para Windows y Android.">
+<meta name="author" content="Grupo CIAI — Unidades Tecnológicas de Santander">
+<meta name="theme-color" content="#144d37">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="UTS Nexus Académico">
+<meta property="og:description" content="La planilla del semestre, con las cuentas y las alertas ya hechas.">
+<meta property="og:locale" content="es_CO">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<a class="saltar" href="#descargas">Saltar a las descargas</a>
+
+<header class="barra">
+  <div class="barra__interior">
+    <a class="marca" href="#inicio">
+      <span class="marca__sigla" aria-hidden="true">UN</span>
+      <span class="marca__nombre">UTS Nexus <em>Académico</em></span>
+    </a>
+    <nav class="barra__nav" aria-label="Secciones">
+      <a href="#capacidades">Qué hace</a>
+      <a href="#creditos">Quién lo hizo</a>
+      <a class="boton boton--lima boton--sm" href="#descargas">Descargar</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <!-- ── Hero: la planilla que calcula sola ─────────────────────────────── -->
+  <section class="hero">
+    <div class="hero__interior">
+
+      <div class="hero__texto">
+        <p class="eyebrow">Unidades Tecnológicas de Santander</p>
+        <h1 class="titular">
+          La planilla del semestre,<br>
+          <span class="titular__acento">con las cuentas ya hechas.</span>
+        </h1>
+        <p class="entradilla">
+          Notas por corte, asistencia por minutos reales y riesgo académico.
+          El servidor hace los cálculos; vos revisás y decidís.
+        </p>
+
+        <div class="hero__acciones">
+          <a class="boton boton--lima" href="#descargas">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
+            Descargar
+          </a>
+          <a class="boton boton--fantasma" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico" target="_blank" rel="noopener">
+            Ver el código
+          </a>
+        </div>
+
+        <p class="hero__nota">Windows y Android · Gratis · Código abierto</p>
+      </div>
+
+      <!-- Signature: planilla real, con los pesos reales del reglamento. -->
+      <figure class="planilla" id="planilla">
+        <figcaption class="planilla__cab">
+          <span class="planilla__materia">Arquitectura de Software</span>
+          <span class="planilla__periodo">Grupo A · 2026-2</span>
+        </figcaption>
+
+        <div class="planilla__formula" aria-hidden="true">
+          <span>Corte</span>
+          <b>Trabajos 30%</b><i>+</i><b>Parciales 60%</b><i>+</i><b>Auto 10%</b>
+        </div>
+
+        <table class="tabla">
+          <caption class="visualmente-oculto">
+            Notas de ejemplo por corte y nota definitiva. La definitiva se calcula
+            con los pesos 33%, 33% y 34%. Se aprueba desde 3.0.
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col" class="tabla__est">Estudiante</th>
+              <th scope="col">C1</th>
+              <th scope="col">C2</th>
+              <th scope="col">C3</th>
+              <th scope="col" class="tabla__def">Definitiva</th>
+            </tr>
+          </thead>
+          <tbody id="filas"><!-- generado en assets/app.js --></tbody>
+        </table>
+
+        <div class="umbral" id="umbral" aria-hidden="true">
+          <span class="umbral__etiqueta">3.0 · aprueba</span>
+        </div>
+
+        <p class="planilla__pie">
+          <span class="punto" aria-hidden="true"></span>
+          Definitiva = C1&nbsp;33% + C2&nbsp;33% + C3&nbsp;34%
+        </p>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ── Descargas ──────────────────────────────────────────────────────── -->
+  <section class="seccion" id="descargas">
+    <div class="envoltorio">
+      <header class="seccion__cab">
+        <h2 class="titulo2">Descargar</h2>
+        <p class="seccion__sub">Elegí el equipo donde vas a pasar lista.</p>
+      </header>
+
+      <div class="rejilla-descargas">
+
+        <article class="tarjeta tarjeta--destacada">
+          <div class="tarjeta__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 5.5 10 4.5v7H3v-6ZM11.5 4.3 21 3v8.5h-9.5v-7.2ZM3 12.5h7v7L3 18.5v-6ZM11.5 12.5H21V21l-9.5-1.3v-7.2Z"/></svg>
+          </div>
+          <h3 class="tarjeta__titulo">Windows</h3>
+          <p class="tarjeta__desc">
+            La aplicación de escritorio: pantalla completa, teclado, gráficos y
+            exportar reportes a PDF.
+          </p>
+          <a class="boton boton--verde boton--bloque" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico/releases/latest" target="_blank" rel="noopener">
+            Descargar para Windows
+          </a>
+          <dl class="requisitos">
+            <div><dt>Sistema</dt><dd>Windows 10 u 11 · 64 bits</dd></div>
+            <div><dt>Archivo</dt><dd>Instalador <code>.msi</code> o <code>.exe</code></dd></div>
+            <div><dt>Se actualiza</dt><dd>Sola, desde la app</dd></div>
+          </dl>
+        </article>
+
+        <article class="tarjeta">
+          <div class="tarjeta__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>
+          </div>
+          <h3 class="tarjeta__titulo">Android</h3>
+          <p class="tarjeta__desc">
+            Para el salón: pasás asistencia y subís notas desde el teléfono,
+            sin depender del portátil.
+          </p>
+          <a class="boton boton--verde boton--bloque" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico/releases/latest" target="_blank" rel="noopener">
+            Descargar para Android
+          </a>
+          <dl class="requisitos">
+            <div><dt>Sistema</dt><dd>Android 8.0 o superior</dd></div>
+            <div><dt>Archivo</dt><dd>Paquete <code>.apk</code></dd></div>
+            <div><dt>Se actualiza</dt><dd>Sola, desde Ajustes</dd></div>
+          </dl>
+        </article>
+
+      </div>
+
+      <aside class="aviso">
+        <strong>Sobre el archivo de Android.</strong>
+        No está en Play Store, así que la primera vez tu teléfono va a pedirte
+        permiso para instalar desde fuera de la tienda. Es una confirmación
+        normal de Android: aceptás una vez y las siguientes actualizaciones ya
+        entran solas.
+      </aside>
+    </div>
+  </section>
+
+  <!-- ── Capacidades ────────────────────────────────────────────────────── -->
+  <section class="seccion seccion--verde" id="capacidades">
+    <div class="envoltorio">
+      <header class="seccion__cab">
+        <h2 class="titulo2">Qué hace</h2>
+        <p class="seccion__sub">
+          Un servidor y una base de datos. Lo que cambiás en el escritorio
+          aparece en el teléfono sin recargar nada.
+        </p>
+      </header>
+
+      <div class="rejilla-capacidades">
+
+        <article class="capacidad">
+          <h3 class="capacidad__titulo">Notas por corte</h3>
+          <p>
+            Trabajos, parciales y autoevaluación con sus pesos del reglamento.
+            El corte y la definitiva las calcula el servidor: ninguna app hace
+            cuentas por su cuenta, así que en los tres lados sale el mismo número.
+          </p>
+        </article>
+
+        <article class="capacidad">
+          <h3 class="capacidad__titulo">Asistencia por minutos</h3>
+          <p>
+            Registra los minutos reales de cada clase, no solo presente o ausente.
+            El porcentaje sale ponderado, así que llegar tarde media hora pesa
+            distinto que faltar el día entero.
+          </p>
+        </article>
+
+        <article class="capacidad">
+          <h3 class="capacidad__titulo">Riesgo académico</h3>
+          <p>
+            Un modelo mira notas, tendencia entre cortes y asistencia, y te dice
+            a quién conviene llamar antes de que sea tarde. Siempre explica en
+            qué se basó: si no puede explicarlo, no lo muestra.
+          </p>
+        </article>
+
+        <article class="capacidad">
+          <h3 class="capacidad__titulo">Listas y reportes</h3>
+          <p>
+            Importás la lista del grupo desde un archivo o buscás a un estudiante
+            que ya está registrado. El consolidado sale en PDF, listo para
+            entregar.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Créditos ───────────────────────────────────────────────────────── -->
+  <section class="seccion" id="creditos">
+    <div class="envoltorio envoltorio--angosto">
+      <header class="seccion__cab">
+        <h2 class="titulo2">Quién lo hizo</h2>
+      </header>
+
+      <div class="creditos">
+        <p class="creditos__grupo">Grupo <strong>CIAI</strong></p>
+        <p class="creditos__linea">
+          Desarrollado en las <strong>Unidades Tecnológicas de Santander</strong>
+          para el trabajo diario de sus docentes.
+        </p>
+
+        <div class="autor">
+          <span class="autor__inicial" aria-hidden="true">JD</span>
+          <div>
+            <p class="autor__nombre">Juan David Gómez Vargas</p>
+            <p class="autor__rol">Desarrollo principal</p>
+          </div>
+        </div>
+
+        <p class="creditos__nota">
+          Backend en Node y TypeScript, escritorio en Tauri y React, móvil en
+          Flutter, y un servicio de predicción en Python. Todo el código está
+          publicado.
+        </p>
+
+        <a class="boton boton--fantasma" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico" target="_blank" rel="noopener">
+          Ver el repositorio
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pie">
+  <div class="envoltorio pie__interior">
+    <p>UTS Nexus Académico · Grupo CIAI · Unidades Tecnológicas de Santander</p>
+    <p class="pie__tenue">Licencia MIT</p>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
