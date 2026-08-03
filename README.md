@@ -65,32 +65,29 @@ Cada `git push` a `main` republica el sitio en uno o dos minutos.
 
 ## Los enlaces de descarga
 
-Los dos botones bajan la carpeta de Dropbox donde están los instaladores. El
-`dl=1` del final es lo que hace que descargue en vez de abrir el visor:
-
-```
-https://www.dropbox.com/scl/fo/6eqhwwq7qyp2f3gi5bvve/ALiY2eeTlRAfSERJIKHZ0w4?rlkey=nsav5fvvvnzjokt8my5swvxit&dl=1
-```
-
-Es un enlace de **carpeta**, no de archivo, así que descarga un ZIP con todo lo
-que haya dentro: el instalador de Windows y el `.apk` juntos. Por eso los dos
-botones llevan al mismo sitio y la página lo avisa. Para que cada botón baje
-solo su archivo hacen falta enlaces por archivo, que Dropbox genera uno a uno
-(clic derecho sobre el archivo → copiar enlace) y también terminan en `dl=1`.
-
-Debajo de cada botón hay una salida a la publicación de GitHub, para quien
-quiera un solo archivo:
+Los dos botones apuntan a la última publicación del repositorio de
+instaladores:
 
 ```
 https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest
 ```
 
-Ese enlace no hay que tocarlo nunca: GitHub resuelve `latest` solo. El de
-Dropbox sí, cada vez que se suba una versión nueva a la carpeta —los
-instaladores no llegan ahí por su cuenta.
+No hay que tocarlo cuando salga una versión nueva: GitHub resuelve `latest`
+solo. El repositorio del código es privado; ese de ahí es público y no tiene
+una línea de código, solo los instaladores publicados.
 
-El repositorio del código es privado. El que se enlaza aquí es público y no
-tiene una línea de código: solo los instaladores publicados.
+### Si se pasan las descargas a Dropbox
+
+Hay que usar un enlace **por archivo**, no el de la carpeta. El de la carpeta
+(`/scl/fo/…`) con `dl=1` descarga un ZIP con todo lo que haya dentro, así que
+el botón de Windows acabaría trayendo también el `.apk`.
+
+En Dropbox: clic derecho sobre el archivo → copiar enlace, y cambiar el `dl=0`
+del final por `dl=1` para que descargue en vez de abrir el visor.
+
+Con enlaces por archivo hay que acordarse de subirlos en **cada versión**: los
+instaladores no llegan a Dropbox por su cuenta, mientras que el enlace de
+GitHub lo publica el workflow solo.
 
 ## La planilla del hero
 
