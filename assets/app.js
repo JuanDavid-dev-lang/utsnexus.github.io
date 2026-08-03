@@ -145,51 +145,22 @@
 })();
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Enlaces de descarga.
+   Enlaces de descarga: los manda el HTML, y solo el HTML.
 
-   Los botones traen escritos los archivos de Dropbox, que el publicador de
-   versiones sobrescribe en su sitio: no caducan al salir una versión nueva. Si
-   la administración configura otros desde la app, el servidor los devuelve aquí
-   y se sustituyen.
+   Aquí había una consulta a `https://3-14-147-55.sslip.io/api/v1/descargas` que
+   reescribía el `href` de los botones con lo que devolviera el servidor, para
+   poder cambiar las descargas desde el panel sin desplegar la página.
 
-   El orden importa: primero un enlace que funciona, después el que toque. Al
-   revés, un servidor caído dejaría la página de descargas sin descargas.
+   Está quitada porque hacía lo contrario de lo que se quiere: el servidor
+   devuelve la publicacion de GitHub como valor por defecto —no como algo que
+   nadie haya configurado—, así que la página cargaba con los archivos de
+   Dropbox y a los pocos milisegundos los cambiaba por los de GitHub. Los
+   botones no llevaban a donde decía el HTML.
+
+   El arreglo de fondo está hecho en el backend (los valores por defecto pasan a
+   estar vacíos, y un campo vacío no se aplica), pero mientras esa versión no
+   esté desplegada, preguntar es peor que no preguntar.
+
+   Para devolver la funcion: `git revert` del commit que borró esto. Los botones
+   conservan su `data-descarga`, que es lo unico que necesitaba.
    ═══════════════════════════════════════════════════════════════════════════ */
-(function () {
-  'use strict';
-
-  var API = 'https://3-14-147-55.sslip.io/api/v1/descargas';
-
-  var botones = document.querySelectorAll('[data-descarga]');
-  if (!botones.length || !window.fetch) return;
-
-  // Si el servidor tarda, la página se queda con lo que ya tiene. Nadie debería
-  // mirar un botón muerto porque una API va lenta.
-  var corta = new AbortController();
-  var plazo = setTimeout(function () { corta.abort(); }, 4000);
-
-  fetch(API, { signal: corta.signal })
-    .then(function (respuesta) {
-      if (!respuesta.ok) throw new Error('HTTP ' + respuesta.status);
-      return respuesta.json();
-    })
-    .then(function (datos) {
-      var enlaces = datos && datos.enlaces;
-      if (!enlaces) return;
-
-      botones.forEach(function (boton) {
-        var destino = enlaces[boton.dataset.descarga];
-        if (!destino) return;
-        // Solo https: un enlace en claro se puede sustituir en tránsito, y lo
-        // que hay al otro lado es un ejecutable.
-        if (destino.slice(0, 8) !== 'https://') return;
-        boton.href = destino;
-      });
-    })
-    .catch(function () {
-      // Silencio deliberado: los enlaces escritos en el HTML siguen sirviendo.
-    })
-    .then(function () {
-      clearTimeout(plazo);
-    });
-})();

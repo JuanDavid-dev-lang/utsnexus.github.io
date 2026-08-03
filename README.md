@@ -83,10 +83,16 @@ Son enlaces **por archivo**, nunca el de la carpeta: el de la carpeta
 el botón de Windows acabaría trayendo también el `.apk`. Y terminan en `dl=1`,
 no `dl=0`: con `dl=0` se abre el visor de Dropbox en vez de descargarse.
 
-Si algún día hay que apuntarlos a otro sitio sin desplegar la página,
-`assets/app.js` consulta al arrancar los enlaces que la administración haya
-guardado en el servidor y sustituye los del HTML. Si el servidor no contesta en
-cuatro segundos, se queda con estos, que siempre sirven.
+Los enlaces salen del HTML y de ningún otro sitio. `assets/app.js` consultaba
+al arrancar los que la administración hubiera guardado en el servidor y
+reescribía los botones con ellos; está quitado. El servidor devuelve la
+publicación de GitHub como **valor por defecto**, no como algo configurado, así
+que la página cargaba con Dropbox y a los pocos milisegundos se iba a GitHub.
+
+El arreglo de fondo ya está en el backend —los valores por defecto pasan a
+estar vacíos y un campo vacío no se aplica—, pero hasta que esa versión esté
+desplegada preguntar es peor que no preguntar. Para recuperar la función:
+`git revert` del commit que la quitó.
 
 El repositorio de instaladores
 (<https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest>)
