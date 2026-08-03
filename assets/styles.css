@@ -504,6 +504,11 @@ a { color: inherit; }
   font-size: 14.5px; color: var(--tinta-suave);
   margin-bottom: 22px;
 }
+/* Dos botones donde antes había uno: se envuelven en pantalla estrecha en vez
+   de encogerse hasta partir el texto. */
+.creditos__acciones {
+  display: flex; flex-wrap: wrap; gap: 10px;
+}
 .creditos .boton--fantasma { color: var(--verde); }
 .creditos .boton--fantasma:hover { background: var(--papel-hueso); }
 
