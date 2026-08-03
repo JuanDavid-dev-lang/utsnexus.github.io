@@ -348,6 +348,11 @@ a { color: inherit; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
   gap: 20px;
+  /* Son dos tarjetas: sin tope se reparten los 1140 px del envoltorio y salen
+     dos bloques de 560, demasiado anchos para lo poco que dicen. El `auto-fit`
+     sigue apilándolas en pantallas angostas. */
+  max-width: 760px;
+  margin-inline: auto;
 }
 
 .tarjeta {

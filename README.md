@@ -65,29 +65,33 @@ Cada `git push` a `main` republica el sitio en uno o dos minutos.
 
 ## Los enlaces de descarga
 
-Los dos botones apuntan a la última publicación del repositorio de
-instaladores:
+Los dos botones apuntan a un archivo concreto de Dropbox: el `.exe` y el `.apk`.
 
-```
-https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest
-```
+**No hay que tocarlos cuando salga una versión nueva.** El workflow `Release`
+del repositorio de las aplicaciones sube los instaladores recién compilados
+*encima* de esos dos archivos (`mode=overwrite`), así que el enlace es el mismo
+y lo que entrega es la versión última. El detalle está en
+`docs/PUBLICAR_VERSION.md` de aquel repositorio.
 
-No hay que tocarlo cuando salga una versión nueva: GitHub resuelve `latest`
-solo. El repositorio del código es privado; ese de ahí es público y no tiene
-una línea de código, solo los instaladores publicados.
+Consecuencia de sobrescribir en vez de subir un archivo nuevo: el **nombre**
+del archivo se queda congelado en el de la primera subida (`…2.3.2…`) aunque
+dentro vaya una versión posterior. Para cambiarlo hay que subir un archivo con
+otro nombre, y eso son enlaces nuevos aquí y en el workflow.
 
-### Si se pasan las descargas a Dropbox
-
-Hay que usar un enlace **por archivo**, no el de la carpeta. El de la carpeta
+Son enlaces **por archivo**, nunca el de la carpeta: el de la carpeta
 (`/scl/fo/…`) con `dl=1` descarga un ZIP con todo lo que haya dentro, así que
-el botón de Windows acabaría trayendo también el `.apk`.
+el botón de Windows acabaría trayendo también el `.apk`. Y terminan en `dl=1`,
+no `dl=0`: con `dl=0` se abre el visor de Dropbox en vez de descargarse.
 
-En Dropbox: clic derecho sobre el archivo → copiar enlace, y cambiar el `dl=0`
-del final por `dl=1` para que descargue en vez de abrir el visor.
+Si algún día hay que apuntarlos a otro sitio sin desplegar la página,
+`assets/app.js` consulta al arrancar los enlaces que la administración haya
+guardado en el servidor y sustituye los del HTML. Si el servidor no contesta en
+cuatro segundos, se queda con estos, que siempre sirven.
 
-Con enlaces por archivo hay que acordarse de subirlos en **cada versión**: los
-instaladores no llegan a Dropbox por su cuenta, mientras que el enlace de
-GitHub lo publica el workflow solo.
+El repositorio de instaladores
+(<https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest>)
+sigue publicándose igual y es de donde se actualizan solas las apps ya
+instaladas; la página solo ya no depende de él para descargar.
 
 ## La planilla del hero
 

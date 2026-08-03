@@ -147,9 +147,10 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    Enlaces de descarga.
 
-   Los botones traen escrita la publicación de GitHub, que siempre existe y
-   siempre es la última. Si la administración ha configurado otros —los archivos
-   en Dropbox, normalmente— el servidor los devuelve aquí y se sustituyen.
+   Los botones traen escritos los archivos de Dropbox, que el publicador de
+   versiones sobrescribe en su sitio: no caducan al salir una versión nueva. Si
+   la administración configura otros desde la app, el servidor los devuelve aquí
+   y se sustituyen.
 
    El orden importa: primero un enlace que funciona, después el que toque. Al
    revés, un servidor caído dejaría la página de descargas sin descargas.
