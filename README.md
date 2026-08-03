@@ -74,9 +74,12 @@ y lo que entrega es la versión última. El detalle está en
 `docs/PUBLICAR_VERSION.md` de aquel repositorio.
 
 Consecuencia de sobrescribir en vez de subir un archivo nuevo: el **nombre**
-del archivo se queda congelado en el de la primera subida (`…2.3.2…`) aunque
+del archivo se queda congelado en el de la primera subida (`…2.3.3…`) aunque
 dentro vaya una versión posterior. Para cambiarlo hay que subir un archivo con
 otro nombre, y eso son enlaces nuevos aquí y en el workflow.
+
+Los enlaces van sin el parámetro `st=` que Dropbox añade al copiarlos: es un
+testigo temporal y caduca. El que da acceso es `rlkey`, y ese no caduca.
 
 Son enlaces **por archivo**, nunca el de la carpeta: el de la carpeta
 (`/scl/fo/…`) con `dl=1` descarga un ZIP con todo lo que haya dentro, así que
