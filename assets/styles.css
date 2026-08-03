@@ -382,6 +382,20 @@ a { color: inherit; }
   flex: 1;
 }
 
+/* Salida para quien no quiere la carpeta entera, sin competir con el botón. */
+.tarjeta__alterna {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+.tarjeta__alterna a { color: var(--verde); font-weight: 600; }
+.tarjeta__alterna code {
+  font-family: var(--dato); font-size: 12.5px;
+  background: var(--papel-hueso);
+  border-radius: 4px; padding: 1px 5px;
+}
+
 .requisitos { margin: 20px 0 0; display: grid; gap: 9px; }
 .requisitos > div {
   display: flex; justify-content: space-between; gap: 14px;

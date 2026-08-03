@@ -6,7 +6,7 @@ Android.
 
 Hecho por el **Grupo CIAI**. Desarrollo principal: **Juan David Gómez Vargas**.
 
-- Aplicaciones: <https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico>
+- Instaladores: <https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest>
 
 ---
 
@@ -65,16 +65,32 @@ Cada `git push` a `main` republica el sitio en uno o dos minutos.
 
 ## Los enlaces de descarga
 
-Los dos botones apuntan a la última publicación del repositorio de las
-aplicaciones:
+Los dos botones bajan la carpeta de Dropbox donde están los instaladores. El
+`dl=1` del final es lo que hace que descargue en vez de abrir el visor:
 
 ```
-https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico/releases/latest
+https://www.dropbox.com/scl/fo/6eqhwwq7qyp2f3gi5bvve/ALiY2eeTlRAfSERJIKHZ0w4?rlkey=nsav5fvvvnzjokt8my5swvxit&dl=1
 ```
 
-No hay que actualizar esta página cuando salga una versión nueva: GitHub
-resuelve `latest` solo. **Hasta que exista la primera publicación etiquetada,
-ese enlace da 404.**
+Es un enlace de **carpeta**, no de archivo, así que descarga un ZIP con todo lo
+que haya dentro: el instalador de Windows y el `.apk` juntos. Por eso los dos
+botones llevan al mismo sitio y la página lo avisa. Para que cada botón baje
+solo su archivo hacen falta enlaces por archivo, que Dropbox genera uno a uno
+(clic derecho sobre el archivo → copiar enlace) y también terminan en `dl=1`.
+
+Debajo de cada botón hay una salida a la publicación de GitHub, para quien
+quiera un solo archivo:
+
+```
+https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest
+```
+
+Ese enlace no hay que tocarlo nunca: GitHub resuelve `latest` solo. El de
+Dropbox sí, cada vez que se suba una versión nueva a la carpeta —los
+instaladores no llegan ahí por su cuenta.
+
+El repositorio del código es privado. El que se enlaza aquí es público y no
+tiene una línea de código: solo los instaladores publicados.
 
 ## La planilla del hero
 
