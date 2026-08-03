@@ -143,3 +143,52 @@
     revelar();
   }
 })();
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Enlaces de descarga.
+
+   Los botones traen escrita la publicación de GitHub, que siempre existe y
+   siempre es la última. Si la administración ha configurado otros —los archivos
+   en Dropbox, normalmente— el servidor los devuelve aquí y se sustituyen.
+
+   El orden importa: primero un enlace que funciona, después el que toque. Al
+   revés, un servidor caído dejaría la página de descargas sin descargas.
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var API = 'https://3-14-147-55.sslip.io/api/v1/descargas';
+
+  var botones = document.querySelectorAll('[data-descarga]');
+  if (!botones.length || !window.fetch) return;
+
+  // Si el servidor tarda, la página se queda con lo que ya tiene. Nadie debería
+  // mirar un botón muerto porque una API va lenta.
+  var corta = new AbortController();
+  var plazo = setTimeout(function () { corta.abort(); }, 4000);
+
+  fetch(API, { signal: corta.signal })
+    .then(function (respuesta) {
+      if (!respuesta.ok) throw new Error('HTTP ' + respuesta.status);
+      return respuesta.json();
+    })
+    .then(function (datos) {
+      var enlaces = datos && datos.enlaces;
+      if (!enlaces) return;
+
+      botones.forEach(function (boton) {
+        var destino = enlaces[boton.dataset.descarga];
+        if (!destino) return;
+        // Solo https: un enlace en claro se puede sustituir en tránsito, y lo
+        // que hay al otro lado es un ejecutable.
+        if (destino.slice(0, 8) !== 'https://') return;
+        boton.href = destino;
+      });
+    })
+    .catch(function () {
+      // Silencio deliberado: los enlaces escritos en el HTML siguen sirviendo.
+    })
+    .then(function () {
+      clearTimeout(plazo);
+    });
+})();
