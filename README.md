@@ -83,10 +83,17 @@ Son enlaces **por archivo**, nunca el de la carpeta: el de la carpeta
 el botón de Windows acabaría trayendo también el `.apk`. Y terminan en `dl=1`,
 no `dl=0`: con `dl=0` se abre el visor de Dropbox en vez de descargarse.
 
-Si algún día hay que apuntarlos a otro sitio sin desplegar la página,
-`assets/app.js` consulta al arrancar los enlaces que la administración haya
-guardado en el servidor y sustituye los del HTML. Si el servidor no contesta en
-cuatro segundos, se queda con estos, que siempre sirven.
+Si hay que apuntarlos a otro sitio sin desplegar la página, `assets/app.js`
+consulta al arrancar los enlaces que la administración haya guardado en el
+servidor (Configuración → Enlaces de descarga, en el escritorio) y sustituye los
+del HTML. Si el servidor no contesta en cuatro segundos, se queda con estos, que
+siempre sirven.
+
+Esa consulta estuvo desactivada un rato: el servidor devolvía la publicación de
+GitHub como **valor por defecto** y pisaba los enlaces de Dropbox nada más
+cargar la página. Ahora los valores por defecto van vacíos y un campo vacío no
+se aplica, así que el servidor solo habla cuando alguien ha configurado algo.
+Si se vuelve a tocar esto, esa es la propiedad que hay que conservar.
 
 El repositorio de instaladores
 (<https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest>)
