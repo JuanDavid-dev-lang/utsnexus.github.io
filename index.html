@@ -32,7 +32,7 @@
       <span class="marca__nombre">UTS Nexus <em>Académico</em></span>
       <!-- La etapa se dice, no se deduce. Quien descarga tiene derecho a saber
            que instala algo en construcción antes de instalarlo, no después. -->
-      <span class="etapa">Alfa</span>
+      <span class="etapa">Beta</span>
     </a>
     <nav class="barra__nav" aria-label="Secciones">
       <a href="#capacidades">Qué hace</a>
@@ -280,6 +280,29 @@
 
 </main>
 
+  <!-- ── Novedades: se alimenta sola de los Releases de GitHub ──────────── -->
+  <!-- Las dos últimas versiones publicadas, leídas del repositorio de
+       instaladores al cargar la página. No hay nada que editar aquí al
+       publicar: el mismo release que actualiza los botones alimenta esto. -->
+  <section class="seccion" id="novedades">
+    <div class="envoltorio">
+      <header class="seccion__cab">
+        <h2 class="titulo2">Últimas novedades</h2>
+        <p class="seccion__sub">Lo que trajeron las dos versiones más recientes.</p>
+      </header>
+
+      <div class="rejilla-descargas" id="novedades-lista">
+        <!-- Lo llena el script de abajo con los releases de GitHub. -->
+      </div>
+
+      <p class="tarjeta__alterna" style="text-align:center; margin-top: 18px;">
+        <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico/releases" target="_blank" rel="noopener">
+          Historial completo de versiones en GitHub
+        </a>
+      </p>
+    </div>
+  </section>
+
 <footer class="pie">
   <div class="envoltorio pie__interior">
     <p>UTS Nexus Académico · Grupo CIAI · Unidades Tecnológicas de Santander</p>
@@ -292,5 +315,69 @@
 </footer>
 
 <script src="assets/app.js"></script>
+<script>
+/* Novedades: las dos últimas versiones, leídas de los Releases de GitHub.
+   Si la API no responde (sin red, límite de peticiones), la sección muestra
+   solo el enlace al historial: nunca un error. */
+(function () {
+  var contenedor = document.getElementById('novedades-lista');
+  if (!contenedor) return;
+
+  fetch('https://api.github.com/repos/JuanDavid-dev-lang/UTS_Nexus_Releases/releases?per_page=2')
+    .then(function (res) { return res.ok ? res.json() : Promise.reject(); })
+    .then(function (releases) {
+      if (!Array.isArray(releases) || releases.length === 0) return;
+
+      releases.forEach(function (release) {
+        var tarjeta = document.createElement('article');
+        tarjeta.className = 'tarjeta';
+
+        var titulo = document.createElement('h3');
+        titulo.className = 'tarjeta__titulo';
+        titulo.textContent = (release.name || release.tag_name)
+          .replace('UTS Nexus Académico ', '');
+        tarjeta.appendChild(titulo);
+
+        var fecha = document.createElement('p');
+        fecha.className = 'tarjeta__alterna';
+        fecha.style.marginTop = '2px';
+        fecha.textContent = new Date(release.published_at).toLocaleDateString(
+          'es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+        tarjeta.appendChild(fecha);
+
+        /* Los titulares de las notas (líneas «### …») son el resumen de los
+           cambios principales; el detalle completo queda en GitHub. */
+        var cambios = (release.body || '')
+          .split('
+')
+          .filter(function (linea) { return linea.indexOf('### ') === 0; })
+          .map(function (linea) { return linea.slice(4).trim(); });
+
+        if (cambios.length > 0) {
+          var lista = document.createElement('ul');
+          lista.className = 'tarjeta__desc';
+          lista.style.paddingLeft = '1.1em';
+          cambios.forEach(function (cambio) {
+            var item = document.createElement('li');
+            item.textContent = cambio;
+            lista.appendChild(item);
+          });
+          tarjeta.appendChild(lista);
+        }
+
+        var enlace = document.createElement('a');
+        enlace.className = 'tarjeta__alterna';
+        enlace.href = release.html_url;
+        enlace.target = '_blank';
+        enlace.rel = 'noopener';
+        enlace.textContent = 'Notas completas →';
+        tarjeta.appendChild(enlace);
+
+        contenedor.appendChild(tarjeta);
+      });
+    })
+    .catch(function () { /* la sección queda con el enlace al historial */ });
+})();
+</script>
 </body>
 </html>
