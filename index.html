@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>UTS Nexus Académico — Descargar</title>
-<meta name="description" content="La planilla del semestre, con alertas y todo. Notas, asistencia y riesgo académico para docentes de las Unidades Tecnológicas de Santander. Descarga para Windows y Android.">
-<meta name="author" content="Grupo CIAI — Unidades Tecnológicas de Santander">
+<meta name="description" content="La planilla del semestre, con alertas y todo. Notas, asistencia y riesgo académico para docentes de las Universitaria Tecnológica de Santander. Descarga para Windows y Android.">
+<meta name="author" content="Grupo CIAI — Universitaria Tecnológica de Santander">
 <meta name="theme-color" content="#144d37">
 
 <meta property="og:type" content="website">
@@ -49,7 +49,7 @@
     <div class="hero__interior">
 
       <div class="hero__texto">
-        <p class="eyebrow">Unidades Tecnológicas de Santander</p>
+        <p class="eyebrow">Universitaria Tecnológica de Santander</p>
         <h1 class="titular">
           La planilla del semestre,<br>
           <span class="titular__acento">con alertas y todo ya hechas.</span>
@@ -246,7 +246,7 @@
       <div class="creditos">
         <p class="creditos__grupo">Grupo <strong>CIAI</strong></p>
         <p class="creditos__linea">
-          Desarrollado en las <strong>Unidades Tecnológicas de Santander</strong>
+          Desarrollado en las <strong>Universitaria Tecnológica de Santander</strong>
           para el trabajo diario de sus docentes.
         </p>
 
@@ -291,21 +291,35 @@
         <p class="seccion__sub">Lo que trajeron las dos versiones más recientes.</p>
       </header>
 
+      <!-- Las tarjetas van HORNEADAS en el HTML: se ven siempre, con o sin
+           JavaScript y aunque un bloqueador corte la petición a la API. El
+           script de abajo solo las REEMPLAZA cuando la API responde con algo
+           más nuevo. -->
       <div class="rejilla-descargas" id="novedades-lista">
-        <!-- Lo llena el script de abajo con los releases de GitHub. -->
+        <article class="tarjeta">
+          <h3 class="tarjeta__titulo">Beta v2.9.5</h3>
+          <p class="tarjeta__alterna" style="margin-top:2px">20 de agosto de 2026</p>
+          <ul class="tarjeta__desc" style="padding-left:1.1em">
+          <li>🔒 Los cortes se capturan en orden</li>
+          <li>🏛️ Los reportes salen con el logo de la UTS</li>
+          </ul>
+        </article>
+        <article class="tarjeta">
+          <h3 class="tarjeta__titulo">Beta v2.9.4</h3>
+          <p class="tarjeta__alterna" style="margin-top:2px">20 de agosto de 2026</p>
+          <ul class="tarjeta__desc" style="padding-left:1.1em">
+          <li>🎯 La lista de una materia es la de ESA materia</li>
+          <li>🔌 Registrar nota y Asistencia vuelven a funcionar</li>
+          <li>🛡️ Fallos visibles, no pantallas vacías</li>
+          </ul>
+        </article>
       </div>
-
-      <p class="tarjeta__alterna" style="text-align:center; margin-top: 18px;">
-        <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico/releases" target="_blank" rel="noopener">
-          Historial completo de versiones en GitHub
-        </a>
-      </p>
     </div>
   </section>
 
 <footer class="pie">
   <div class="envoltorio pie__interior">
-    <p>UTS Nexus Académico · Grupo CIAI · Unidades Tecnológicas de Santander</p>
+    <p>UTS Nexus Académico · Grupo CIAI · Universitaria Tecnológica de Santander</p>
     <p class="pie__tenue">
       <a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener">
         Licencia PolyForm Noncommercial
@@ -328,6 +342,7 @@
     .then(function (releases) {
       if (!Array.isArray(releases) || releases.length === 0) return;
 
+      contenedor.textContent = '';
       releases.forEach(function (release) {
         var tarjeta = document.createElement('article');
         tarjeta.className = 'tarjeta';
@@ -365,18 +380,10 @@
           tarjeta.appendChild(lista);
         }
 
-        var enlace = document.createElement('a');
-        enlace.className = 'tarjeta__alterna';
-        enlace.href = release.html_url;
-        enlace.target = '_blank';
-        enlace.rel = 'noopener';
-        enlace.textContent = 'Notas completas →';
-        tarjeta.appendChild(enlace);
-
         contenedor.appendChild(tarjeta);
       });
     })
-    .catch(function () { /* la sección queda con el enlace al historial */ });
+    .catch(function () { /* quedan las tarjetas horneadas en el HTML */ });
 })();
 </script>
 </body>
