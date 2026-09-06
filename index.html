@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>UTS Nexus Académico — Descargar</title>
-<meta name="description" content="La planilla del semestre, con alertas y todo. Notas, asistencia y riesgo académico para docentes de las Universitaria Tecnológica de Santander. Descarga para Windows y Android.">
+<meta name="description" content="La planilla del semestre, con alertas y todo. Notas, asistencia y riesgo académico para docentes de las Universitaria Tecnológica de Santander. Descarga para Windows, Linux y Android.">
 <meta name="author" content="Grupo CIAI — Universitaria Tecnológica de Santander">
 <meta name="theme-color" content="#144d37">
 
@@ -69,7 +69,7 @@
           </a>
         </div>
 
-        <p class="hero__nota">Windows y Android · Gratis · Uso académico y sin ánimo de lucro</p>
+        <p class="hero__nota">Windows, Linux y Android · Gratis · Uso académico y sin ánimo de lucro</p>
       </div>
 
       <!-- Signature: planilla real, con los pesos reales del reglamento. -->
@@ -122,7 +122,7 @@
         <p class="seccion__sub">Elegí el equipo donde vas a pasar lista.</p>
       </header>
 
-      <div class="rejilla-descargas">
+      <div class="rejilla-descargas rejilla-descargas--tres">
 
         <article class="tarjeta tarjeta--destacada">
           <div class="tarjeta__icono" aria-hidden="true">
@@ -151,6 +151,32 @@
 
         <article class="tarjeta">
           <div class="tarjeta__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2c2.2 0 3.6 1.7 3.6 3.9 0 1.3.5 2.2 1.4 3.4 1.4 1.9 2.2 3.6 2.2 5.6 0 3.3-3 5.6-7.2 5.6S4.8 18.2 4.8 14.9c0-2 .8-3.7 2.2-5.6.9-1.2 1.4-2.1 1.4-3.4C8.4 3.7 9.8 2 12 2Z"/><path d="M10.4 6.3h.01M13.6 6.3h.01"/><path d="M10.9 8.6h2.2l-1.1 1.3z"/><path d="M9.2 20.3 7.6 22M14.8 20.3 16.4 22"/></svg>
+          </div>
+          <h3 class="tarjeta__titulo">Linux</h3>
+          <p class="tarjeta__desc">
+            La misma aplicación de escritorio, para quien da clase desde
+            Ubuntu, Mint o Fedora.
+          </p>
+          <!-- Mientras la AppImage no esté subida a Dropbox, el botón lleva a la
+               publicación de GitHub, donde además se puede elegir .deb o .rpm.
+               Cuando el workflow suba la primera AppImage, aquí va su enlace de
+               Dropbox igual que en las otras dos tarjetas. -->
+          <a class="boton boton--verde boton--bloque" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest" data-descarga="linux" target="_blank" rel="noopener">
+            Descargar para Linux
+          </a>
+          <p class="tarjeta__alterna">
+            AppImage, <code>.deb</code> o <code>.rpm</code>
+          </p>
+          <dl class="requisitos">
+            <div><dt>Sistema</dt><dd>Cualquier distribución · 64 bits</dd></div>
+            <div><dt>Archivo</dt><dd>AppImage, <code>.deb</code> o <code>.rpm</code></dd></div>
+            <div><dt>Se actualiza</dt><dd>Sola, desde la app</dd></div>
+          </dl>
+        </article>
+
+        <article class="tarjeta">
+          <div class="tarjeta__icono" aria-hidden="true">
             <svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>
           </div>
           <h3 class="tarjeta__titulo">Android</h3>
@@ -172,6 +198,15 @@
         </article>
 
       </div>
+
+      <aside class="aviso">
+        <strong>Sobre la AppImage de Linux.</strong>
+        Es un archivo único que no se instala: se descarga, se le da permiso de
+        ejecución (<code>chmod +x</code>, o «Permitir ejecutar como programa» en
+        las propiedades del archivo) y se abre con doble clic. Quien prefiera un
+        paquete del sistema tiene el <code>.deb</code> y el <code>.rpm</code> en
+        la misma publicación.
+      </aside>
 
       <aside class="aviso">
         <strong>Sobre el archivo de Android.</strong>

@@ -368,6 +368,12 @@ a { color: inherit; }
   margin-inline: auto;
 }
 
+/* Tres tarjetas no caben en 760 px: con `minmax(290px, …)` el `auto-fit`
+   deja dos arriba y una suelta debajo, que se lee como un error de maqueta.
+   El tope sube a los tres anchos mínimos más los huecos, y ahí el `auto-fit`
+   las sigue apilando solo cuando la pantalla no da. */
+.rejilla-descargas--tres { max-width: 1010px; }
+
 .tarjeta {
   display: flex; flex-direction: column;
   background: var(--blanco);
