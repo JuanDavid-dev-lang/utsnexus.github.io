@@ -160,6 +160,10 @@
 
   var API = 'https://3-14-147-55.sslip.io/api/v1/descargas';
 
+  // Linux ya no lleva `data-descarga`: su botón entrega el INSTALADOR, no el
+  // archivo de la aplicación, y el servidor devuelve la dirección de la
+  // AppImage. Sustituirla dejaría el botón entregando otra cosa que la que
+  // anuncia, y el instalador ya se trae la aplicación él solo.
   var botones = document.querySelectorAll('[data-descarga]');
   if (!botones.length || !window.fetch) return;
 

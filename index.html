@@ -204,23 +204,24 @@
             La misma aplicación de escritorio, para quien da clase desde
             Ubuntu, Mint o Fedora.
           </p>
-          <!-- Archivo directo en Dropbox, como los otros dos. El publicador de
-               versiones lo sobrescribe en su sitio, así que este enlace siempre
-               entrega la última: no hay que tocarlo al publicar. -->
-          <!-- Sin `target="_blank"`: los tres archivos se sirven con
-               `Content-Disposition: attachment`, así que navegar en la misma
-               pestaña baja el archivo y la página no se mueve. Con `_blank` el
-               navegador abría una pestaña que se cerraba sola, y ese parpadeo
-               se lee como que algo falló. -->
-          <a class="boton boton--marca boton--bloque" href="https://www.dropbox.com/scl/fi/rdx81u2hlplteru4ixhq6/UTS-Nexus-Academico-Linux.AppImage?rlkey=32kwf13t7n6bbzw2f2roq208y&dl=1" data-descarga="linux">
-            Descargar para Linux
+          <!-- El instalador y no el archivo suelto. Una AppImage no se instala
+               en ninguna parte: se descarga, se queda en Descargas, hay que
+               darle permiso de ejecución a mano y no aparece en el menú de
+               aplicaciones. El instalador hace las tres cosas, y si no
+               encuentra la aplicación en el equipo la descarga él.
+
+               El nombre del archivo no lleva la versión, así que
+               `releases/latest/download/…` siempre entrega el último y este
+               enlace no hay que tocarlo al publicar. -->
+          <a class="boton boton--marca boton--bloque" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest/download/instalar-uts-nexus.sh">
+            Descargar el instalador
           </a>
           <p class="tarjeta__alterna">
-            Descarga directa de la <code>.AppImage</code>
+            Instalador gráfico · <code>.sh</code> de 15 KB
           </p>
           <dl class="requisitos">
             <div><dt>Sistema</dt><dd>Cualquier distribución · 64 bits</dd></div>
-            <div><dt>Archivo</dt><dd>AppImage portable</dd></div>
+            <div><dt>Instala</dt><dd>Sin contraseña de administrador</dd></div>
             <div><dt>Se actualiza</dt><dd>Sola, desde la app</dd></div>
           </dl>
         </article>
@@ -255,12 +256,23 @@
       </div>
 
       <aside class="aviso">
-        <strong>Sobre la AppImage de Linux.</strong>
-        Es un archivo único que no se instala: se descarga, se le da permiso de
-        ejecución (<code>chmod +x</code>, o «Permitir ejecutar como programa» en
-        las propiedades del archivo) y se abre con doble clic. Quien prefiera un
-        paquete del sistema tiene el <code>.deb</code> y el <code>.rpm</code> en
+        <strong>Cómo se instala en Linux.</strong>
+        Descargá el instalador y abrí un terminal en la carpeta de descargas:
+        <code>bash instalar-uts-nexus.sh</code>. Se ejecuta así, con
+        <code>bash</code> delante, para no tener que darle permiso de ejecución
+        primero. Abre una ventana, descarga la aplicación si no la tenés, la
+        deja en el menú con su icono y también sabe desinstalarla. No pide
+        contraseña de administrador: todo va dentro de tu carpeta personal.
+      </aside>
+
+      <aside class="aviso">
+        <strong>Si preferís el paquete de tu distribución.</strong>
+        El <code>.deb</code>, el <code>.rpm</code> y la <code>.AppImage</code>
+        suelta están en
         <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest" target="_blank" rel="noopener">la publicación</a>.
+        El <code>.deb</code> y el <code>.rpm</code> los instala el centro de
+        software del sistema, y esos sí piden contraseña porque escriben en
+        <code>/usr</code>.
       </aside>
 
       <aside class="aviso">
