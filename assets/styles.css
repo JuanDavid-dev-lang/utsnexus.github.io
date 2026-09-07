@@ -10,21 +10,35 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Color */
-  --verde: #144d37;
-  --verde-noche: #0d3325;
-  --verde-hover: #1c6b4c;
+  /* ── Color ───────────────────────────────────────────────────────────────
+     Los nombres declaran el PAPEL, no el color. `--superficie` es la tarjeta,
+     sea blanca o de oliva oscuro; `--marca` es el campo verde de la marca. Con
+     nombres de color (`--blanco`, `--papel`) el modo oscuro obliga a escribir
+     `--blanco: #33332A`, y a partir de ahí nadie sabe qué significa cada uno.
+
+     El lima es el acento en los dos modos y nunca es color de texto sobre el
+     fondo de la página ni fondo de superficie grande: solo acción, distintivo,
+     selección y foco. Regla heredada de DESIGN.md. */
+  --marca: #144d37;          /* superficie de marca: hero, franja verde, pie */
+  --marca-noche: #0d3325;
+  --marca-hover: #1c6b4c;
+  --marca-texto: #144d37;    /* el verde cuando tiene que SER texto o icono */
+  --sobre-marca: #ffffff;    /* texto sobre la superficie de marca */
   --lima: #cad225;
-  --lima-suave: #f1f6ce;
-  --papel: #f4f7f1;
-  --papel-hueso: #eaf0e6;
-  --blanco: #ffffff;
+  --lima-tenue: #f1f6ce;
+  --fondo: #f4f7f1;
+  --fondo-sutil: #eaf0e6;
+  --superficie: #ffffff;
+  --barra: rgb(244 247 241 / .82);
   --tinta: #12271e;
   --tinta-suave: #5b6b61;
   --borde: #d8e2d4;
   --borde-fuerte: #b9cbb2;
   --alarma: #dc2626;
-  --alarma-suave: #fee2e2;
+  --alarma-tenue: #fee2e2;
+  --exito: #14795a;
+  --sombra: 0 1px 2px rgb(18 39 30 / .04), 0 8px 28px rgb(18 39 30 / .07);
+  --sombra-alta: 0 2px 4px rgb(18 39 30 / .06), 0 20px 50px rgb(18 39 30 / .13);
 
   /* Tipografía */
   --display: 'Archivo', system-ui, sans-serif;
@@ -35,8 +49,77 @@
   --radio: 14px;
   --radio-sm: 9px;
   --ancho: 1140px;
-  --sombra: 0 1px 2px rgb(18 39 30 / .04), 0 8px 28px rgb(18 39 30 / .07);
-  --sombra-alta: 0 2px 4px rgb(18 39 30 / .06), 0 20px 50px rgb(18 39 30 / .13);
+}
+
+/* ── Modo oscuro ────────────────────────────────────────────────────────────
+   La paleta oliva/lima de DESIGN.md, la misma que usan el escritorio y el
+   móvil: fondo #232922, tarjeta #33332A, texto #EDEFDD. No es el verde de la
+   marca oscurecido — ese dark mode se probó y el texto lima sobre verde caía
+   por debajo de AA.
+
+   Los tres estados del tema se declaran a mano y en este orden:
+     1. `:root` es el modo claro y define TODOS los tokens. Ningún color tiene
+        su única definición dentro de un bloque de tema.
+     2. `prefers-color-scheme` cubre el modo «seguir al sistema», que es el que
+        no lleva marca en el <html>. El `:not([data-tema="claro"])` es lo que
+        deja que la elección manual gane sobre el sistema.
+     3. `[data-tema="oscuro"]` cubre la elección manual, para que el interruptor
+        funcione en los dos sentidos.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) { color-scheme: dark; }
+  :root:not([data-tema="claro"]) {
+    --marca: #1b3b2b;
+    --marca-noche: #10241a;
+    --marca-hover: #24543d;
+    --marca-texto: #bfc663;
+    --sobre-marca: #edefdd;
+    --lima: #cad225;
+    --lima-tenue: #3a3d1c;
+    --fondo: #232922;
+    --fondo-sutil: #3b3c30;
+    --superficie: #33332a;
+    --barra: rgb(35 41 34 / .86);
+    --tinta: #edefdd;
+    --tinta-suave: #a6aa8a;
+    --borde: #45472f;
+    --borde-fuerte: #696b3e;
+    --alarma: #f87171;
+    --alarma-tenue: #43201d;
+    --exito: #4ade80;
+    --sombra: 0 1px 2px rgb(0 0 0 / .3), 0 8px 28px rgb(0 0 0 / .38);
+    --sombra-alta: 0 2px 4px rgb(0 0 0 / .34), 0 20px 50px rgb(0 0 0 / .5);
+  }
+}
+
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --marca: #1b3b2b;
+  --marca-noche: #10241a;
+  --marca-hover: #24543d;
+  --marca-texto: #bfc663;
+  --sobre-marca: #edefdd;
+  --lima: #cad225;
+  --lima-tenue: #3a3d1c;
+  --fondo: #232922;
+  --fondo-sutil: #3b3c30;
+  --superficie: #33332a;
+  --barra: rgb(35 41 34 / .86);
+  --tinta: #edefdd;
+  --tinta-suave: #a6aa8a;
+  --borde: #45472f;
+  --borde-fuerte: #696b3e;
+  --alarma: #f87171;
+  --alarma-tenue: #43201d;
+  --exito: #4ade80;
+  --sombra: 0 1px 2px rgb(0 0 0 / .3), 0 8px 28px rgb(0 0 0 / .38);
+  --sombra-alta: 0 2px 4px rgb(0 0 0 / .34), 0 20px 50px rgb(0 0 0 / .5);
+}
+
+/* El interruptor no debe repintar la página a trozos: la transición va en las
+   propiedades de color y en nada más. */
+body, .barra, .tarjeta, .creditos, .planilla, .seccion--marca, .capacidad {
+  transition: background-color .25s ease, border-color .25s ease, color .25s ease;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -45,7 +128,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: var(--papel);
+  background: var(--fondo);
   color: var(--tinta);
   font-family: var(--texto);
   font-size: 16px;
@@ -53,7 +136,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
+/* h4 entra en el reset: los requisitos lo usan, y sin esto conserva el
+   margen por defecto del navegador y su código queda descolgado del título. */
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.1; margin: 0; }
 p { margin: 0; }
 a { color: inherit; }
 
@@ -71,7 +156,7 @@ a { color: inherit; }
 
 .saltar {
   position: absolute; left: -9999px;
-  background: var(--verde); color: var(--blanco);
+  background: var(--marca); color: var(--sobre-marca);
   padding: 12px 18px; border-radius: 0 0 var(--radio-sm) 0;
   z-index: 100; text-decoration: none; font-weight: 600;
 }
@@ -104,8 +189,8 @@ a { color: inherit; }
 .boton--lima { background: var(--lima); color: var(--tinta); box-shadow: 0 6px 20px rgb(202 210 37 / .34); }
 .boton--lima:hover { background: #d8e04a; }
 
-.boton--verde { background: var(--verde); color: var(--blanco); }
-.boton--verde:hover { background: var(--verde-hover); }
+.boton--marca { background: var(--marca); color: var(--sobre-marca); }
+.boton--marca:hover { background: var(--marca-hover); }
 
 .boton--fantasma { background: transparent; border-color: currentColor; }
 .boton--fantasma:hover { background: rgb(255 255 255 / .1); }
@@ -116,7 +201,7 @@ a { color: inherit; }
 /* ── Barra superior ─────────────────────────────────────────────────────── */
 .barra {
   position: sticky; top: 0; z-index: 50;
-  background: rgb(244 247 241 / .82);
+  background: var(--barra);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--borde);
 }
@@ -146,7 +231,7 @@ a { color: inherit; }
   font-family: var(--dato);
   font-size: 11px; font-weight: 600;
   letter-spacing: .06em; text-transform: uppercase;
-  color: var(--verde); background: var(--lima-suave);
+  color: var(--marca-texto); background: var(--lima-tenue);
   border: 1px solid var(--lima);
   border-radius: 999px;
   padding: 2px 8px;
@@ -164,8 +249,8 @@ a { color: inherit; }
 .hero {
   background:
     radial-gradient(120% 90% at 88% 4%, rgb(202 210 37 / .13), transparent 58%),
-    linear-gradient(168deg, var(--verde) 0%, var(--verde-noche) 100%);
-  color: var(--blanco);
+    linear-gradient(168deg, var(--marca) 0%, var(--marca-noche) 100%);
+  color: var(--sobre-marca);
   padding: clamp(56px, 9vw, 104px) 0 clamp(72px, 10vw, 124px);
   overflow: hidden;
 }
@@ -216,7 +301,7 @@ a { color: inherit; }
 .planilla {
   position: relative;
   margin: 0;
-  background: var(--blanco);
+  background: var(--superficie);
   color: var(--tinta);
   border-radius: var(--radio);
   box-shadow: var(--sombra-alta);
@@ -244,7 +329,7 @@ a { color: inherit; }
   font-weight: 600; color: var(--tinta);
 }
 .planilla__formula b {
-  background: var(--papel-hueso);
+  background: var(--fondo-sutil);
   border-radius: 5px; padding: 3px 7px; font-weight: 500;
 }
 .planilla__formula i { font-style: normal; opacity: .5; }
@@ -264,7 +349,7 @@ a { color: inherit; }
 
 .tabla td {
   padding: 11px 6px;
-  border-bottom: 1px solid var(--papel-hueso);
+  border-bottom: 1px solid var(--fondo-sutil);
   font-family: var(--dato);
   font-size: 14px;
   font-variant-numeric: tabular-nums;
@@ -283,13 +368,13 @@ a { color: inherit; }
 .fila.esta { opacity: 1; transform: none; transition: opacity .42s ease, transform .42s ease; }
 
 .def { font-weight: 600; }
-.def--alta { color: var(--verde); }
+.def--alta { color: var(--exito); }
 .def--baja { color: var(--alarma); }
 
 .marca-riesgo {
   display: inline-flex; align-items: center; gap: 5px;
   margin-left: 8px;
-  background: var(--alarma-suave); color: var(--alarma);
+  background: var(--alarma-tenue); color: var(--alarma);
   border-radius: 999px;
   padding: 2px 9px;
   font-family: var(--texto); font-size: 11px; font-weight: 600;
@@ -331,14 +416,14 @@ a { color: inherit; }
 }
 .punto {
   width: 7px; height: 7px; border-radius: 50%;
-  background: var(--verde); flex: none;
+  background: var(--marca-texto); flex: none;
 }
 
 /* ── Secciones ────────────────────────────────────────────────────────────
    El padding vertical vive solo aquí. Ninguna clase de contenido lo redefine,
    para que dos secciones seguidas no acumulen espacios distintos. */
 .seccion { padding: clamp(60px, 8vw, 100px) 0; }
-.seccion--verde { background: var(--verde); color: var(--blanco); }
+.seccion--marca { background: var(--marca); color: var(--sobre-marca); }
 
 .seccion__cab { margin-bottom: clamp(30px, 4vw, 46px); }
 .titulo2 {
@@ -352,7 +437,7 @@ a { color: inherit; }
   color: var(--tinta-suave);
   max-width: 56ch;
 }
-.seccion--verde .seccion__sub { color: rgb(255 255 255 / .75); }
+.seccion--marca .seccion__sub { color: rgb(255 255 255 / .75); }
 
 /* ── Descargas ────────────────────────────────────────────────────────────
    Windows va primero y destacado porque es donde un docente arma el semestre;
@@ -376,7 +461,7 @@ a { color: inherit; }
 
 .tarjeta {
   display: flex; flex-direction: column;
-  background: var(--blanco);
+  background: var(--superficie);
   border: 1px solid var(--borde);
   border-radius: var(--radio);
   padding: 28px;
@@ -387,16 +472,16 @@ a { color: inherit; }
 .tarjeta__icono {
   display: grid; place-items: center;
   width: 46px; height: 46px;
-  background: var(--papel-hueso);
+  background: var(--fondo-sutil);
   border-radius: 12px;
   margin-bottom: 18px;
 }
 .tarjeta__icono svg {
   width: 23px; height: 23px;
-  fill: none; stroke: var(--verde); stroke-width: 1.7;
+  fill: none; stroke: var(--marca-texto); stroke-width: 1.7;
   stroke-linecap: round; stroke-linejoin: round;
 }
-.tarjeta--destacada .tarjeta__icono { background: var(--lima-suave); }
+.tarjeta--destacada .tarjeta__icono { background: var(--lima-tenue); }
 
 .tarjeta__titulo { font-size: 1.32rem; font-weight: 700; }
 .tarjeta__desc {
@@ -413,10 +498,10 @@ a { color: inherit; }
   color: var(--tinta-suave);
   text-align: center;
 }
-.tarjeta__alterna a { color: var(--verde); font-weight: 600; }
+.tarjeta__alterna a { color: var(--marca-texto); font-weight: 600; }
 .tarjeta__alterna code {
   font-family: var(--dato); font-size: 12.5px;
-  background: var(--papel-hueso);
+  background: var(--fondo-sutil);
   border-radius: 4px; padding: 1px 5px;
 }
 
@@ -424,7 +509,7 @@ a { color: inherit; }
 .requisitos > div {
   display: flex; justify-content: space-between; gap: 14px;
   padding-top: 9px;
-  border-top: 1px solid var(--papel-hueso);
+  border-top: 1px solid var(--fondo-sutil);
 }
 .requisitos dt { font-size: 13px; color: var(--tinta-suave); }
 .requisitos dd {
@@ -434,13 +519,13 @@ a { color: inherit; }
 }
 .requisitos code {
   font-family: var(--dato); font-size: 12.5px;
-  background: var(--papel-hueso);
+  background: var(--fondo-sutil);
   border-radius: 4px; padding: 1px 5px;
 }
 
 .aviso {
   margin-top: 24px;
-  background: var(--lima-suave);
+  background: var(--lima-tenue);
   border-left: 3px solid var(--lima);
   border-radius: var(--radio-sm);
   padding: 17px 20px;
@@ -460,7 +545,7 @@ a { color: inherit; }
   border-radius: var(--radio);
   overflow: hidden;
 }
-.capacidad { background: var(--verde); padding: 28px 26px; }
+.capacidad { background: var(--marca); padding: 28px 26px; }
 .capacidad__titulo {
   font-size: 1.13rem; font-weight: 700;
   color: var(--lima);
@@ -470,7 +555,7 @@ a { color: inherit; }
 
 /* ── Créditos ─────────────────────────────────────────────────────────── */
 .creditos {
-  background: var(--blanco);
+  background: var(--superficie);
   border: 1px solid var(--borde);
   border-radius: var(--radio);
   padding: clamp(28px, 4vw, 42px);
@@ -481,20 +566,20 @@ a { color: inherit; }
   font-size: 1.5rem; font-weight: 500;
   color: var(--tinta-suave);
 }
-.creditos__grupo strong { color: var(--verde); font-weight: 800; }
+.creditos__grupo strong { color: var(--marca-texto); font-weight: 800; }
 .creditos__linea { margin-top: 10px; color: var(--tinta-suave); }
 
 .autor {
   display: flex; align-items: center; gap: 15px;
   margin: 26px 0;
   padding: 18px 20px;
-  background: var(--papel);
+  background: var(--fondo);
   border-radius: var(--radio-sm);
 }
 .autor__inicial {
   display: grid; place-items: center;
   width: 46px; height: 46px; flex: none;
-  background: var(--verde); color: var(--lima);
+  background: var(--marca); color: var(--lima);
   border-radius: 50%;
   font-family: var(--display); font-weight: 700; font-size: 15px;
 }
@@ -515,12 +600,12 @@ a { color: inherit; }
 .creditos__acciones {
   display: flex; flex-wrap: wrap; gap: 10px;
 }
-.creditos .boton--fantasma { color: var(--verde); }
-.creditos .boton--fantasma:hover { background: var(--papel-hueso); }
+.creditos .boton--fantasma { color: var(--marca-texto); }
+.creditos .boton--fantasma:hover { background: var(--fondo-sutil); }
 
 /* ── Pie ──────────────────────────────────────────────────────────────── */
 .pie {
-  background: var(--verde-noche);
+  background: var(--marca-noche);
   color: rgb(255 255 255 / .68);
   padding: 30px 0;
   font-size: 14px;
@@ -541,8 +626,6 @@ a { color: inherit; }
 }
 
 @media (max-width: 460px) {
-  /* "Académico" sale de la barra antes que partir la marca en dos líneas. */
-  .marca__nombre em { display: none; }
   .tabla th, .tabla td { padding-inline: 3px; font-size: 13px; }
   .tabla td:first-child { font-size: 13.5px; }
   .planilla { padding: 18px 15px 15px; }
@@ -557,4 +640,361 @@ a { color: inherit; }
     transition-duration: .001ms !important;
   }
   .boton:hover { transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Interruptor de tema
+
+   Tres posiciones, no dos. Un interruptor de dos deja la página clavada en
+   cuanto alguien lo toca una vez, y el equipo que cambia solo al anochecer
+   deja de hacerlo sin explicación. La tercera —seguir al sistema— tiene que
+   ser alcanzable, así que va como una opción más y no escondida en un ciclo.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.tema {
+  display: flex; align-items: center; gap: 2px;
+  padding: 3px;
+  background: var(--fondo-sutil);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  flex: none;
+}
+.tema__op {
+  display: grid; place-items: center;
+  width: 30px; height: 30px;
+  padding: 0;
+  background: transparent;
+  border: 0; border-radius: 50%;
+  color: var(--tinta-suave);
+  cursor: pointer;
+  transition: background-color .18s ease, color .18s ease;
+}
+.tema__op svg {
+  width: 16px; height: 16px;
+  fill: none; stroke: currentColor; stroke-width: 1.9;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.tema__op:hover { color: var(--tinta); }
+/* El estado activo no se dice solo con color: el lima de fondo lo marca para
+   quien lo ve, y `aria-pressed` para quien lo escucha. */
+.tema__op[aria-pressed="true"] {
+  background: var(--lima);
+  color: #12271e;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   La necesidad
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rejilla-necesidad {
+  display: grid;
+  /* 300 px reparte los 1140 del envoltorio en TRES columnas, no en cuatro: con
+     cuatro, las seis tarjetas dejan la última fila a medias. */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+}
+.problema {
+  display: flex; flex-direction: column;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-left: 3px solid var(--alarma);
+  border-radius: var(--radio);
+  padding: 24px 24px 20px;
+  box-shadow: var(--sombra);
+}
+.problema__titulo {
+  font-size: 1.08rem; font-weight: 700;
+  margin-bottom: 9px;
+}
+.problema p { color: var(--tinta-suave); font-size: 14.7px; }
+/* La consecuencia es lo que convierte una queja en un requisito. Va separada
+   del párrafo para que se lea como la conclusión, no como más descripción. */
+.problema__porque {
+  display: flex; gap: 9px;
+  margin-top: auto; padding-top: 14px;
+  border-top: 1px solid var(--fondo-sutil);
+  font-size: 13.6px;
+  color: var(--tinta);
+}
+.problema__porque b {
+  font-family: var(--dato);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: var(--marca-texto);
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Requerimientos
+
+   Numerados y con código porque así se citan en un documento del proyecto:
+   «RF-04» tiene que poder buscarse. El código es el ancla, no un adorno.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.reqs__grupo + .reqs__grupo { margin-top: clamp(34px, 4vw, 52px); }
+
+.reqs__cab {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--borde);
+}
+.reqs__titulo { font-size: 1.3rem; font-weight: 700; }
+.reqs__cuenta {
+  font-family: var(--dato);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+.reqs {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1px;
+  background: var(--borde);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+/* El hueco sobre el fondo del borde dibuja la retícula sin una línea por
+   celda: con `border` en cada tarjeta los bordes contiguos se suman y salen
+   dobles, y en la última columna sobra uno. */
+.req {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  background: var(--superficie);
+  padding: 19px 21px;
+}
+.req__id {
+  font-family: var(--dato);
+  font-size: 11.5px; font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--marca-texto);
+  background: var(--fondo-sutil);
+  border-radius: 6px;
+  padding: 3px 8px;
+  height: max-content;
+  white-space: nowrap;
+}
+.req__titulo { font-size: 1rem; font-weight: 700; margin-bottom: 5px; }
+.req p { font-size: 14px; color: var(--tinta-suave); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Diagramas UML
+
+   Van dibujados en SVG dentro del HTML, no como imágenes: heredan los tokens
+   del tema, así que el mismo diagrama se lee en claro y en oscuro sin mantener
+   dos archivos. Un PNG exportado se queda con el fondo del día que se exportó.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.diag__pestanas {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 20px;
+}
+.diag__pestana {
+  padding: 9px 17px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  font-family: var(--texto);
+  font-size: 14px; font-weight: 600;
+  color: var(--tinta-suave);
+  cursor: pointer;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease;
+}
+.diag__pestana:hover { color: var(--tinta); border-color: var(--borde-fuerte); }
+.diag__pestana[aria-selected="true"] {
+  background: var(--lima);
+  border-color: var(--lima);
+  color: #12271e;
+}
+
+.diag__panel {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: clamp(18px, 3vw, 30px);
+  box-shadow: var(--sombra);
+}
+
+.diag__pie {
+  margin-bottom: 18px;
+  font-size: 14.6px;
+  color: var(--tinta-suave);
+  max-width: 72ch;
+}
+
+/* El diagrama no encoge hasta ser ilegible: se desplaza dentro de su caja.
+   La página nunca se desplaza en horizontal. */
+.diag__lienzo {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-bottom: 6px;
+}
+.diag__lienzo svg {
+  display: block;
+  min-width: 640px;
+  width: 100%;
+  height: auto;
+}
+
+/* Piezas del dibujo. Se pintan con los tokens, no con colores fijos. */
+.d-caja { fill: var(--fondo-sutil); stroke: var(--borde-fuerte); stroke-width: 1.4; }
+.d-caja--marca { fill: var(--marca); stroke: var(--marca); }
+.d-caja--tenue { fill: var(--fondo-sutil); stroke: var(--borde); stroke-width: 1.2; }
+/* El marco del sistema no es una caja: es el límite que las contiene. */
+.d-caja--limite { fill: none; stroke: var(--borde-fuerte); stroke-width: 1.4; stroke-dasharray: 7 5; }
+.d-caja--lima { fill: var(--lima-tenue); stroke: var(--lima); stroke-width: 1.4; }
+.d-linea { fill: none; stroke: var(--borde-fuerte); stroke-width: 1.4; }
+.d-linea--corte { stroke-dasharray: 5 4; }
+.d-figura { fill: none; stroke: var(--marca-texto); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.d-txt { font-family: var(--texto); font-size: 12.5px; fill: var(--tinta); }
+.d-txt--fuerte { font-family: var(--display); font-size: 13px; font-weight: 700; fill: var(--tinta); }
+.d-txt--sobre { fill: var(--sobre-marca); }
+.d-txt--tenue { font-family: var(--texto); font-size: 11.5px; fill: var(--tinta-suave); }
+.d-txt--dato { font-family: var(--dato); font-size: 10.5px; fill: var(--tinta-suave); }
+.d-txt--centro { text-anchor: middle; }
+.d-punta { fill: var(--borde-fuerte); stroke: none; }
+
+/* Alternativa en texto. No es un extra de cortesía: un diagrama es una imagen
+   compleja, y quien navega con lector de pantalla necesita la misma
+   información en prosa, no un `alt` de seis palabras. */
+.diag__texto {
+  margin-top: 20px;
+  border-top: 1px solid var(--borde);
+  padding-top: 16px;
+}
+.diag__texto > summary {
+  cursor: pointer;
+  font-size: 14px; font-weight: 600;
+  color: var(--marca-texto);
+}
+.diag__texto ol, .diag__texto ul {
+  margin: 12px 0 0; padding-left: 1.3em;
+  font-size: 14.2px; color: var(--tinta-suave);
+}
+.diag__texto li + li { margin-top: 6px; }
+
+@media (max-width: 900px) {
+  /* El interruptor de tema NO se esconde con los enlaces: es el único control
+     de la barra que cambia cómo se ve la página. */
+  .barra__nav { gap: 12px; }
+}
+
+@media (max-width: 560px) {
+  .reqs { grid-template-columns: 1fr; }
+  .req { grid-template-columns: 1fr; gap: 8px; }
+  .req__id { justify-self: start; }
+}
+
+/* Sin JavaScript los cuatro paneles se quedan visibles uno debajo de otro: el
+   `hidden` lo pone el guion, no el HTML. La página cuenta lo mismo aunque el
+   script no llegue, que es la regla que ya sigue la sección de novedades. */
+.diag__panel + .diag__panel { margin-top: 16px; }
+
+/* Fondo de una etiqueta que tiene que cruzar una línea de vida. Es del color
+   del panel, así que la despeja sin dibujar nada nuevo. */
+.d-etiqueta { fill: var(--superficie); stroke: none; }
+
+/* ── La barra en pantalla estrecha ────────────────────────────────────────
+   El interruptor de tema ocupa sitio en una barra que ya estaba justa, así
+   que a partir de aquí todo encoge por orden de importancia. Lo que NO se
+   toca es el objetivo táctil: 28 px de botón dentro de una barra de 66 es lo
+   mínimo cómodo, y por debajo de eso se deja de encoger y se quita algo. */
+/* "Académico" sale de la barra antes que partir la marca en dos líneas. El
+   corte está donde deja de caber: marca completa, interruptor y botón suman
+   unos 526 px, y a 600 el envoltorio ya no los sostiene. */
+@media (max-width: 600px) {
+  .marca__nombre em { display: none; }
+}
+
+@media (max-width: 620px) {
+  .barra__nav { gap: 10px; }
+  .tema__op { width: 28px; height: 28px; }
+  .tema__op svg { width: 15px; height: 15px; }
+  .barra__nav .boton--sm { padding: 9px 15px; }
+}
+
+@media (max-width: 500px) {
+  /* Se va el nombre escrito, no la marca: quedan el logotipo y la etapa, que
+     es el dato que nadie debería tener que deducir. El nombre completo está
+     en el título de la página y en el titular. */
+  .marca__nombre { display: none; }
+  /* El texto del botón se oculta a la vista pero sigue siendo su nombre para
+     un lector de pantalla. Con `display: none` el botón se quedaría sin
+     nombre y se anunciaría como «enlace». */
+  .barra__nav .boton__texto {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .barra__nav .boton--sm { padding: 9px 10px; }
+}
+
+@media (max-width: 560px) {
+  /* Por debajo de 300 px de columna, `auto-fit` deja de poder encoger y la
+     tarjeta empuja la página hacia los lados. */
+  .rejilla-necesidad { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Portada del documento (requerimientos-uml.html)
+
+   No es el hero de la página de descarga repetido: allí lo que importa es el
+   botón, y aquí no hay nada que descargar. Lleva la misma superficie de marca
+   para que se reconozca el mismo producto, y debajo la ficha del documento.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.portada {
+  background:
+    radial-gradient(120% 90% at 88% 4%, rgb(202 210 37 / .13), transparent 58%),
+    linear-gradient(168deg, var(--marca) 0%, var(--marca-noche) 100%);
+  color: var(--sobre-marca);
+  padding: clamp(48px, 7vw, 84px) 0 clamp(40px, 6vw, 68px);
+}
+/* Sin bloque centrado: el texto de la portada arranca en el mismo margen
+   que los títulos de las secciones de abajo. Centrarlo lo dejaba desalineado
+   con todo lo que sigue. */
+.portada__ficha { max-width: 760px; }
+.portada__titulo { font-size: clamp(2.1rem, 4.4vw, 3.3rem); }
+.portada .entradilla { max-width: 60ch; }
+
+.portada__ficha {
+  margin: clamp(28px, 4vw, 40px) 0 0;
+  display: grid;
+  gap: 1px;
+  background: rgb(255 255 255 / .16);
+  border: 1px solid rgb(255 255 255 / .16);
+  border-radius: var(--radio-sm);
+  overflow: hidden;
+}
+.portada__ficha > div {
+  display: flex; flex-wrap: wrap; gap: 6px 18px;
+  padding: 12px 16px;
+  background: rgb(255 255 255 / .05);
+}
+.portada__ficha dt {
+  font-family: var(--dato);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .09em; text-transform: uppercase;
+  color: var(--lima);
+  min-width: 118px;
+}
+.portada__ficha dd { margin: 0; font-size: 14.6px; color: rgb(255 255 255 / .88); }
+
+.portada__indice { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+/* ── Rótulo de cada diagrama ──────────────────────────────────────────────
+   En un documento se cita «la figura 3», así que la figura tiene que llevar
+   su número escrito y no solo un título. */
+.diag__num {
+  font-family: var(--dato);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--marca-texto);
+  margin-bottom: 6px;
+}
+.diag__titulo {
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  font-weight: 700;
+  margin-bottom: 12px;
 }

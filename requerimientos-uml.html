@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Requerimientos y modelo UML — UTS Nexus Académico</title>
+<meta name="description" content="Requerimientos funcionales y no funcionales de UTS Nexus Académico y su modelo UML: casos de uso, clases, componentes y secuencia.">
+<meta name="author" content="Grupo CIAI — Universitaria Tecnológica de Santander">
+<meta name="theme-color" content="#144d37" id="metaTema">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Requerimientos y modelo UML — UTS Nexus Académico">
+<meta property="og:description" content="Qué tiene que hacer el sistema, cómo tiene que hacerlo y cuatro vistas UML del mismo.">
+<meta property="og:locale" content="es_CO">
+
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- La preferencia de tema se lee antes de dibujar. Leerla después deja el
+     primer fotograma con el tema del sistema y lo cambia a continuación: quien
+     eligió claro con el equipo en oscuro ve un fogonazo. Es el mismo guion que
+     la portada, y va antes de la hoja de estilos por eso mismo. -->
+<script>
+(function () {
+  var elegido = null;
+  try { elegido = localStorage.getItem('uts-tema'); } catch (e) { /* modo privado */ }
+  if (elegido === 'claro' || elegido === 'oscuro') {
+    document.documentElement.setAttribute('data-tema', elegido);
+  }
+  var oscuro = elegido === 'oscuro' || (elegido !== 'claro' &&
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.style.colorScheme = oscuro ? 'dark' : 'light';
+})();
+</script>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<a class="saltar" href="#requerimientos">Saltar al contenido</a>
+
+<header class="barra">
+  <div class="barra__interior">
+    <a class="marca" href="index.html">
+      <img class="marca__logo" src="assets/logo.png" alt="" width="36" height="36" decoding="async">
+      <span class="marca__nombre">UTS Nexus <em>Académico</em></span>
+      <span class="etapa">Doc</span>
+    </a>
+    <nav class="barra__nav" aria-label="Secciones">
+      <a href="#requerimientos">Requerimientos</a>
+      <a href="#uml">Modelo UML</a>
+
+      <div class="tema" role="group" aria-label="Tema de la página">
+        <button class="tema__op" type="button" data-tema-op="claro" aria-pressed="false" title="Claro">
+          <span class="visualmente-oculto">Tema claro</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"/></svg>
+        </button>
+        <button class="tema__op" type="button" data-tema-op="oscuro" aria-pressed="false" title="Oscuro">
+          <span class="visualmente-oculto">Tema oscuro</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>
+        </button>
+        <button class="tema__op" type="button" data-tema-op="sistema" aria-pressed="false" title="Seguir al sistema">
+          <span class="visualmente-oculto">Seguir el tema del sistema</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.8" y="4.5" width="18.4" height="12.4" rx="2"/><path d="M8.5 20.5h7"/></svg>
+        </button>
+      </div>
+
+      <a class="boton boton--lima boton--sm" href="index.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
+        <span class="boton__texto">Volver</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── Portada del documento ──────────────────────────────────────────────
+       No es el hero de la portada repetido: aquí no hay nada que descargar.
+       Dice qué documento es, de qué sistema habla y qué contiene, que es lo
+       que alguien necesita saber antes de leer treinta requisitos. -->
+  <section class="portada">
+    <div class="envoltorio portada__interior">
+      <p class="eyebrow">Documento técnico · Grupo CIAI</p>
+      <h1 class="titular portada__titulo">
+        Requerimientos y<br>
+        <span class="titular__acento">modelo UML</span>
+      </h1>
+      <p class="entradilla">
+        Qué tiene que hacer UTS Nexus Académico, qué tiene que cumplir mientras
+        lo hace, y cuatro vistas del sistema: quién lo usa, qué guarda, de qué
+        piezas está hecho y qué ocurre cuando alguien escribe una nota.
+      </p>
+
+      <dl class="portada__ficha">
+        <div><dt>Sistema</dt><dd>UTS Nexus Académico</dd></div>
+        <div><dt>Institución</dt><dd>Universitaria Tecnológica de Santander</dd></div>
+        <div><dt>Contenido</dt><dd>12 requisitos funcionales · 10 no funcionales · 4 diagramas</dd></div>
+      </dl>
+
+      <nav class="portada__indice" aria-label="Contenido del documento">
+        <a class="boton boton--lima boton--sm" href="#requerimientos">Requerimientos</a>
+        <a class="boton boton--fantasma boton--sm" href="#uml">Modelo UML</a>
+        <a class="boton boton--fantasma boton--sm" href="index.html#necesidad">La necesidad</a>
+      </nav>
+    </div>
+  </section>
+
+
+  <!-- ── Requerimientos ─────────────────────────────────────────────────────
+       Con código y no solo con título: «RF-04» es lo que se cita en un
+       documento del proyecto, así que tiene que poder buscarse en la página.
+       Todos los que están aquí están implementados; esto no es una lista de
+       deseos. -->
+  <section class="seccion" id="requerimientos">
+    <div class="envoltorio">
+      <header class="seccion__cab">
+        <h2 class="titulo2">Requerimientos</h2>
+        <p class="seccion__sub">
+          Lo que el sistema tiene que hacer, y lo que tiene que cumplir mientras
+          lo hace. Cada uno responde a algo de la sección anterior.
+        </p>
+      </header>
+
+      <div class="reqs__grupo">
+        <header class="reqs__cab">
+          <h3 class="reqs__titulo">Funcionales</h3>
+          <span class="reqs__cuenta">RF-01 a RF-12 · qué hace</span>
+        </header>
+
+        <ul class="reqs">
+          <li class="req">
+            <span class="req__id">RF-01</span>
+            <div>
+              <h4 class="req__titulo">Cuentas, sesión y roles</h4>
+              <p>
+                Cinco roles —administración, coordinación, secretaría, docencia y
+                estudiante— con alcance propio. La sesión rota el token en cada
+                canje y reutilizar uno viejo revoca la familia entera.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-02</span>
+            <div>
+              <h4 class="req__titulo">Matrícula y listados de clase</h4>
+              <p>
+                El listado se pega como texto, se sube como CSV o se lee de un
+                PDF o una foto. La lectura <em>propone</em> con confianza por
+                fila; escribir es un segundo paso que el docente confirma.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-03</span>
+            <div>
+              <h4 class="req__titulo">Registro de notas por componente</h4>
+              <p>
+                Una nota es atómica por estudiante, materia, corte y componente.
+                Se captura a mano, en lote desde una planilla o importada de
+                Excel, PDF o foto.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-04</span>
+            <div>
+              <h4 class="req__titulo">Cálculo del corte y de la definitiva</h4>
+              <p>
+                Corte = trabajos 30 % + parciales 60 % + autoevaluación 10 %.
+                Definitiva = C1 33 % + C2 33 % + C3 34 %, se aprueba desde 3.0.
+                A mitad de semestre se promedia solo lo calificado.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-05</span>
+            <div>
+              <h4 class="req__titulo">Asistencia por minutos reales</h4>
+              <p>
+                Cada clase registra minutos presentes sobre minutos totales. El
+                porcentaje es ponderado, no un conteo de ausencias.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-06</span>
+            <div>
+              <h4 class="req__titulo">Alerta temprana de riesgo</h4>
+              <p>
+                Un modelo cruza notas, tendencia entre cortes y asistencia, y
+                entrega la razón de cada alerta. Si no puede explicarla, no la
+                muestra.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-07</span>
+            <div>
+              <h4 class="req__titulo">Patrones de inasistencia</h4>
+              <p>
+                Rachas de faltas seguidas y ausencias repetidas en el mismo día
+                abren un caso de seguimiento. El caso se cierra solo cuando el
+                patrón desaparece; no se borra.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-08</span>
+            <div>
+              <h4 class="req__titulo">Agenda y recordatorios de clase</h4>
+              <p>
+                El horario semanal se expande a clases con fecha y hora del
+                campus, junto con parciales, entregas y tutorías. El aviso llega
+                aunque la aplicación esté cerrada.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-09</span>
+            <div>
+              <h4 class="req__titulo">Reportes y consolidados</h4>
+              <p>
+                Notas, asistencia y consolidado en PDF y Excel, con membrete,
+                logo y columnas configurables por la institución. Las tres
+                salidas leen el mismo catálogo de columnas.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-10</span>
+            <div>
+              <h4 class="req__titulo">Cierre del periodo académico</h4>
+              <p>
+                Abierto, en cierre y cerrado. Durante el cierre se guarda una
+                fotografía por estudiante y materia; reabrir no la borra, anota
+                quién, cuándo y por qué.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-11</span>
+            <div>
+              <h4 class="req__titulo">Sincronización en tiempo real</h4>
+              <p>
+                Lo que se cambia en el escritorio aparece en el teléfono sin
+                recargar. El servidor avisa a quien corresponde, no a todo el
+                mundo.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RF-12</span>
+            <div>
+              <h4 class="req__titulo">Auditoría de cambios</h4>
+              <p>
+                Cada modificación guarda autor, fecha y solo lo que cambió, con
+                contraseñas y datos personales enmascarados antes de escribirse.
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="reqs__grupo">
+        <header class="reqs__cab">
+          <h3 class="reqs__titulo">No funcionales</h3>
+          <span class="reqs__cuenta">RNF-01 a RNF-10 · cómo tiene que hacerlo</span>
+        </header>
+
+        <ul class="reqs">
+          <li class="req">
+            <span class="req__id">RNF-01</span>
+            <div>
+              <h4 class="req__titulo">Un solo motor de cálculo</h4>
+              <p>
+                Ningún cliente recalcula notas, asistencia ni riesgo. Las tres
+                aplicaciones muestran el número que devuelve el servidor, así
+                que no pueden discrepar.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RNF-02</span>
+            <div>
+              <h4 class="req__titulo">El alcance se decide en el servidor</h4>
+              <p>
+                Un docente no ve estudiantes de otro, y coordinación se acota a
+                sus programas. La comprobación es lógica probada, no una
+                pantalla que oculta botones.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RNF-03</span>
+            <div>
+              <h4 class="req__titulo">Escrituras masivas en un viaje</h4>
+              <p>
+                Una planilla de 500 filas por 10 columnas se guarda en una
+                operación por lote, no en quince mil idas y vueltas a la base de
+                datos.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RNF-04</span>
+            <div>
+              <h4 class="req__titulo">Listados paginados y acotados</h4>
+              <p>
+                Todo listado se pide por páginas y la búsqueda ocurre en el
+                servidor: con páginas, filtrar en memoria dejaría fuera a quien
+                no se ha descargado todavía.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RNF-05</span>
+            <div>
+              <h4 class="req__titulo">Accesibilidad y contraste</h4>
+              <p>
+                Contraste AA en los dos modos, foco visible, objetivos táctiles
+                de 48 dp y movimiento reducido cuando el sistema lo pide. El
+                tema tiene tres estados: claro, oscuro y seguir al sistema.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RNF-06</span>
+            <div>
+              <h4 class="req__titulo">Multiplataforma desde una base común</h4>
+              <p>
+                Windows, Linux y Android desde el mismo código de cliente por
+                plataforma. Añadir un sistema operativo no obliga a reescribir
+                la lógica académica.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RNF-07</span>
+            <div>
+              <h4 class="req__titulo">Degradación declarada</h4>
+              <p>
+                Sin servicio de predicción se usa el motor de reglas y se dice
+                cuál respondió. Sin correo o sin notificaciones el sistema sigue
+                funcionando y lo anota; nada falla en silencio.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RNF-08</span>
+            <div>
+              <h4 class="req__titulo">Actualización firmada</h4>
+              <p>
+                El instalador verifica la firma antes de aplicar una
+                actualización. Lo que se descarga es un ejecutable: sin firma,
+                cualquiera podría publicar una versión falsa.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RNF-09</span>
+            <div>
+              <h4 class="req__titulo">Secretos fuera del código</h4>
+              <p>
+                Claves y credenciales viven en el entorno y se validan al
+                arrancar. Las sesiones se guardan en el llavero del sistema
+                operativo, no en un archivo de texto.
+              </p>
+            </div>
+          </li>
+
+          <li class="req">
+            <span class="req__id">RNF-10</span>
+            <div>
+              <h4 class="req__titulo">Límites de tasa y de tamaño</h4>
+              <p>
+                Cuántas peticiones caben en una ventana y cuánto cabe en una
+                petición son dos defensas distintas, y las dos están puestas.
+                El cupo se cuenta por usuario, no por dirección de red.
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Modelo UML ─────────────────────────────────────────────────────────
+       Los cuatro diagramas van dibujados en SVG dentro de la página, no como
+       imágenes exportadas: heredan los colores del tema, así que el mismo
+       diagrama se lee en claro y en oscuro sin mantener dos archivos. Un PNG
+       se queda con el fondo del día en que se exportó.
+
+       Cada uno lleva su alternativa en texto. Un diagrama es una imagen
+       compleja: un `alt` de seis palabras no la sustituye. -->
+  <section class="seccion" id="uml">
+    <div class="envoltorio">
+      <header class="seccion__cab">
+        <h2 class="titulo2">Modelo UML</h2>
+        <p class="seccion__sub">
+          Cuatro vistas del mismo sistema: quién lo usa, qué guarda, de qué
+          piezas está hecho y qué ocurre cuando alguien escribe una nota.
+        </p>
+      </header>
+
+      <!-- Las puntas de flecha se declaran una sola vez. Si vivieran dentro de
+           un panel oculto, el navegador no las resolvería en los demás. -->
+      <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+        <defs>
+          <marker id="flechaUml" viewBox="0 0 10 8" refX="9" refY="4"
+                  markerWidth="9" markerHeight="7" orient="auto-start-reverse">
+            <path class="d-punta" d="M0,0 L10,4 L0,8 Z"/>
+          </marker>
+        </defs>
+      </svg>
+
+      <div class="diag__pestanas" role="tablist" aria-label="Diagramas UML">
+        <button class="diag__pestana" type="button" role="tab" id="pest-casos"
+                aria-controls="diag-casos" aria-selected="true">Casos de uso</button>
+        <button class="diag__pestana" type="button" role="tab" id="pest-clases"
+                aria-controls="diag-clases" aria-selected="false">Clases</button>
+        <button class="diag__pestana" type="button" role="tab" id="pest-componentes"
+                aria-controls="diag-componentes" aria-selected="false">Componentes</button>
+        <button class="diag__pestana" type="button" role="tab" id="pest-secuencia"
+                aria-controls="diag-secuencia" aria-selected="false">Secuencia</button>
+      </div>
+
+      <!-- ── 1. Casos de uso ──────────────────────────────────────────────── -->
+      <div class="diag__panel" role="tabpanel" id="diag-casos" aria-labelledby="pest-casos" tabindex="0">
+        <p class="diag__num">Figura 1</p>
+        <h3 class="diag__titulo">Casos de uso</h3>
+        <p class="diag__pie">
+          <strong>Diagrama de casos de uso.</strong> Quién puede hacer qué.
+          Secretaría hace lo mismo que coordinación pero sin escribir, y el
+          estudiante no entra al sistema: recibe un aviso en su propia
+          aplicación.
+        </p>
+
+        <div class="diag__lienzo">
+          <svg viewBox="0 0 940 560" role="img" aria-labelledby="tituloCasos">
+            <title id="tituloCasos">Diagrama de casos de uso de UTS Nexus Académico</title>
+
+            <rect class="d-caja--limite" x="250" y="28" width="440" height="500" rx="12"/>
+            <text class="d-txt--fuerte d-txt--centro" x="470" y="56">UTS Nexus Académico</text>
+
+            <!-- Actor: docente -->
+            <g class="d-figura">
+              <circle cx="120" cy="142" r="9"/>
+              <path d="M120 151 V174 M106 162 H134 M120 174 L109 192 M120 174 L131 192"/>
+            </g>
+            <text class="d-txt d-txt--centro" x="120" y="212">Docente</text>
+
+            <!-- Actor: coordinación -->
+            <g class="d-figura">
+              <circle cx="120" cy="302" r="9"/>
+              <path d="M120 311 V334 M106 322 H134 M120 334 L109 352 M120 334 L131 352"/>
+            </g>
+            <text class="d-txt d-txt--centro" x="120" y="372">Coordinación</text>
+
+            <!-- Actor: secretaría -->
+            <g class="d-figura">
+              <circle cx="120" cy="432" r="9"/>
+              <path d="M120 441 V464 M106 452 H134 M120 464 L109 482 M120 464 L131 482"/>
+            </g>
+            <text class="d-txt d-txt--centro" x="120" y="502">Secretaría</text>
+
+            <!-- Actor: administración -->
+            <g class="d-figura">
+              <circle cx="822" cy="412" r="9"/>
+              <path d="M822 421 V444 M808 432 H836 M822 444 L811 462 M822 444 L833 462"/>
+            </g>
+            <text class="d-txt d-txt--centro" x="822" y="482">Administración</text>
+
+            <!-- Actor: estudiante, fuera del sistema -->
+            <g class="d-figura">
+              <circle cx="822" cy="152" r="9"/>
+              <path d="M822 161 V184 M808 172 H836 M822 184 L811 202 M822 184 L833 202"/>
+            </g>
+            <text class="d-txt d-txt--centro" x="822" y="222">Estudiante</text>
+            <text class="d-txt--tenue d-txt--centro" x="822" y="238">en UniPlanner</text>
+
+            <!-- Relaciones del docente -->
+            <path class="d-linea" d="M148 152 L338 96"/>
+            <path class="d-linea" d="M148 158 L338 158"/>
+            <path class="d-linea" d="M148 164 L338 220"/>
+            <path class="d-linea" d="M148 170 L338 282"/>
+            <path class="d-linea" d="M148 176 L338 344"/>
+
+            <!-- Relaciones de coordinación -->
+            <path class="d-linea" d="M148 312 L338 226"/>
+            <path class="d-linea" d="M148 322 L338 344"/>
+
+            <!-- Secretaría: la misma lectura, sin escribir -->
+            <path class="d-linea d-linea--corte" d="M148 442 L338 352"/>
+            <text class="d-txt--dato d-txt--centro" x="243" y="386">«solo lectura»</text>
+
+            <!-- Administración -->
+            <path class="d-linea" d="M794 418 L602 406"/>
+            <path class="d-linea" d="M794 430 L602 468"/>
+
+            <!-- Al estudiante se le informa; nunca se le aplica nada -->
+            <path class="d-linea d-linea--corte" marker-end="url(#flechaUml)" d="M602 214 L794 178"/>
+            <!-- La etiqueta cruza el marco del sistema. El recuadro del color
+                 del panel la despeja; sin él, las rayas del marco salen entre
+                 las letras. -->
+            <rect class="d-etiqueta" x="634" y="169" width="128" height="14" rx="3"/>
+            <text class="d-txt--dato d-txt--centro" x="698" y="180">«informa, no aplica»</text>
+
+            <!-- Casos de uso -->
+            <ellipse class="d-caja" cx="470" cy="96" rx="132" ry="21"/>
+            <text class="d-txt d-txt--centro" x="470" y="101">Registrar notas por corte</text>
+
+            <ellipse class="d-caja" cx="470" cy="158" rx="132" ry="21"/>
+            <text class="d-txt d-txt--centro" x="470" y="163">Tomar asistencia por minutos</text>
+
+            <ellipse class="d-caja" cx="470" cy="220" rx="132" ry="21"/>
+            <text class="d-txt d-txt--centro" x="470" y="225">Ver el riesgo y su explicación</text>
+
+            <ellipse class="d-caja" cx="470" cy="282" rx="132" ry="21"/>
+            <text class="d-txt d-txt--centro" x="470" y="287">Importar el listado de clase</text>
+
+            <ellipse class="d-caja" cx="470" cy="344" rx="132" ry="21"/>
+            <text class="d-txt d-txt--centro" x="470" y="349">Generar reportes y consolidado</text>
+
+            <ellipse class="d-caja--lima" cx="470" cy="406" rx="132" ry="21"/>
+            <text class="d-txt d-txt--centro" x="470" y="411">Cerrar el periodo académico</text>
+
+            <ellipse class="d-caja--lima" cx="470" cy="468" rx="132" ry="21"/>
+            <text class="d-txt d-txt--centro" x="470" y="473">Administrar cuentas y alcances</text>
+          </svg>
+        </div>
+
+        <details class="diag__texto">
+          <summary>Leer el diagrama en texto</summary>
+          <ul>
+            <li><strong>Docente:</strong> registra notas por corte, toma asistencia por minutos, consulta el riesgo con su explicación, importa el listado de clase y genera reportes.</li>
+            <li><strong>Coordinación:</strong> consulta el riesgo y genera reportes y consolidados de sus programas.</li>
+            <li><strong>Secretaría:</strong> los mismos reportes que coordinación, en modo de solo lectura.</li>
+            <li><strong>Administración:</strong> cierra el periodo académico y administra cuentas y alcances. Son los dos casos que ningún otro rol alcanza.</li>
+            <li><strong>Estudiante:</strong> no entra a este sistema. Recibe en UniPlanner un aviso derivado del riesgo, que informa y nunca aplica nada por él.</li>
+          </ul>
+        </details>
+      </div>
+
+      <!-- ── 2. Clases ────────────────────────────────────────────────────── -->
+      <div class="diag__panel" role="tabpanel" id="diag-clases" aria-labelledby="pest-clases" tabindex="0">
+        <p class="diag__num">Figura 2</p>
+        <h3 class="diag__titulo">Clases y modelo de datos</h3>
+        <p class="diag__pie">
+          <strong>Diagrama de clases.</strong> El estudiante existe una sola vez
+          en toda la institución, identificado por su cédula. La matrícula es la
+          pieza que lo une a un grupo de una materia en un semestre; todo lo
+          demás cuelga de ahí.
+        </p>
+
+        <div class="diag__lienzo">
+          <svg viewBox="0 0 940 580" role="img" aria-labelledby="tituloClases">
+            <title id="tituloClases">Diagrama de clases del modelo de datos</title>
+
+            <!-- Estudiante -->
+            <rect class="d-caja" x="40" y="40" width="210" height="124" rx="8"/>
+            <path class="d-linea" d="M40 70 H250"/>
+            <text class="d-txt--fuerte d-txt--centro" x="145" y="61">Estudiante</text>
+            <text class="d-txt--dato" x="56" y="92">cédula · única</text>
+            <text class="d-txt--dato" x="56" y="112">nombre</text>
+            <text class="d-txt--dato" x="56" y="132">programa</text>
+            <text class="d-txt--dato" x="56" y="152">correo</text>
+
+            <!-- Materia -->
+            <rect class="d-caja" x="365" y="40" width="210" height="124" rx="8"/>
+            <path class="d-linea" d="M365 70 H575"/>
+            <text class="d-txt--fuerte d-txt--centro" x="470" y="61">Materia</text>
+            <text class="d-txt--dato" x="381" y="92">código</text>
+            <text class="d-txt--dato" x="381" y="112">nombre</text>
+            <text class="d-txt--dato" x="381" y="132">programa</text>
+            <text class="d-txt--dato" x="381" y="152">créditos</text>
+
+            <!-- Profesor -->
+            <rect class="d-caja" x="690" y="40" width="210" height="124" rx="8"/>
+            <path class="d-linea" d="M690 70 H900"/>
+            <text class="d-txt--fuerte d-txt--centro" x="795" y="61">Profesor</text>
+            <text class="d-txt--dato" x="706" y="92">institución</text>
+            <text class="d-txt--dato" x="706" y="112">programas asignados</text>
+            <text class="d-txt--dato" x="706" y="132">director de grado</text>
+            <text class="d-txt--dato" x="706" y="152">estado de la cuenta</text>
+
+            <!-- Matrícula, el centro -->
+            <rect class="d-caja--lima" x="365" y="230" width="210" height="124" rx="8"/>
+            <path class="d-linea" d="M365 260 H575"/>
+            <text class="d-txt--fuerte d-txt--centro" x="470" y="251">Matrícula</text>
+            <text class="d-txt--dato" x="381" y="282">estudiante</text>
+            <text class="d-txt--dato" x="381" y="302">materia · grupo</text>
+            <text class="d-txt--dato" x="381" y="322">periodo · 2026-2</text>
+            <text class="d-txt--dato" x="381" y="342">docente</text>
+
+            <!-- Periodo -->
+            <rect class="d-caja" x="690" y="230" width="210" height="104" rx="8"/>
+            <path class="d-linea" d="M690 260 H900"/>
+            <text class="d-txt--fuerte d-txt--centro" x="795" y="251">Periodo académico</text>
+            <text class="d-txt--dato" x="706" y="282">código · 2026-2</text>
+            <text class="d-txt--dato" x="706" y="302">estado: abierto,</text>
+            <text class="d-txt--dato" x="706" y="322">en cierre o cerrado</text>
+
+            <!-- Nota -->
+            <rect class="d-caja" x="40" y="420" width="210" height="124" rx="8"/>
+            <path class="d-linea" d="M40 450 H250"/>
+            <text class="d-txt--fuerte d-txt--centro" x="145" y="441">Nota</text>
+            <text class="d-txt--dato" x="56" y="472">corte · 1, 2 o 3</text>
+            <text class="d-txt--dato" x="56" y="492">componente</text>
+            <text class="d-txt--dato" x="56" y="512">valor · 0 a 5</text>
+            <text class="d-txt--dato" x="56" y="532">etiqueta</text>
+
+            <!-- Asistencia -->
+            <rect class="d-caja" x="365" y="420" width="210" height="124" rx="8"/>
+            <path class="d-linea" d="M365 450 H575"/>
+            <text class="d-txt--fuerte d-txt--centro" x="470" y="441">Asistencia</text>
+            <text class="d-txt--dato" x="381" y="472">fecha de la clase</text>
+            <text class="d-txt--dato" x="381" y="492">minutos presentes</text>
+            <text class="d-txt--dato" x="381" y="512">minutos totales</text>
+            <text class="d-txt--dato" x="381" y="532">observación</text>
+
+            <!-- Asociaciones -->
+            <path class="d-linea" d="M145 164 V290 H365"/>
+            <text class="d-txt--dato" x="153" y="184">1</text>
+            <text class="d-txt--dato" x="345" y="284">*</text>
+
+            <path class="d-linea" d="M470 164 V230"/>
+            <text class="d-txt--dato" x="478" y="184">1</text>
+            <text class="d-txt--dato" x="478" y="224">*</text>
+
+            <path class="d-linea" d="M795 164 V198 H620 V262 H575"/>
+            <text class="d-txt--dato" x="803" y="184">1</text>
+            <text class="d-txt--dato" x="588" y="256">*</text>
+
+            <path class="d-linea d-linea--corte" marker-end="url(#flechaUml)" d="M690 300 H579"/>
+            <text class="d-txt--dato d-txt--centro" x="634" y="292">«bloquea»</text>
+
+            <path class="d-linea" d="M470 354 V386 H145 V420"/>
+            <text class="d-txt--dato d-txt--centro" x="300" y="378">notas del corte</text>
+
+            <path class="d-linea" d="M470 354 V420"/>
+            <text class="d-txt--dato" x="478" y="404">clases dictadas</text>
+          </svg>
+        </div>
+
+        <details class="diag__texto">
+          <summary>Leer el diagrama en texto</summary>
+          <ul>
+            <li><strong>Estudiante</strong> (cédula única, nombre, programa, correo) tiene muchas <strong>matrículas</strong>.</li>
+            <li><strong>Materia</strong> (código, nombre, programa, créditos) tiene muchas matrículas, y <strong>Profesor</strong> (institución, programas asignados, si dirige trabajos de grado) también.</li>
+            <li><strong>Matrícula</strong> une estudiante, materia, grupo, periodo y docente. Es la pieza que define quién ve a quién.</li>
+            <li>De la matrícula cuelgan las <strong>notas</strong> —una por corte y componente, con valor de 0 a 5— y las <strong>asistencias</strong>, una por clase, con minutos presentes sobre minutos totales.</li>
+            <li>El <strong>periodo académico</strong> bloquea las escrituras de notas, asistencia y matrículas cuando pasa a «en cierre» o «cerrado».</li>
+          </ul>
+        </details>
+      </div>
+
+      <!-- ── 3. Componentes ───────────────────────────────────────────────── -->
+      <div class="diag__panel" role="tabpanel" id="diag-componentes" aria-labelledby="pest-componentes" tabindex="0">
+        <p class="diag__num">Figura 3</p>
+        <h3 class="diag__titulo">Componentes y despliegue</h3>
+        <p class="diag__pie">
+          <strong>Diagrama de componentes.</strong> Un backend y una base de
+          datos en el centro; las aplicaciones solo muestran. El servicio de
+          predicción es opcional: si no responde, el backend usa su motor de
+          reglas y lo dice en la respuesta.
+        </p>
+
+        <div class="diag__lienzo">
+          <svg viewBox="0 0 940 480" role="img" aria-labelledby="tituloComponentes">
+            <title id="tituloComponentes">Diagrama de componentes y despliegue</title>
+
+            <rect class="d-caja" x="80" y="30" width="300" height="92" rx="10"/>
+            <text class="d-txt--fuerte d-txt--centro" x="230" y="62">Aplicación de escritorio</text>
+            <text class="d-txt--tenue d-txt--centro" x="230" y="84">Tauri 2 + React 19</text>
+            <text class="d-txt--dato d-txt--centro" x="230" y="104">Windows · Linux</text>
+
+            <rect class="d-caja" x="560" y="30" width="300" height="92" rx="10"/>
+            <text class="d-txt--fuerte d-txt--centro" x="710" y="62">Aplicación móvil</text>
+            <text class="d-txt--tenue d-txt--centro" x="710" y="84">Flutter</text>
+            <text class="d-txt--dato d-txt--centro" x="710" y="104">Android</text>
+
+            <rect class="d-caja--marca" x="250" y="190" width="440" height="110" rx="10"/>
+            <text class="d-txt--fuerte d-txt--sobre d-txt--centro" x="470" y="220">Backend · Node + TypeScript</text>
+            <rect class="d-caja--tenue" x="268" y="238" width="126" height="44" rx="7"/>
+            <text class="d-txt--dato d-txt--centro" x="331" y="258">domains/</text>
+            <text class="d-txt--dato d-txt--centro" x="331" y="273">cálculo puro</text>
+            <rect class="d-caja--tenue" x="406" y="238" width="126" height="44" rx="7"/>
+            <text class="d-txt--dato d-txt--centro" x="469" y="258">modules/</text>
+            <text class="d-txt--dato d-txt--centro" x="469" y="273">rutas HTTP</text>
+            <rect class="d-caja--tenue" x="544" y="238" width="126" height="44" rx="7"/>
+            <text class="d-txt--dato d-txt--centro" x="607" y="258">shared/</text>
+            <text class="d-txt--dato d-txt--centro" x="607" y="273">infraestructura</text>
+
+            <rect class="d-caja" x="40" y="370" width="250" height="86" rx="10"/>
+            <text class="d-txt--fuerte d-txt--centro" x="165" y="402">MongoDB Atlas</text>
+            <text class="d-txt--tenue d-txt--centro" x="165" y="424">estudiantes · notas · asistencia</text>
+
+            <rect class="d-caja" x="345" y="370" width="250" height="86" rx="10"/>
+            <text class="d-txt--fuerte d-txt--centro" x="470" y="402">Servicio de predicción</text>
+            <text class="d-txt--tenue d-txt--centro" x="470" y="424">FastAPI + scikit-learn</text>
+
+            <rect class="d-caja" x="650" y="370" width="250" height="86" rx="10"/>
+            <text class="d-txt--fuerte d-txt--centro" x="775" y="402">UniPlanner</text>
+            <text class="d-txt--tenue d-txt--centro" x="775" y="424">buzón del estudiante</text>
+
+            <path class="d-linea" marker-start="url(#flechaUml)" marker-end="url(#flechaUml)" d="M230 122 V156 H330 V190"/>
+            <text class="d-txt--dato" x="240" y="150">REST · Socket.io</text>
+
+            <path class="d-linea" marker-start="url(#flechaUml)" marker-end="url(#flechaUml)" d="M710 122 V156 H610 V190"/>
+            <text class="d-txt--dato" x="700" y="150" text-anchor="end">REST · Socket.io</text>
+
+            <path class="d-linea" marker-start="url(#flechaUml)" marker-end="url(#flechaUml)" d="M330 300 V336 H165 V370"/>
+            <text class="d-txt--dato" x="180" y="330">Mongoose</text>
+
+            <path class="d-linea d-linea--corte" marker-start="url(#flechaUml)" marker-end="url(#flechaUml)" d="M470 300 V370"/>
+            <text class="d-txt--dato" x="482" y="342">opcional · cae a reglas</text>
+
+            <path class="d-linea" marker-end="url(#flechaUml)" d="M610 300 V336 H775 V370"/>
+            <text class="d-txt--dato" x="760" y="330" text-anchor="end">solo escritura</text>
+          </svg>
+        </div>
+
+        <details class="diag__texto">
+          <summary>Leer el diagrama en texto</summary>
+          <ul>
+            <li>Dos aplicaciones cliente: <strong>escritorio</strong> (Tauri 2 + React 19, para Windows y Linux) y <strong>móvil</strong> (Flutter, Android). Las dos hablan con el mismo backend por REST y reciben cambios en vivo por Socket.io.</li>
+            <li>El <strong>backend</strong> (Node + TypeScript) tiene tres capas: <code>domains/</code> con el cálculo puro y probado, <code>modules/</code> con las rutas HTTP por capacidad y <code>shared/</code> con la infraestructura común.</li>
+            <li>Persiste en <strong>MongoDB Atlas</strong> a través de Mongoose.</li>
+            <li>Consulta un <strong>servicio de predicción</strong> en FastAPI. Es opcional: si no responde, el backend usa su motor de reglas y lo declara.</li>
+            <li>Escribe avisos en el buzón de <strong>UniPlanner</strong>, la aplicación del estudiante. La flecha va en un solo sentido a propósito: de allí no vuelve ningún dato.</li>
+          </ul>
+        </details>
+      </div>
+
+      <!-- ── 4. Secuencia ─────────────────────────────────────────────────── -->
+      <div class="diag__panel" role="tabpanel" id="diag-secuencia" aria-labelledby="pest-secuencia" tabindex="0">
+        <p class="diag__num">Figura 4</p>
+        <h3 class="diag__titulo">Secuencia: registrar una nota</h3>
+        <p class="diag__pie">
+          <strong>Diagrama de secuencia: registrar una nota.</strong> El docente
+          escribe un 4.2; la definitiva la calcula el servidor y vuelve ya
+          hecha. La aplicación no multiplica nada, y por eso el teléfono no
+          puede mostrar otro número.
+        </p>
+
+        <div class="diag__lienzo">
+          <svg viewBox="0 0 1040 470" role="img" aria-labelledby="tituloSecuencia">
+            <title id="tituloSecuencia">Diagrama de secuencia del registro de una nota</title>
+
+            <rect class="d-caja" x="20" y="20" width="120" height="42" rx="8"/>
+            <text class="d-txt--fuerte d-txt--centro" x="80" y="46">Docente</text>
+            <path class="d-linea d-linea--corte" d="M80 62 V434"/>
+
+            <rect class="d-caja" x="230" y="20" width="120" height="42" rx="8"/>
+            <text class="d-txt--fuerte d-txt--centro" x="290" y="46">Escritorio</text>
+            <path class="d-linea d-linea--corte" d="M290 62 V434"/>
+
+            <rect class="d-caja--marca" x="460" y="20" width="120" height="42" rx="8"/>
+            <text class="d-txt--fuerte d-txt--sobre d-txt--centro" x="520" y="46">Backend</text>
+            <path class="d-linea d-linea--corte" d="M520 62 V434"/>
+
+            <rect class="d-caja" x="720" y="20" width="120" height="42" rx="8"/>
+            <text class="d-txt--fuerte d-txt--centro" x="780" y="46">MongoDB</text>
+            <path class="d-linea d-linea--corte" d="M780 62 V434"/>
+
+            <rect class="d-caja" x="910" y="20" width="120" height="42" rx="8"/>
+            <text class="d-txt--fuerte d-txt--centro" x="970" y="46">Móvil</text>
+            <path class="d-linea d-linea--corte" d="M970 62 V434"/>
+
+            <path class="d-linea" marker-end="url(#flechaUml)" d="M80 108 H290"/>
+            <text class="d-txt--dato d-txt--centro" x="185" y="100">escribe 4.2 en C1</text>
+
+            <path class="d-linea" marker-end="url(#flechaUml)" d="M290 152 H520"/>
+            <text class="d-txt--dato d-txt--centro" x="405" y="144">POST /grades</text>
+
+            <path class="d-linea" marker-end="url(#flechaUml)" d="M520 180 H575 V212 H524"/>
+            <text class="d-txt--dato" x="583" y="192">comprueba el alcance,</text>
+            <text class="d-txt--dato" x="583" y="208">el periodo y el rango 0–5</text>
+
+            <path class="d-linea" marker-end="url(#flechaUml)" d="M520 252 H780"/>
+            <text class="d-txt--dato d-txt--centro" x="650" y="244">escritura por lote + auditoría</text>
+
+            <path class="d-linea d-linea--corte" marker-end="url(#flechaUml)" d="M780 292 H520"/>
+            <text class="d-txt--dato d-txt--centro" x="650" y="284">confirmado</text>
+
+            <path class="d-linea" marker-end="url(#flechaUml)" d="M520 320 H575 V352 H524"/>
+            <text class="d-txt--dato" x="583" y="332">recalcula el corte</text>
+            <text class="d-txt--dato" x="583" y="348">y la definitiva</text>
+
+            <path class="d-linea d-linea--corte" marker-end="url(#flechaUml)" d="M520 392 H290"/>
+            <text class="d-txt--dato d-txt--centro" x="405" y="384">definitiva 4.03 · ya calculada</text>
+
+            <path class="d-linea" marker-end="url(#flechaUml)" d="M520 428 H970"/>
+            <!-- La etiqueta cruza la línea de vida de MongoDB. El recuadro del
+                 color del panel la despeja: sin él, las rayas de la línea
+                 aparecen entre las letras y se lee como un error de dibujo. -->
+            <rect class="d-etiqueta" x="632" y="408" width="316" height="16" rx="3"/>
+            <text class="d-txt--dato d-txt--centro" x="790" y="420">sync:update · la pantalla del teléfono se refresca</text>
+          </svg>
+        </div>
+
+        <details class="diag__texto">
+          <summary>Leer el diagrama en texto</summary>
+          <ol>
+            <li>El docente escribe 4.2 en el primer corte, en la aplicación de escritorio.</li>
+            <li>El escritorio envía la nota al backend con una petición <code>POST /grades</code>.</li>
+            <li>El backend comprueba que ese estudiante está en su alcance, que el periodo sigue abierto y que la nota está entre 0 y 5.</li>
+            <li>Guarda en MongoDB con una escritura por lote y deja el registro de auditoría en la misma operación.</li>
+            <li>Recalcula el corte y la definitiva con los pesos del reglamento.</li>
+            <li>Devuelve al escritorio la definitiva ya calculada: la aplicación no multiplica nada.</li>
+            <li>Emite un evento a los dispositivos de ese usuario, y la pantalla del teléfono se refresca sola.</li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+
+<footer class="pie">
+  <div class="envoltorio pie__interior">
+    <p>UTS Nexus Académico · Grupo CIAI · Universitaria Tecnológica de Santander</p>
+    <p class="pie__tenue">
+      <a href="index.html">Volver a la página de descarga</a>
+    </p>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

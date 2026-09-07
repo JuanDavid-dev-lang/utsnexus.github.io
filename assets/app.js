@@ -193,3 +193,143 @@
       clearTimeout(plazo);
     });
 })();
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tema: claro, oscuro y seguir al sistema.
+
+   El tercer estado no es un adorno. Con dos posiciones, quien toca el
+   interruptor una vez deja la página fijada para siempre, y el equipo que
+   cambia solo al anochecer deja de hacerlo sin que nada lo explique. Por eso
+   «seguir al sistema» es una opción visible y además el valor de partida.
+
+   Quien elige a mano manda sobre el sistema: se guarda `claro` u `oscuro` en
+   el navegador y el atributo `data-tema` gana a la consulta de medios en la
+   hoja de estilos. Elegir «sistema» borra la preferencia en vez de escribir
+   el valor actual — si guardara el valor, mañana seguiría el de hoy.
+
+   El fogonazo del primer fotograma lo evita el guion en línea de <head>: este
+   solo se ocupa de los botones y de mantener el color de la barra del
+   navegador al día.
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var CLAVE = 'uts-tema';
+  var COLOR = { claro: '#144d37', oscuro: '#232922' };
+
+  var opciones = document.querySelectorAll('[data-tema-op]');
+  if (!opciones.length) return;
+
+  var meta = document.getElementById('metaTema');
+  var delSistema = window.matchMedia
+    ? window.matchMedia('(prefers-color-scheme: dark)')
+    : null;
+
+  function guardado() {
+    try {
+      var v = localStorage.getItem(CLAVE);
+      return (v === 'claro' || v === 'oscuro') ? v : 'sistema';
+    } catch (e) {
+      // Navegación privada o almacenamiento bloqueado: se sigue al sistema y
+      // los botones funcionan igual durante la visita.
+      return 'sistema';
+    }
+  }
+
+  function aplicar(eleccion) {
+    var raiz = document.documentElement;
+
+    if (eleccion === 'sistema') raiz.removeAttribute('data-tema');
+    else raiz.setAttribute('data-tema', eleccion);
+
+    var esOscuro = eleccion === 'oscuro' ||
+      (eleccion === 'sistema' && !!delSistema && delSistema.matches);
+
+    raiz.style.colorScheme = esOscuro ? 'dark' : 'light';
+    if (meta) meta.setAttribute('content', esOscuro ? COLOR.oscuro : COLOR.claro);
+
+    opciones.forEach(function (boton) {
+      boton.setAttribute('aria-pressed',
+        boton.dataset.temaOp === eleccion ? 'true' : 'false');
+    });
+  }
+
+  opciones.forEach(function (boton) {
+    boton.addEventListener('click', function () {
+      var eleccion = boton.dataset.temaOp;
+      try {
+        if (eleccion === 'sistema') localStorage.removeItem(CLAVE);
+        else localStorage.setItem(CLAVE, eleccion);
+      } catch (e) { /* la elección vale para esta visita */ }
+      aplicar(eleccion);
+    });
+  });
+
+  // Con «seguir al sistema» puesto, el equipo puede cambiar de tema mientras la
+  // página está abierta. La hoja de estilos se recoloca sola; esto es para que
+  // la barra del navegador no se quede con el color anterior.
+  if (delSistema) {
+    var alCambiar = function () { if (guardado() === 'sistema') aplicar('sistema'); };
+    if (delSistema.addEventListener) delSistema.addEventListener('change', alCambiar);
+    else if (delSistema.addListener) delSistema.addListener(alCambiar);
+  }
+
+  aplicar(guardado());
+})();
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Pestañas de los diagramas UML.
+
+   Sin JavaScript los cuatro paneles quedan visibles uno debajo de otro: el
+   `hidden` de los tres últimos lo pone este guion, no el HTML. Así la página
+   sigue contando lo mismo si el script no llega, que es la misma regla que
+   sigue la sección de novedades.
+
+   Teclado: flechas para moverse entre pestañas, Inicio y Fin para los
+   extremos. Es el comportamiento que un lector de pantalla anuncia al entrar
+   en un `tablist`, así que tiene que existir de verdad.
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var lista = document.querySelector('[role="tablist"]');
+  if (!lista) return;
+
+  var pestanas = Array.prototype.slice.call(lista.querySelectorAll('[role="tab"]'));
+  if (pestanas.length < 2) return;
+
+  var paneles = pestanas.map(function (pestana) {
+    return document.getElementById(pestana.getAttribute('aria-controls'));
+  });
+  if (paneles.indexOf(null) !== -1) return;
+
+  function activar(indice, mover) {
+    pestanas.forEach(function (pestana, i) {
+      var activa = i === indice;
+      pestana.setAttribute('aria-selected', activa ? 'true' : 'false');
+      // Roving tabindex: el tabulador entra una vez al grupo y sale; dentro se
+      // navega con las flechas. Con cuatro pestañas tabulables, llegar al
+      // panel exigiría cuatro pulsaciones.
+      pestana.tabIndex = activa ? 0 : -1;
+      paneles[i].hidden = !activa;
+    });
+    if (mover) pestanas[indice].focus();
+  }
+
+  pestanas.forEach(function (pestana, i) {
+    pestana.addEventListener('click', function () { activar(i, false); });
+
+    pestana.addEventListener('keydown', function (evento) {
+      var destino = null;
+      if (evento.key === 'ArrowRight' || evento.key === 'ArrowDown') destino = (i + 1) % pestanas.length;
+      else if (evento.key === 'ArrowLeft' || evento.key === 'ArrowUp') destino = (i - 1 + pestanas.length) % pestanas.length;
+      else if (evento.key === 'Home') destino = 0;
+      else if (evento.key === 'End') destino = pestanas.length - 1;
+      if (destino === null) return;
+      evento.preventDefault();
+      activar(destino, true);
+    });
+  });
+
+  activar(0, false);
+})();

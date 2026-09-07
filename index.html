@@ -6,7 +6,7 @@
 <title>UTS Nexus Académico — Descargar</title>
 <meta name="description" content="La planilla del semestre, con alertas y todo. Notas, asistencia y riesgo académico para docentes de las Universitaria Tecnológica de Santander. Descarga para Windows, Linux y Android.">
 <meta name="author" content="Grupo CIAI — Universitaria Tecnológica de Santander">
-<meta name="theme-color" content="#144d37">
+<meta name="theme-color" content="#144d37" id="metaTema">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="UTS Nexus Académico">
@@ -19,6 +19,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- La preferencia se lee antes de dibujar. Leerla después deja el primer
+     fotograma con el tema del sistema y lo cambia a continuación: quien eligió
+     claro con el equipo en oscuro ve un fogonazo blanco-negro-blanco. Va aquí,
+     en línea y antes de la hoja de estilos, por eso mismo. -->
+<script>
+(function () {
+  var elegido = null;
+  try { elegido = localStorage.getItem('uts-tema'); } catch (e) { /* modo privado */ }
+  if (elegido === 'claro' || elegido === 'oscuro') {
+    document.documentElement.setAttribute('data-tema', elegido);
+  }
+  var oscuro = elegido === 'oscuro' || (elegido !== 'claro' &&
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.style.colorScheme = oscuro ? 'dark' : 'light';
+})();
+</script>
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -35,9 +51,34 @@
       <span class="etapa">Beta</span>
     </a>
     <nav class="barra__nav" aria-label="Secciones">
+      <a href="#necesidad">La necesidad</a>
       <a href="#capacidades">Qué hace</a>
-      <a href="#creditos">Quién lo hizo</a>
-      <a class="boton boton--lima boton--sm" href="#descargas">Descargar</a>
+
+      <!-- Tres posiciones y no dos: con un interruptor de dos, quien lo toca
+           una vez deja la página clavada, y el equipo que cambia solo al
+           anochecer deja de hacerlo sin explicación. -->
+      <div class="tema" role="group" aria-label="Tema de la página">
+        <button class="tema__op" type="button" data-tema-op="claro" aria-pressed="false" title="Claro">
+          <span class="visualmente-oculto">Tema claro</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"/></svg>
+        </button>
+        <button class="tema__op" type="button" data-tema-op="oscuro" aria-pressed="false" title="Oscuro">
+          <span class="visualmente-oculto">Tema oscuro</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>
+        </button>
+        <button class="tema__op" type="button" data-tema-op="sistema" aria-pressed="false" title="Seguir al sistema">
+          <span class="visualmente-oculto">Seguir el tema del sistema</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.8" y="4.5" width="18.4" height="12.4" rx="2"/><path d="M8.5 20.5h7"/></svg>
+        </button>
+      </div>
+
+      <!-- El icono y el texto van separados porque en pantalla estrecha el
+           texto se oculta VISUALMENTE (no con `display:none`): así el botón
+           queda del tamaño del icono y conserva su nombre accesible. -->
+      <a class="boton boton--lima boton--sm" href="#descargas">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
+        <span class="boton__texto">Descargar</span>
+      </a>
     </nav>
   </div>
 </header>
@@ -136,7 +177,7 @@
           <!-- Archivo directo en Dropbox. El publicador de versiones lo
                sobrescribe en su sitio, así que este enlace siempre entrega la
                última: no hay que tocarlo al publicar. -->
-          <a class="boton boton--verde boton--bloque" href="https://www.dropbox.com/scl/fi/b7x8vsajh5q1isjp0kbuy/UTS-Nexus-Academico-Windows.exe?rlkey=fea1cre2x5lykdjhcf9n5cr5a&st=ejqfy6he&dl=1" data-descarga="windows" target="_blank" rel="noopener">
+          <a class="boton boton--marca boton--bloque" href="https://www.dropbox.com/scl/fi/b7x8vsajh5q1isjp0kbuy/UTS-Nexus-Academico-Windows.exe?rlkey=fea1cre2x5lykdjhcf9n5cr5a&st=ejqfy6he&dl=1" data-descarga="windows" target="_blank" rel="noopener">
             Descargar para Windows
           </a>
           <p class="tarjeta__alterna">
@@ -161,7 +202,7 @@
           <!-- Archivo directo en Dropbox, como los otros dos. El publicador de
                versiones lo sobrescribe en su sitio, así que este enlace siempre
                entrega la última: no hay que tocarlo al publicar. -->
-          <a class="boton boton--verde boton--bloque" href="https://www.dropbox.com/scl/fi/rdx81u2hlplteru4ixhq6/UTS-Nexus-Academico-Linux.AppImage?rlkey=32kwf13t7n6bbzw2f2roq208y&dl=1" data-descarga="linux" target="_blank" rel="noopener">
+          <a class="boton boton--marca boton--bloque" href="https://www.dropbox.com/scl/fi/rdx81u2hlplteru4ixhq6/UTS-Nexus-Academico-Linux.AppImage?rlkey=32kwf13t7n6bbzw2f2roq208y&dl=1" data-descarga="linux" target="_blank" rel="noopener">
             Descargar para Linux
           </a>
           <p class="tarjeta__alterna">
@@ -183,7 +224,7 @@
             Para el salón: pasás asistencia y subís notas desde el teléfono,
             sin depender del portátil.
           </p>
-          <a class="boton boton--verde boton--bloque" href="https://www.dropbox.com/scl/fi/a8tjol3iwgh20hwf2ni5k/UTS-Nexus-Academico-Android.apk?rlkey=3q4cnw4677rydinkov0h1yj8d&st=la92phz1&dl=1" data-descarga="android" target="_blank" rel="noopener">
+          <a class="boton boton--marca boton--bloque" href="https://www.dropbox.com/scl/fi/a8tjol3iwgh20hwf2ni5k/UTS-Nexus-Academico-Android.apk?rlkey=3q4cnw4677rydinkov0h1yj8d&st=la92phz1&dl=1" data-descarga="android" target="_blank" rel="noopener">
             Descargar para Android
           </a>
           <p class="tarjeta__alterna">
@@ -217,8 +258,116 @@
     </div>
   </section>
 
+  <!-- ── La necesidad ───────────────────────────────────────────────────────
+       Lo que hacía falta antes de que esto existiera. Cada tarjeta termina en
+       la consecuencia, porque es la consecuencia —y no la queja— la que se
+       convierte en un requisito de la sección siguiente. -->
+  <section class="seccion" id="necesidad">
+    <div class="envoltorio">
+      <header class="seccion__cab">
+        <h2 class="titulo2">La necesidad</h2>
+        <p class="seccion__sub">
+          El seguimiento académico de un semestre se llevaba en hojas de cálculo
+          sueltas, cuadernos y correos. Nada de eso está mal hecho: está
+          repartido, y repartido no se puede cruzar a tiempo.
+        </p>
+      </header>
+
+      <div class="rejilla-necesidad">
+
+        <article class="problema">
+          <h3 class="problema__titulo">Una planilla por docente</h3>
+          <p>
+            Los pesos del reglamento —30 % trabajos, 60 % parciales, 10 %
+            autoevaluación— se reescriben a mano en cada archivo. Una fórmula
+            mal copiada no da error: da un acta con un número distinto, y se
+            descubre cuando el estudiante reclama.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>el cálculo tiene que vivir en un solo sitio, fuera de la hoja
+            de cada quien.</span>
+          </p>
+        </article>
+
+        <article class="problema">
+          <h3 class="problema__titulo">La asistencia solo dice sí o no</h3>
+          <p>
+            En papel se marca presente o ausente. Llegar veinte minutos tarde y
+            faltar la clase entera cuentan igual, así que el porcentaje del
+            semestre no representa lo que de verdad pasó en el salón.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>se registran los minutos reales de cada clase y el porcentaje
+            sale ponderado.</span>
+          </p>
+        </article>
+
+        <article class="problema">
+          <h3 class="problema__titulo">El riesgo se ve cuando ya se perdió</h3>
+          <p>
+            La señal está en los datos desde marzo: notas que bajan entre
+            cortes, faltas seguidas los mismos días. Pero nadie cruza notas con
+            asistencia hasta el cierre, y para entonces ya no hay nada que
+            hacer.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>el sistema revisa solo y avisa antes, con la razón del aviso
+            escrita.</span>
+          </p>
+        </article>
+
+        <article class="problema">
+          <h3 class="problema__titulo">El consolidado se arma a mano</h3>
+          <p>
+            Coordinación pide los cortes por correo y recibe archivos con
+            formatos distintos. Unificarlos es un trabajo manual que se repite
+            en cada corte y que, además, envejece el mismo día que alguien
+            corrige una nota.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>el consolidado se genera del mismo dato vivo, no de copias
+            enviadas.</span>
+          </p>
+        </article>
+
+        <article class="problema">
+          <h3 class="problema__titulo">Cada quien ve de más o de menos</h3>
+          <p>
+            Un archivo compartido no distingue roles: o se manda completo, y
+            entonces un docente ve los estudiantes de otro, o se recorta a mano
+            y se pierde el rastro de quién cambió qué.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>el alcance de cada rol lo decide el servidor y todo cambio
+            queda auditado.</span>
+          </p>
+        </article>
+
+        <article class="problema">
+          <h3 class="problema__titulo">El salón no es el escritorio</h3>
+          <p>
+            Pasar lista ocurre de pie, con el teléfono en la mano y a veces sin
+            wifi; armar el semestre ocurre sentado, con teclado y pantalla
+            grande. Una sola herramienta para las dos cosas sirve mal a las dos.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>hay aplicación de escritorio y de teléfono sobre los mismos
+            datos.</span>
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ── Capacidades ────────────────────────────────────────────────────── -->
-  <section class="seccion seccion--verde" id="capacidades">
+  <section class="seccion seccion--marca" id="capacidades">
     <div class="envoltorio">
       <header class="seccion__cab">
         <h2 class="titulo2">Qué hace</h2>
@@ -301,6 +450,9 @@
         </p>
 
         <div class="creditos__acciones">
+          <a class="boton boton--fantasma" href="requerimientos-uml.html">
+            Requerimientos y modelo UML
+          </a>
           <a class="boton boton--fantasma" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico" target="_blank" rel="noopener">
             Ver el código
           </a>
