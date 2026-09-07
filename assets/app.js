@@ -183,6 +183,10 @@
         // Solo https: un enlace en claro se puede sustituir en tránsito, y lo
         // que hay al otro lado es un ejecutable.
         if (destino.slice(0, 8) !== 'https://') return;
+        // El enlace se abre en la MISMA pestaña, así que lo que haya al otro
+        // lado tiene que servirse con `Content-Disposition: attachment`. Si
+        // devolviera una página, el visitante se iría de aquí en vez de
+        // descargar.
         boton.href = destino;
       });
     })
