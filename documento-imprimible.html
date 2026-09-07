@@ -1,120 +1,301 @@
 <!doctype html>
-<html lang="es-CO">
+<html lang="es-CO" data-tema="claro">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Requerimientos y modelo UML — UTS Nexus Académico</title>
-<meta name="description" content="Requerimientos funcionales y no funcionales de UTS Nexus Académico y su modelo UML: casos de uso, clases, componentes y secuencia.">
+<title>UTS Nexus Académico — Necesidad, requerimientos y modelo UML</title>
 <meta name="author" content="Grupo CIAI — Universitaria Tecnológica de Santander">
-<meta name="theme-color" content="#144d37" id="metaTema">
-
-<meta property="og:type" content="article">
-<meta property="og:title" content="Requerimientos y modelo UML — UTS Nexus Académico">
-<meta property="og:description" content="Qué tiene que hacer el sistema, cómo tiene que hacerlo y cuatro vistas UML del mismo.">
-<meta property="og:locale" content="es_CO">
-
-<link rel="icon" href="assets/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="assets/logo.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- La preferencia de tema se lee antes de dibujar. Leerla después deja el
-     primer fotograma con el tema del sistema y lo cambia a continuación: quien
-     eligió claro con el equipo en oscuro ve un fogonazo. Es el mismo guion que
-     la portada, y va antes de la hoja de estilos por eso mismo. -->
-<script>
-(function () {
-  var elegido = null;
-  try { elegido = localStorage.getItem('uts-tema'); } catch (e) { /* modo privado */ }
-  if (elegido === 'claro' || elegido === 'oscuro') {
-    document.documentElement.setAttribute('data-tema', elegido);
-  }
-  var oscuro = elegido === 'oscuro' || (elegido !== 'claro' &&
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  document.documentElement.style.colorScheme = oscuro ? 'dark' : 'light';
-})();
-</script>
 <link rel="stylesheet" href="assets/styles.css">
+<style>
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Hoja de impresión del documento.
+
+   Lo que cambia respecto de la pantalla no es decorativo:
+
+   · El tema se fija en claro. Un PDF se lee en papel y en visores que no
+     tienen modo oscuro; imprimir la versión oscura son treinta páginas de
+     tóner y un texto que no se lee al fotocopiarlo.
+   · Los cuatro diagramas se enseñan a la vez. En pantalla son pestañas, y una
+     pestaña en un PDF es un diagrama que no existe.
+   · Cada figura empieza en su página y no se parte. Un diagrama de clases
+     cortado por la mitad no es un diagrama.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@page {
+  size: A4;
+  margin: 16mm 14mm 18mm;
+}
+
+/* Portada del documento, solo para el PDF. */
+.portada-pdf {
+  min-height: 232mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+  break-after: page;
+}
+.portada-pdf__marca {
+  display: flex; align-items: center; gap: 14px;
+  padding-bottom: 22px;
+  border-bottom: 3px solid var(--marca);
+}
+.portada-pdf__marca img { width: 54px; height: 54px; object-fit: contain; }
+.portada-pdf__institucion {
+  font-family: var(--dato);
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+.portada-pdf__producto { font-family: var(--display); font-size: 20px; font-weight: 800; }
+.portada-pdf h1 {
+  font-size: 44px; font-weight: 800;
+  letter-spacing: -.025em; line-height: 1.05;
+}
+.portada-pdf h1 span { color: var(--marca); }
+.portada-pdf__resumen {
+  font-size: 15.5px; line-height: 1.65;
+  color: var(--tinta-suave);
+  max-width: 62ch;
+}
+.portada-pdf__ficha {
+  margin: 0; display: grid; gap: 0;
+  border-top: 1px solid var(--borde);
+}
+.portada-pdf__ficha > div {
+  display: flex; gap: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--borde);
+}
+.portada-pdf__ficha dt {
+  font-family: var(--dato);
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--tinta-suave);
+  min-width: 130px;
+}
+.portada-pdf__ficha dd { margin: 0; font-size: 14px; }
+
+/* Índice: en un documento de treinta páginas, saber qué hay dentro. */
+.indice-pdf { break-after: page; }
+.indice-pdf ol { margin: 0; padding-left: 1.4em; font-size: 15px; }
+.indice-pdf li { margin-bottom: 7px; }
+.indice-pdf li ul { margin: 6px 0 0; padding-left: 1.1em; list-style: none; }
+.indice-pdf li ul li { font-size: 13.5px; color: var(--tinta-suave); margin-bottom: 3px; }
+
+@media print {
+  /* El navegador respeta los fondos solo si se le pide. Sin esto, las tarjetas
+     y la superficie de marca salen en blanco y la retícula desaparece. */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  html { scroll-behavior: auto; }
+  body { background: #fff; font-size: 11.5pt; }
+
+  /* Nada de navegación en un papel. */
+  .barra, .pie, .saltar, .diag__pestanas, .portada, .portada__indice { display: none !important; }
+
+  .seccion { padding: 0 0 6mm; break-before: page; }
+  .seccion--marca { background: transparent; color: var(--tinta); }
+  .seccion--marca .seccion__sub { color: var(--tinta-suave); }
+  .envoltorio { width: 100%; }
+
+  .seccion__cab { margin-bottom: 8mm; }
+  .titulo2 { font-size: 24pt; break-after: avoid; }
+  .reqs__cab, .problema__titulo, .req__titulo, .diag__titulo { break-after: avoid; }
+
+  /* Una tarjeta partida entre dos páginas se lee como dos tarjetas a medias. */
+  .problema, .req, .diag__panel, .aviso { break-inside: avoid; }
+
+  .rejilla-necesidad { grid-template-columns: repeat(2, 1fr); gap: 6mm; }
+  .reqs { grid-template-columns: repeat(2, 1fr); }
+
+  /* Los diagramas: uno por página, entero y sin barra de desplazamiento. */
+  .diag__panel {
+    break-before: page;
+    box-shadow: none;
+    border: 0;
+    padding: 0;
+  }
+  .diag__panel + .diag__panel { margin-top: 0; }
+  .diag__lienzo { overflow: visible; }
+  .diag__lienzo svg { min-width: 0; width: 100%; max-height: 200mm; }
+
+  /* La alternativa en texto deja de ser un desplegable: en papel nadie puede
+     abrirlo, y es donde está explicado el diagrama. */
+  .diag__texto { break-inside: avoid; }
+  .diag__texto > summary { list-style: none; }
+  .diag__texto > summary::-webkit-details-marker { display: none; }
+
+  a { text-decoration: none; color: inherit; }
+}
+
+</style>
 </head>
 <body>
 
-<a class="saltar" href="#requerimientos">Saltar al contenido</a>
+<main class="envoltorio">
 
-<header class="barra">
-  <div class="barra__interior">
-    <a class="marca" href="index.html">
-      <img class="marca__logo" src="assets/logo.png" alt="" width="36" height="36" decoding="async">
-      <span class="marca__nombre">UTS Nexus <em>Académico</em></span>
-      <span class="etapa">Doc</span>
-    </a>
-    <nav class="barra__nav" aria-label="Secciones">
-      <a href="#requerimientos">Requerimientos</a>
-      <a href="#uml">Modelo UML</a>
-
-      <div class="tema" role="group" aria-label="Tema de la página">
-        <button class="tema__op" type="button" data-tema-op="claro" aria-pressed="false" title="Claro">
-          <span class="visualmente-oculto">Tema claro</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"/></svg>
-        </button>
-        <button class="tema__op" type="button" data-tema-op="oscuro" aria-pressed="false" title="Oscuro">
-          <span class="visualmente-oculto">Tema oscuro</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>
-        </button>
-        <button class="tema__op" type="button" data-tema-op="sistema" aria-pressed="false" title="Seguir al sistema">
-          <span class="visualmente-oculto">Seguir el tema del sistema</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.8" y="4.5" width="18.4" height="12.4" rx="2"/><path d="M8.5 20.5h7"/></svg>
-        </button>
+  <!-- ── Portada ────────────────────────────────────────────────────────── -->
+  <section class="portada-pdf">
+    <div class="portada-pdf__marca">
+      <img src="assets/logo.png" alt="">
+      <div>
+        <p class="portada-pdf__institucion">Universitaria Tecnológica de Santander · Grupo CIAI</p>
+        <p class="portada-pdf__producto">UTS Nexus Académico</p>
       </div>
-
-      <a class="boton boton--lima boton--sm" href="index.html">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
-        <span class="boton__texto">Volver</span>
-      </a>
-    </nav>
-  </div>
-</header>
-
-<main>
-
-  <!-- ── Portada del documento ──────────────────────────────────────────────
-       No es el hero de la portada repetido: aquí no hay nada que descargar.
-       Dice qué documento es, de qué sistema habla y qué contiene, que es lo
-       que alguien necesita saber antes de leer treinta requisitos. -->
-  <section class="portada">
-    <div class="envoltorio portada__interior">
-      <p class="eyebrow">Documento técnico · Grupo CIAI</p>
-      <h1 class="titular portada__titulo">
-        Requerimientos y<br>
-        <span class="titular__acento">modelo UML</span>
-      </h1>
-      <p class="entradilla">
-        Qué tiene que hacer UTS Nexus Académico, qué tiene que cumplir mientras
-        lo hace, y cuatro vistas del sistema: quién lo usa, qué guarda, de qué
-        piezas está hecho y qué ocurre cuando alguien escribe una nota.
-      </p>
-
-      <dl class="portada__ficha">
-        <div><dt>Sistema</dt><dd>UTS Nexus Académico</dd></div>
-        <div><dt>Institución</dt><dd>Universitaria Tecnológica de Santander</dd></div>
-        <div><dt>Contenido</dt><dd>12 requisitos funcionales · 10 no funcionales · 4 diagramas</dd></div>
-      </dl>
-
-      <nav class="portada__indice" aria-label="Contenido del documento">
-        <a class="boton boton--lima boton--sm" href="#requerimientos">Requerimientos</a>
-        <a class="boton boton--fantasma boton--sm" href="#uml">Modelo UML</a>
-        <a class="boton boton--fantasma boton--sm" href="index.html#necesidad">La necesidad</a>
-        <!-- El PDF trae además la sección de la necesidad, que en la web vive en
-             la portada: en un documento suelto el problema tiene que ir delante
-             de los requisitos o estos no se entienden. -->
-        <a class="boton boton--fantasma boton--sm" href="UTS_Nexus_Necesidad_Requerimientos_UML.pdf" download>
-          Descargar en PDF
-        </a>
-      </nav>
     </div>
+
+    <h1>Necesidad,<br>requerimientos y<br><span>modelo UML</span></h1>
+
+    <p class="portada-pdf__resumen">
+      Qué problema resuelve la plataforma, qué tiene que hacer, qué tiene que
+      cumplir mientras lo hace, y cuatro vistas del sistema: quién lo usa, qué
+      guarda, de qué piezas está hecho y qué ocurre cuando alguien escribe una
+      nota.
+    </p>
+
+    <dl class="portada-pdf__ficha">
+      <div><dt>Sistema</dt><dd>UTS Nexus Académico</dd></div>
+      <div><dt>Institución</dt><dd>Universitaria Tecnológica de Santander</dd></div>
+      <div><dt>Contenido</dt><dd>6 necesidades · 12 requisitos funcionales · 10 no funcionales · 4 diagramas UML</dd></div>
+      <div><dt>Licencia</dt><dd>PolyForm Noncommercial 1.0.0</dd></div>
+    </dl>
   </section>
 
+  <!-- ── Contenido ──────────────────────────────────────────────────────── -->
+  <section class="indice-pdf">
+    <header class="seccion__cab">
+      <h2 class="titulo2">Contenido</h2>
+    </header>
+    <ol>
+      <li><strong>La necesidad</strong> — el problema que se resolvía a mano</li>
+      <li><strong>Requerimientos</strong>
+        <ul>
+          <li>Funcionales · RF-01 a RF-12</li>
+          <li>No funcionales · RNF-01 a RNF-10</li>
+        </ul>
+      </li>
+      <li><strong>Modelo UML</strong>
+        <ul>
+          <li>Figura 1 · Casos de uso</li>
+          <li>Figura 2 · Clases y modelo de datos</li>
+          <li>Figura 3 · Componentes y despliegue</li>
+          <li>Figura 4 · Secuencia: registrar una nota</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ── La necesidad ───────────────────────────────────────────────────────
+       Lo que hacía falta antes de que esto existiera. Cada tarjeta termina en
+       la consecuencia, porque es la consecuencia —y no la queja— la que se
+       convierte en un requisito de la sección siguiente. -->
+  <section class="seccion" id="necesidad">
+    <div class="envoltorio">
+      <header class="seccion__cab">
+        <h2 class="titulo2">La necesidad</h2>
+        <p class="seccion__sub">
+          El seguimiento académico de un semestre se llevaba en hojas de cálculo
+          sueltas, cuadernos y correos. Nada de eso está mal hecho: está
+          repartido, y repartido no se puede cruzar a tiempo.
+        </p>
+      </header>
+
+      <div class="rejilla-necesidad">
+
+        <article class="problema">
+          <h3 class="problema__titulo">Una planilla por docente</h3>
+          <p>
+            Los pesos del reglamento —30 % trabajos, 60 % parciales, 10 %
+            autoevaluación— se reescriben a mano en cada archivo. Una fórmula
+            mal copiada no da error: da un acta con un número distinto, y se
+            descubre cuando el estudiante reclama.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>el cálculo tiene que vivir en un solo sitio, fuera de la hoja
+            de cada quien.</span>
+          </p>
+        </article>
+
+        <article class="problema">
+          <h3 class="problema__titulo">La asistencia solo dice sí o no</h3>
+          <p>
+            En papel se marca presente o ausente. Llegar veinte minutos tarde y
+            faltar la clase entera cuentan igual, así que el porcentaje del
+            semestre no representa lo que de verdad pasó en el salón.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>se registran los minutos reales de cada clase y el porcentaje
+            sale ponderado.</span>
+          </p>
+        </article>
+
+        <article class="problema">
+          <h3 class="problema__titulo">El riesgo se ve cuando ya se perdió</h3>
+          <p>
+            La señal está en los datos desde marzo: notas que bajan entre
+            cortes, faltas seguidas los mismos días. Pero nadie cruza notas con
+            asistencia hasta el cierre, y para entonces ya no hay nada que
+            hacer.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>el sistema revisa solo y avisa antes, con la razón del aviso
+            escrita.</span>
+          </p>
+        </article>
+
+        <article class="problema">
+          <h3 class="problema__titulo">El consolidado se arma a mano</h3>
+          <p>
+            Coordinación pide los cortes por correo y recibe archivos con
+            formatos distintos. Unificarlos es un trabajo manual que se repite
+            en cada corte y que, además, envejece el mismo día que alguien
+            corrige una nota.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>el consolidado se genera del mismo dato vivo, no de copias
+            enviadas.</span>
+          </p>
+        </article>
+
+        <article class="problema">
+          <h3 class="problema__titulo">Cada quien ve de más o de menos</h3>
+          <p>
+            Un archivo compartido no distingue roles: o se manda completo, y
+            entonces un docente ve los estudiantes de otro, o se recorta a mano
+            y se pierde el rastro de quién cambió qué.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>el alcance de cada rol lo decide el servidor y todo cambio
+            queda auditado.</span>
+          </p>
+        </article>
+
+        <article class="problema">
+          <h3 class="problema__titulo">El salón no es el escritorio</h3>
+          <p>
+            Pasar lista ocurre de pie, con el teléfono en la mano y a veces sin
+            wifi; armar el semestre ocurre sentado, con teclado y pantalla
+            grande. Una sola herramienta para las dos cosas sirve mal a las dos.
+          </p>
+          <p class="problema__porque">
+            <b>Por eso</b>
+            <span>hay aplicación de escritorio y de teléfono sobre los mismos
+            datos.</span>
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
 
   <!-- ── Requerimientos ─────────────────────────────────────────────────────
        Con código y no solo con título: «RF-04» es lo que se cita en un
@@ -441,20 +622,8 @@
           </marker>
         </defs>
       </svg>
-
-      <div class="diag__pestanas" role="tablist" aria-label="Diagramas UML">
-        <button class="diag__pestana" type="button" role="tab" id="pest-casos"
-                aria-controls="diag-casos" aria-selected="true">Casos de uso</button>
-        <button class="diag__pestana" type="button" role="tab" id="pest-clases"
-                aria-controls="diag-clases" aria-selected="false">Clases</button>
-        <button class="diag__pestana" type="button" role="tab" id="pest-componentes"
-                aria-controls="diag-componentes" aria-selected="false">Componentes</button>
-        <button class="diag__pestana" type="button" role="tab" id="pest-secuencia"
-                aria-controls="diag-secuencia" aria-selected="false">Secuencia</button>
-      </div>
-
       <!-- ── 1. Casos de uso ──────────────────────────────────────────────── -->
-      <div class="diag__panel" role="tabpanel" id="diag-casos" aria-labelledby="pest-casos" tabindex="0">
+      <div class="diag__panel" id="diag-casos">
         <p class="diag__num">Figura 1</p>
         <h3 class="diag__titulo">Casos de uso</h3>
         <p class="diag__pie">
@@ -558,8 +727,8 @@
           </svg>
         </div>
 
-        <details class="diag__texto">
-          <summary>Leer el diagrama en texto</summary>
+        <details class="diag__texto" open>
+          <summary>El diagrama, en texto</summary>
           <ul>
             <li><strong>Docente:</strong> registra notas por corte, toma asistencia por minutos, consulta el riesgo con su explicación, importa el listado de clase y genera reportes.</li>
             <li><strong>Coordinación:</strong> consulta el riesgo y genera reportes y consolidados de sus programas.</li>
@@ -571,7 +740,7 @@
       </div>
 
       <!-- ── 2. Clases ────────────────────────────────────────────────────── -->
-      <div class="diag__panel" role="tabpanel" id="diag-clases" aria-labelledby="pest-clases" tabindex="0">
+      <div class="diag__panel" id="diag-clases">
         <p class="diag__num">Figura 2</p>
         <h3 class="diag__titulo">Clases y modelo de datos</h3>
         <p class="diag__pie">
@@ -671,8 +840,8 @@
           </svg>
         </div>
 
-        <details class="diag__texto">
-          <summary>Leer el diagrama en texto</summary>
+        <details class="diag__texto" open>
+          <summary>El diagrama, en texto</summary>
           <ul>
             <li><strong>Estudiante</strong> (cédula única, nombre, programa, correo) tiene muchas <strong>matrículas</strong>.</li>
             <li><strong>Materia</strong> (código, nombre, programa, créditos) tiene muchas matrículas, y <strong>Profesor</strong> (institución, programas asignados, si dirige trabajos de grado) también.</li>
@@ -684,7 +853,7 @@
       </div>
 
       <!-- ── 3. Componentes ───────────────────────────────────────────────── -->
-      <div class="diag__panel" role="tabpanel" id="diag-componentes" aria-labelledby="pest-componentes" tabindex="0">
+      <div class="diag__panel" id="diag-componentes">
         <p class="diag__num">Figura 3</p>
         <h3 class="diag__titulo">Componentes y despliegue</h3>
         <p class="diag__pie">
@@ -749,8 +918,8 @@
           </svg>
         </div>
 
-        <details class="diag__texto">
-          <summary>Leer el diagrama en texto</summary>
+        <details class="diag__texto" open>
+          <summary>El diagrama, en texto</summary>
           <ul>
             <li>Dos aplicaciones cliente: <strong>escritorio</strong> (Tauri 2 + React 19, para Windows y Linux) y <strong>móvil</strong> (Flutter, Android). Las dos hablan con el mismo backend por REST y reciben cambios en vivo por Socket.io.</li>
             <li>El <strong>backend</strong> (Node + TypeScript) tiene tres capas: <code>domains/</code> con el cálculo puro y probado, <code>modules/</code> con las rutas HTTP por capacidad y <code>shared/</code> con la infraestructura común.</li>
@@ -762,7 +931,7 @@
       </div>
 
       <!-- ── 4. Secuencia ─────────────────────────────────────────────────── -->
-      <div class="diag__panel" role="tabpanel" id="diag-secuencia" aria-labelledby="pest-secuencia" tabindex="0">
+      <div class="diag__panel" id="diag-secuencia">
         <p class="diag__num">Figura 4</p>
         <h3 class="diag__titulo">Secuencia: registrar una nota</h3>
         <p class="diag__pie">
@@ -828,8 +997,8 @@
           </svg>
         </div>
 
-        <details class="diag__texto">
-          <summary>Leer el diagrama en texto</summary>
+        <details class="diag__texto" open>
+          <summary>El diagrama, en texto</summary>
           <ol>
             <li>El docente escribe 4.2 en el primer corte, en la aplicación de escritorio.</li>
             <li>El escritorio envía la nota al backend con una petición <code>POST /grades</code>.</li>
@@ -844,18 +1013,6 @@
     </div>
   </section>
 
-
 </main>
-
-<footer class="pie">
-  <div class="envoltorio pie__interior">
-    <p>UTS Nexus Académico · Grupo CIAI · Universitaria Tecnológica de Santander</p>
-    <p class="pie__tenue">
-      <a href="index.html">Volver a la página de descarga</a>
-    </p>
-  </div>
-</footer>
-
-<script src="assets/app.js"></script>
 </body>
 </html>

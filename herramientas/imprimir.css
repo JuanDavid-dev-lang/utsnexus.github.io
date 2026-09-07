@@ -1,0 +1,120 @@
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Hoja de impresión del documento.
+
+   Lo que cambia respecto de la pantalla no es decorativo:
+
+   · El tema se fija en claro. Un PDF se lee en papel y en visores que no
+     tienen modo oscuro; imprimir la versión oscura son treinta páginas de
+     tóner y un texto que no se lee al fotocopiarlo.
+   · Los cuatro diagramas se enseñan a la vez. En pantalla son pestañas, y una
+     pestaña en un PDF es un diagrama que no existe.
+   · Cada figura empieza en su página y no se parte. Un diagrama de clases
+     cortado por la mitad no es un diagrama.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@page {
+  size: A4;
+  margin: 16mm 14mm 18mm;
+}
+
+/* Portada del documento, solo para el PDF. */
+.portada-pdf {
+  min-height: 232mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+  break-after: page;
+}
+.portada-pdf__marca {
+  display: flex; align-items: center; gap: 14px;
+  padding-bottom: 22px;
+  border-bottom: 3px solid var(--marca);
+}
+.portada-pdf__marca img { width: 54px; height: 54px; object-fit: contain; }
+.portada-pdf__institucion {
+  font-family: var(--dato);
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+.portada-pdf__producto { font-family: var(--display); font-size: 20px; font-weight: 800; }
+.portada-pdf h1 {
+  font-size: 44px; font-weight: 800;
+  letter-spacing: -.025em; line-height: 1.05;
+}
+.portada-pdf h1 span { color: var(--marca); }
+.portada-pdf__resumen {
+  font-size: 15.5px; line-height: 1.65;
+  color: var(--tinta-suave);
+  max-width: 62ch;
+}
+.portada-pdf__ficha {
+  margin: 0; display: grid; gap: 0;
+  border-top: 1px solid var(--borde);
+}
+.portada-pdf__ficha > div {
+  display: flex; gap: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--borde);
+}
+.portada-pdf__ficha dt {
+  font-family: var(--dato);
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--tinta-suave);
+  min-width: 130px;
+}
+.portada-pdf__ficha dd { margin: 0; font-size: 14px; }
+
+/* Índice: en un documento de treinta páginas, saber qué hay dentro. */
+.indice-pdf { break-after: page; }
+.indice-pdf ol { margin: 0; padding-left: 1.4em; font-size: 15px; }
+.indice-pdf li { margin-bottom: 7px; }
+.indice-pdf li ul { margin: 6px 0 0; padding-left: 1.1em; list-style: none; }
+.indice-pdf li ul li { font-size: 13.5px; color: var(--tinta-suave); margin-bottom: 3px; }
+
+@media print {
+  /* El navegador respeta los fondos solo si se le pide. Sin esto, las tarjetas
+     y la superficie de marca salen en blanco y la retícula desaparece. */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  html { scroll-behavior: auto; }
+  body { background: #fff; font-size: 11.5pt; }
+
+  /* Nada de navegación en un papel. */
+  .barra, .pie, .saltar, .diag__pestanas, .portada, .portada__indice { display: none !important; }
+
+  .seccion { padding: 0 0 6mm; break-before: page; }
+  .seccion--marca { background: transparent; color: var(--tinta); }
+  .seccion--marca .seccion__sub { color: var(--tinta-suave); }
+  .envoltorio { width: 100%; }
+
+  .seccion__cab { margin-bottom: 8mm; }
+  .titulo2 { font-size: 24pt; break-after: avoid; }
+  .reqs__cab, .problema__titulo, .req__titulo, .diag__titulo { break-after: avoid; }
+
+  /* Una tarjeta partida entre dos páginas se lee como dos tarjetas a medias. */
+  .problema, .req, .diag__panel, .aviso { break-inside: avoid; }
+
+  .rejilla-necesidad { grid-template-columns: repeat(2, 1fr); gap: 6mm; }
+  .reqs { grid-template-columns: repeat(2, 1fr); }
+
+  /* Los diagramas: uno por página, entero y sin barra de desplazamiento. */
+  .diag__panel {
+    break-before: page;
+    box-shadow: none;
+    border: 0;
+    padding: 0;
+  }
+  .diag__panel + .diag__panel { margin-top: 0; }
+  .diag__lienzo { overflow: visible; }
+  .diag__lienzo svg { min-width: 0; width: 100%; max-height: 200mm; }
+
+  /* La alternativa en texto deja de ser un desplegable: en papel nadie puede
+     abrirlo, y es donde está explicado el diagrama. */
+  .diag__texto { break-inside: avoid; }
+  .diag__texto > summary { list-style: none; }
+  .diag__texto > summary::-webkit-details-marker { display: none; }
+
+  a { text-decoration: none; color: inherit; }
+}
