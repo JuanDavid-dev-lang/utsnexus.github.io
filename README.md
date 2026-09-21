@@ -34,10 +34,14 @@ assets/js/
   app.js           punto de entrada (módulo ES); llama a los demás
   tema.js          los tres botones de tema
   menu.js          cierra el menú de teléfono al elegir una sección
+  barra.js         progreso de lectura y enlace de la sección activa
   revelar.js       observador que anima las tarjetas al entrar en pantalla
-  planilla.js      anima las filas y traza la línea del 3.0
+  planilla.js      anima las filas, traza la línea del 3.0 y deja CAMBIAR
+                   una nota: recalcula, reordena y mueve la línea
   descargas.js     sustituye los enlaces si la administración configuró otros
-  novedades.js     las dos últimas versiones, desde los Releases de GitHub
+                   y sella la tarjeta del equipo desde el que se mira
+  novedades.js     las dos últimas versiones y la «versión actual», desde
+                   los Releases de GitHub
   pestanas.js      pestañas accesibles de los diagramas UML
   cache.js         caché con caducidad en localStorage y fetch con plazo
 
@@ -150,12 +154,17 @@ instaladas; la página solo ya no depende de él para descargar.
 No es una imagen ni una captura. Las filas van **escritas en el HTML**, con la
 definitiva ya calculada con los pesos del motor real —C1 33% + C2 33% +
 C3 34%, se aprueba desde 3.0—: así existen sin JavaScript, las lee un
-buscador y están en el primer fotograma. `assets/js/planilla.js` solo las
-anima y coloca la línea del umbral midiendo el DOM ya pintado.
+buscador y están en el primer fotograma.
 
-Si se cambia una nota de ejemplo hay que recalcular la definitiva a mano
-(son cinco multiplicaciones) y, si alguien pasa a reprobar, mover
-`data-reprueba="si"` a su fila.
+Con JavaScript, además, se puede tocar: los botones «− / +» cambian el corte
+2 de Laura Gómez, y `assets/js/planilla.js` recalcula con los mismos pesos,
+reordena las filas (con la API de transiciones de vista, donde exista) y
+recoloca la línea del 3.0. En cinco toques Laura pasa de reprobar a
+adelantar a Camilo: el recorrido entero de lo que hace el producto.
+
+Las notas de ejemplo van en los atributos `data-c1`, `data-c2` y `data-c3`
+de cada fila; la que se puede cambiar lleva `data-editable`. Si se cambia
+una nota a mano hay que dejar coherente la definitiva escrita en la celda.
 
 ## Carga y concurrencia
 

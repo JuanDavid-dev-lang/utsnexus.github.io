@@ -5,7 +5,9 @@
    a entrar al subir es una tarjeta que parpadea. Lo que ya está en pantalla
    al cargar se marca de inmediato, sin esperar al observador. */
 export function iniciarRevelar() {
-  const elementos = document.querySelectorAll('.revela');
+  // Los números de sección no se esconden, pero su regla se dibuja al
+  // entrar: van al mismo observador con la misma marca.
+  const elementos = document.querySelectorAll('.revela, .seccion__num');
   if (!elementos.length) return;
 
   const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

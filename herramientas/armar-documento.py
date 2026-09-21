@@ -26,11 +26,11 @@ def entre(texto, inicio, fin):
 
 # ── Las tres secciones, sacadas de donde ya viven ───────────────────────────
 indice = leer(os.path.join(SITIO, 'index.html'))
-necesidad = entre(indice, '  <!-- ── La necesidad ─', '  <!-- ── Créditos ─')
-# El fondo sutil es un recurso de pantalla para separar secciones; en papel
+necesidad = entre(indice, '  <!-- ── 04 La necesidad ─', '  <!-- ── 05 Créditos ─')
+# El papel rayado es un recurso de pantalla para separar secciones; en papel
 # sería una banda gris. Y `revela` es la animación de entrada: aquí no hay
 # guion que la dispare, así que la clase sobra.
-necesidad = necesidad.replace('<section class="seccion seccion--sutil" id="necesidad">',
+necesidad = necesidad.replace('<section class="seccion seccion--rayada" id="necesidad">',
                               '<section class="seccion" id="necesidad">')
 necesidad = necesidad.replace(' revela"', '"')
 

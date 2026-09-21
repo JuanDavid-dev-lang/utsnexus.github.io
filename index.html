@@ -105,6 +105,9 @@
 <a class="saltar" href="#descargas">Saltar a las descargas</a>
 
 <header class="barra">
+  <!-- Una línea lima que crece con el desplazamiento: dice cuánto queda sin
+       ocupar sitio. Se pinta con `transform`, así que no cuesta maquetar. -->
+  <span class="barra__progreso" id="progreso" aria-hidden="true"></span>
   <div class="barra__interior">
     <a class="marca" href="#inicio">
       <img class="marca__logo" src="assets/logo.png" alt="" width="36" height="36" decoding="async">
@@ -115,8 +118,9 @@
     </a>
 
     <nav class="barra__nav" aria-label="Secciones">
-      <div class="barra__enlaces">
+      <div class="barra__enlaces" id="enlaces">
         <a href="#capacidades">Qué hace</a>
+        <a href="#novedades">Novedades</a>
         <a href="#necesidad">La necesidad</a>
         <a href="requerimientos-uml.html">Documento</a>
       </div>
@@ -124,7 +128,8 @@
       <!-- Tres posiciones y no dos: con un interruptor de dos, quien lo toca
            una vez deja la página clavada, y el equipo que cambia solo al
            anochecer deja de hacerlo sin explicación. -->
-      <div class="tema" role="group" aria-label="Tema de la página">
+      <div class="tema" role="group" aria-label="Tema de la página" data-activo="sistema">
+        <span class="tema__indicador" aria-hidden="true"></span>
         <button class="tema__op" type="button" data-tema-op="claro" aria-pressed="false" title="Claro">
           <span class="visualmente-oculto">Tema claro</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"/></svg>
@@ -154,6 +159,7 @@
       <div class="menu" id="menu" popover>
         <a href="#descargas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>Descargar</a>
         <a href="#capacidades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/></svg>Qué hace</a>
+        <a href="#novedades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>Novedades</a>
         <a href="#necesidad"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4.5M12 16h.01"/></svg>La necesidad</a>
         <a href="#creditos"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>Quién lo hizo</a>
         <div class="menu__separador" role="separator"></div>
@@ -195,8 +201,11 @@
 
       <!-- Signature: planilla real, con los pesos reales del reglamento. Las
            filas van escritas, con la definitiva ya calculada (C1 33 % + C2
-           33 % + C3 34 %): se ven sin JavaScript y las lee un buscador. El
-           guion solo las anima y traza la línea del 3.0. -->
+           33 % + C3 34 %): se ven sin JavaScript y las lee un buscador.
+
+           Y se puede TOCAR: los botones de abajo cambian una nota y la
+           planilla se recalcula, se reordena y mueve la línea del 3.0. Es la
+           promesa del producto puesta en la portada, no descrita. -->
       <figure class="planilla" id="planilla">
         <figcaption class="planilla__cab">
           <span class="planilla__materia">Arquitectura de Software</span>
@@ -223,16 +232,27 @@
             </tr>
           </thead>
           <tbody id="filas">
-            <tr class="fila"><td>Ana Ruiz</td><td>4.2</td><td>3.9</td><td>4.4</td><td class="def def--alta">4.2</td></tr>
-            <tr class="fila"><td>Andrés Mejía</td><td>3.8</td><td>4.1</td><td>3.7</td><td class="def def--alta">3.9</td></tr>
-            <tr class="fila"><td>Camilo Peña</td><td>3.4</td><td>3.1</td><td>3.2</td><td class="def def--alta">3.2</td></tr>
-            <tr class="fila"><td>Laura Gómez</td><td>3.1</td><td>2.9</td><td>3.3</td><td class="def def--alta">3.1</td></tr>
-            <tr class="fila" data-reprueba="si"><td>Valentina Soto</td><td>2.6</td><td>2.2</td><td>2.4</td><td class="def def--baja">2.4<span class="marca-riesgo">riesgo alto</span></td></tr>
+            <tr class="fila" data-nombre="Ana Ruiz" data-c1="4.2" data-c2="3.9" data-c3="4.4"><td>Ana Ruiz</td><td>4.2</td><td>3.9</td><td>4.4</td><td class="def def--alta">4.2</td></tr>
+            <tr class="fila" data-nombre="Andrés Mejía" data-c1="3.8" data-c2="4.1" data-c3="3.7"><td>Andrés Mejía</td><td>3.8</td><td>4.1</td><td>3.7</td><td class="def def--alta">3.9</td></tr>
+            <tr class="fila" data-nombre="Camilo Peña" data-c1="3.4" data-c2="3.1" data-c3="3.2"><td>Camilo Peña</td><td>3.4</td><td>3.1</td><td>3.2</td><td class="def def--alta">3.2</td></tr>
+            <tr class="fila" data-nombre="Laura Gómez" data-c1="3.1" data-c2="2.9" data-c3="3.3" data-editable="c2"><td>Laura Gómez</td><td>3.1</td><td class="celda--viva">2.9</td><td>3.3</td><td class="def def--alta">3.1</td></tr>
+            <tr class="fila" data-nombre="Valentina Soto" data-c1="2.6" data-c2="2.2" data-c3="2.4" data-reprueba="si"><td>Valentina Soto</td><td>2.6</td><td>2.2</td><td>2.4</td><td class="def def--baja">2.4<span class="marca-riesgo">riesgo alto</span></td></tr>
           </tbody>
         </table>
 
         <div class="umbral" id="umbral" aria-hidden="true">
           <span class="umbral__etiqueta">3.0 · aprueba</span>
+        </div>
+
+        <!-- Los controles solo aparecen con JavaScript (`html.js`): sin él
+             no hay nada que recalcular y un botón muerto es peor que ninguno. -->
+        <div class="probar" id="probar" hidden>
+          <p class="probar__texto">Probá: cambiá el <b>corte 2</b> de Laura</p>
+          <div class="paso" role="group" aria-label="Nota del corte 2 de Laura Gómez">
+            <button class="paso__boton" type="button" data-paso="-0.3" aria-label="Bajar 0,3">−</button>
+            <output class="paso__valor" id="paso-valor" for="filas" aria-live="polite">2.9</output>
+            <button class="paso__boton" type="button" data-paso="0.3" aria-label="Subir 0,3">+</button>
+          </div>
         </div>
 
         <p class="planilla__pie">
@@ -244,19 +264,32 @@
     </div>
   </section>
 
-  <!-- ── Descargas ──────────────────────────────────────────────────────── -->
+  <!-- ── 01 Descargas ───────────────────────────────────────────────────── -->
   <section class="seccion" id="descargas">
     <div class="envoltorio">
-      <header class="seccion__cab">
-        <h2 class="titulo2">Descargar</h2>
-        <p class="seccion__sub">Elegí el equipo donde vas a pasar lista.</p>
+      <header class="seccion__cab seccion__cab--fila">
+        <div>
+          <p class="seccion__num"><span>01</span><i class="regla" aria-hidden="true"></i></p>
+          <h2 class="titulo2">Descargar</h2>
+          <p class="seccion__sub">Elegí el equipo donde vas a pasar lista.</p>
+        </div>
+        <!-- La versión vigente, leída de los Releases. Escrita a mano como
+             respaldo; `novedades.js` la actualiza con la misma respuesta que
+             alimenta la sección de novedades: una petición, dos usos. -->
+        <p class="version" id="version-actual">
+          <span class="version__punto" aria-hidden="true"></span>
+          Versión actual <b>v2.16.0</b> · <time datetime="2026-09-01">1 de septiembre de 2026</time>
+        </p>
       </header>
 
       <div class="rejilla-descargas">
 
-        <article class="tarjeta tarjeta--destacada revela">
-          <div class="tarjeta__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M3 5.5 10 4.5v7H3v-6ZM11.5 4.3 21 3v8.5h-9.5v-7.2ZM3 12.5h7v7L3 18.5v-6ZM11.5 12.5H21V21l-9.5-1.3v-7.2Z"/></svg>
+        <article class="tarjeta tarjeta--destacada revela" data-plataforma="windows">
+          <div class="tarjeta__cab">
+            <div class="tarjeta__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 5.5 10 4.5v7H3v-6ZM11.5 4.3 21 3v8.5h-9.5v-7.2ZM3 12.5h7v7L3 18.5v-6ZM11.5 12.5H21V21l-9.5-1.3v-7.2Z"/></svg>
+            </div>
+            <span class="tarjeta__formato">.exe</span>
           </div>
           <h3 class="tarjeta__titulo">Windows</h3>
           <p class="tarjeta__desc">
@@ -269,9 +302,9 @@
                `Content-Disposition: attachment`, así que navegar en la misma
                pestaña baja el archivo y la página no se mueve. -->
           <a class="boton boton--marca boton--bloque" href="https://www.dropbox.com/scl/fi/b7x8vsajh5q1isjp0kbuy/UTS-Nexus-Academico-Windows.exe?rlkey=fea1cre2x5lykdjhcf9n5cr5a&st=ejqfy6he&dl=1" data-descarga="windows">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
             Descargar para Windows
           </a>
-          <p class="tarjeta__alterna">Descarga directa del instalador <code>.exe</code></p>
           <dl class="requisitos">
             <div><dt>Sistema</dt><dd>Windows 10 u 11 · 64 bits</dd></div>
             <div><dt>Archivo</dt><dd>Instalador <code>.exe</code></dd></div>
@@ -279,9 +312,12 @@
           </dl>
         </article>
 
-        <article class="tarjeta revela">
-          <div class="tarjeta__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M12 2c2.2 0 3.6 1.7 3.6 3.9 0 1.3.5 2.2 1.4 3.4 1.4 1.9 2.2 3.6 2.2 5.6 0 3.3-3 5.6-7.2 5.6S4.8 18.2 4.8 14.9c0-2 .8-3.7 2.2-5.6.9-1.2 1.4-2.1 1.4-3.4C8.4 3.7 9.8 2 12 2Z"/><path d="M10.4 6.3h.01M13.6 6.3h.01"/><path d="M10.9 8.6h2.2l-1.1 1.3z"/><path d="M9.2 20.3 7.6 22M14.8 20.3 16.4 22"/></svg>
+        <article class="tarjeta revela" data-plataforma="linux">
+          <div class="tarjeta__cab">
+            <div class="tarjeta__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2c2.2 0 3.6 1.7 3.6 3.9 0 1.3.5 2.2 1.4 3.4 1.4 1.9 2.2 3.6 2.2 5.6 0 3.3-3 5.6-7.2 5.6S4.8 18.2 4.8 14.9c0-2 .8-3.7 2.2-5.6.9-1.2 1.4-2.1 1.4-3.4C8.4 3.7 9.8 2 12 2Z"/><path d="M10.4 6.3h.01M13.6 6.3h.01"/><path d="M10.9 8.6h2.2l-1.1 1.3z"/><path d="M9.2 20.3 7.6 22M14.8 20.3 16.4 22"/></svg>
+            </div>
+            <span class="tarjeta__formato">.sh · 15 KB</span>
           </div>
           <h3 class="tarjeta__titulo">Linux</h3>
           <p class="tarjeta__desc">
@@ -294,9 +330,9 @@
                lleva la versión, así que `releases/latest/download/…` siempre
                entrega el último. -->
           <a class="boton boton--marca boton--bloque" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest/download/instalar-uts-nexus.sh">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
             Descargar el instalador
           </a>
-          <p class="tarjeta__alterna">Instalador gráfico · <code>.sh</code> de 15 KB</p>
           <dl class="requisitos">
             <div><dt>Sistema</dt><dd>Cualquier distribución · 64 bits</dd></div>
             <div><dt>Instala</dt><dd>Sin contraseña de administrador</dd></div>
@@ -304,9 +340,12 @@
           </dl>
         </article>
 
-        <article class="tarjeta revela">
-          <div class="tarjeta__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>
+        <article class="tarjeta revela" data-plataforma="android">
+          <div class="tarjeta__cab">
+            <div class="tarjeta__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>
+            </div>
+            <span class="tarjeta__formato">.apk</span>
           </div>
           <h3 class="tarjeta__titulo">Android</h3>
           <p class="tarjeta__desc">
@@ -314,9 +353,9 @@
             sin depender del portátil.
           </p>
           <a class="boton boton--marca boton--bloque" href="https://www.dropbox.com/scl/fi/a8tjol3iwgh20hwf2ni5k/UTS-Nexus-Academico-Android.apk?rlkey=3q4cnw4677rydinkov0h1yj8d&st=la92phz1&dl=1" data-descarga="android">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
             Descargar para Android
           </a>
-          <p class="tarjeta__alterna">Descarga directa del paquete <code>.apk</code></p>
           <dl class="requisitos">
             <div><dt>Sistema</dt><dd>Android 8.0 o superior</dd></div>
             <div><dt>Archivo</dt><dd>Paquete <code>.apk</code></dd></div>
@@ -364,112 +403,147 @@
     </div>
   </section>
 
-  <!-- ── Qué hace ───────────────────────────────────────────────────────── -->
+  <!-- ── 02 Qué hace ────────────────────────────────────────────────────────
+       Cuatro capacidades en una lista numerada con reglas, no en cuatro
+       tarjetas iguales. Cada una trae una pieza pequeña que se mueve cuando
+       la lista entra en pantalla: la fórmula que suma, la barra que se llena,
+       la alerta que salta. Enseñar, no describir. -->
   <section class="seccion seccion--marca" id="capacidades">
-    <div class="envoltorio">
-      <header class="seccion__cab">
+    <div class="envoltorio capas">
+      <div class="capas__intro">
+        <p class="seccion__num"><span>02</span><i class="regla" aria-hidden="true"></i></p>
         <h2 class="titulo2">Qué hace</h2>
         <p class="seccion__sub">
           Un servidor y una base de datos. Lo que cambiás en el escritorio
           aparece en el teléfono sin recargar nada.
         </p>
-      </header>
-
-      <div class="rejilla-capacidades">
-
-        <article class="capacidad revela">
-          <div class="capacidad__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 10h16M9 5v14M14 5v14"/></svg>
-          </div>
-          <h3 class="capacidad__titulo">Notas por corte</h3>
-          <p>
-            Trabajos, parciales y autoevaluación con sus pesos del reglamento.
-            El corte y la definitiva las calcula el servidor: ninguna app hace
-            cuentas por su cuenta, así que en los tres lados sale el mismo número.
-          </p>
-        </article>
-
-        <article class="capacidad revela">
-          <div class="capacidad__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
-          </div>
-          <h3 class="capacidad__titulo">Asistencia por minutos</h3>
-          <p>
-            Registra los minutos reales de cada clase, no solo presente o ausente.
-            El porcentaje sale ponderado, así que llegar tarde media hora pesa
-            distinto que faltar el día entero.
-          </p>
-        </article>
-
-        <article class="capacidad revela">
-          <div class="capacidad__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M12 3.5 21 19.5H3z"/><path d="M12 10v4M12 17h.01"/></svg>
-          </div>
-          <h3 class="capacidad__titulo">Riesgo académico</h3>
-          <p>
-            Un modelo mira notas, tendencia entre cortes y asistencia, y te dice
-            a quién conviene llamar antes de que sea tarde. Siempre explica en
-            qué se basó: si no puede explicarlo, no lo muestra.
-          </p>
-        </article>
-
-        <article class="capacidad revela">
-          <div class="capacidad__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>
-          </div>
-          <h3 class="capacidad__titulo">Listas y reportes</h3>
-          <p>
-            Importás la lista del grupo desde un archivo o buscás a un estudiante
-            que ya está registrado. El consolidado sale en PDF, listo para
-            entregar.
-          </p>
-        </article>
-
       </div>
+
+      <ol class="capas__lista">
+
+        <li class="capa revela">
+          <span class="capa__num" aria-hidden="true">01</span>
+          <div class="capa__texto">
+            <h3 class="capa__titulo">Notas por corte</h3>
+            <p>
+              Trabajos, parciales y autoevaluación con sus pesos del reglamento.
+              El corte y la definitiva las calcula el servidor: ninguna app hace
+              cuentas por su cuenta, así que en los tres lados sale el mismo número.
+            </p>
+          </div>
+          <div class="capa__demo demo-notas" aria-hidden="true">
+            <span class="demo-notas__chip">3.8 <small>×30%</small></span>
+            <i>+</i>
+            <span class="demo-notas__chip">4.2 <small>×60%</small></span>
+            <i>+</i>
+            <span class="demo-notas__chip">4.5 <small>×10%</small></span>
+            <span class="demo-notas__igual">= <b>4.1</b></span>
+          </div>
+        </li>
+
+        <li class="capa revela">
+          <span class="capa__num" aria-hidden="true">02</span>
+          <div class="capa__texto">
+            <h3 class="capa__titulo">Asistencia por minutos</h3>
+            <p>
+              Registra los minutos reales de cada clase, no solo presente o ausente.
+              El porcentaje sale ponderado, así que llegar tarde media hora pesa
+              distinto que faltar el día entero.
+            </p>
+          </div>
+          <div class="capa__demo demo-asis" aria-hidden="true">
+            <div class="demo-asis__barra"><span class="demo-asis__lleno"></span></div>
+            <p class="demo-asis__dato"><b>62</b> de 74 min · <b>84 %</b></p>
+          </div>
+        </li>
+
+        <li class="capa revela">
+          <span class="capa__num" aria-hidden="true">03</span>
+          <div class="capa__texto">
+            <h3 class="capa__titulo">Riesgo académico</h3>
+            <p>
+              Un modelo mira notas, tendencia entre cortes y asistencia, y te dice
+              a quién conviene llamar antes de que sea tarde. Siempre explica en
+              qué se basó: si no puede explicarlo, no lo muestra.
+            </p>
+          </div>
+          <div class="capa__demo demo-riesgo" aria-hidden="true">
+            <span class="demo-riesgo__marca">riesgo alto</span>
+            <p class="demo-riesgo__razon">Bajó 0.8 entre cortes y faltó a 3 clases seguidas.</p>
+          </div>
+        </li>
+
+        <li class="capa revela">
+          <span class="capa__num" aria-hidden="true">04</span>
+          <div class="capa__texto">
+            <h3 class="capa__titulo">Listas y reportes</h3>
+            <p>
+              Importás la lista del grupo desde un archivo o buscás a un estudiante
+              que ya está registrado. El consolidado sale en PDF, listo para
+              entregar.
+            </p>
+          </div>
+          <div class="capa__demo demo-pdf" aria-hidden="true">
+            <svg viewBox="0 0 64 80"><path class="demo-pdf__hoja" d="M8 4h32l16 16v56H8z"/><path class="demo-pdf__doblez" d="M40 4v16h16"/><path class="demo-pdf__linea" d="M18 36h28M18 46h28M18 56h18"/></svg>
+            <span class="demo-pdf__sello">PDF</span>
+          </div>
+        </li>
+
+      </ol>
     </div>
   </section>
 
-  <!-- ── Novedades: se alimenta sola de los Releases de GitHub ──────────── -->
-  <!-- Las tarjetas van HORNEADAS en el HTML: se ven siempre, con o sin
-       JavaScript. `assets/js/novedades.js` las reemplaza cuando la API
-       responde con algo más nuevo. -->
+  <!-- ── 03 Novedades: se alimenta sola de los Releases de GitHub ─────────
+       Una línea de tiempo, no tarjetas. Las dos entradas van HORNEADAS en el
+       HTML: se ven siempre, con o sin JavaScript. `assets/js/novedades.js`
+       las reemplaza cuando la API responde con algo más nuevo. -->
   <section class="seccion" id="novedades">
     <div class="envoltorio">
       <header class="seccion__cab">
+        <p class="seccion__num"><span>03</span><i class="regla" aria-hidden="true"></i></p>
         <h2 class="titulo2">Últimas novedades</h2>
         <p class="seccion__sub">Lo que trajeron las dos versiones más recientes.</p>
       </header>
 
-      <div class="rejilla-descargas rejilla-descargas--dos" id="novedades-lista">
-        <article class="tarjeta revela">
-          <h3 class="tarjeta__titulo">Pre-release 2.16.0</h3>
-          <p class="tarjeta__fecha">1 de septiembre de 2026</p>
-          <ul class="tarjeta__cambios">
-            <li>✨ Nueva experiencia de registro en el computador</li>
-            <li>📱 Registro móvil rediseñado en el teléfono</li>
-            <li>🛠️ Debajo del capó</li>
-          </ul>
-        </article>
-        <article class="tarjeta revela">
-          <h3 class="tarjeta__titulo">Pre-release v2.15.0</h3>
-          <p class="tarjeta__fecha">25 de agosto de 2026</p>
-          <ul class="tarjeta__cambios">
-            <li>🔄 Por qué esta versión existe</li>
-            <li>🎓 Y lo que traía la anterior</li>
-            <li>Debajo del capó</li>
-          </ul>
-        </article>
-      </div>
+      <ol class="linea" id="novedades-lista">
+        <li class="hito revela">
+          <time class="hito__fecha" datetime="2026-09-01">1 sept 2026</time>
+          <div class="hito__cuerpo">
+            <h3 class="hito__titulo">Pre-release 2.16.0</h3>
+            <ul class="hito__cambios">
+              <li>✨ Nueva experiencia de registro en el computador</li>
+              <li>📱 Registro móvil rediseñado en el teléfono</li>
+              <li>🛠️ Debajo del capó</li>
+            </ul>
+          </div>
+        </li>
+        <li class="hito revela">
+          <time class="hito__fecha" datetime="2026-08-25">25 ago 2026</time>
+          <div class="hito__cuerpo">
+            <h3 class="hito__titulo">Pre-release v2.15.0</h3>
+            <ul class="hito__cambios">
+              <li>🔄 Por qué esta versión existe</li>
+              <li>🎓 Y lo que traía la anterior</li>
+              <li>Debajo del capó</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+      <p class="linea__pie">
+        <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases" target="_blank" rel="noopener">Todas las versiones publicadas</a>
+      </p>
     </div>
   </section>
 
-  <!-- ── La necesidad ───────────────────────────────────────────────────────
-       Lo que hacía falta antes de que esto existiera. Cada tarjeta termina en
+  <!-- ── 04 La necesidad ────────────────────────────────────────────────────
+       Un libro de dos columnas sobre papel rayado: a la izquierda lo que
+       pasaba, a la derecha lo que se decidió por eso. Cada fila termina en
        la consecuencia, porque es la consecuencia —y no la queja— la que se
        convierte en un requisito del documento. -->
-  <section class="seccion seccion--sutil" id="necesidad">
+  <section class="seccion seccion--rayada" id="necesidad">
     <div class="envoltorio">
       <header class="seccion__cab">
+        <p class="seccion__num"><span>04</span><i class="regla" aria-hidden="true"></i></p>
         <h2 class="titulo2">La necesidad</h2>
         <p class="seccion__sub">
           El seguimiento académico de un semestre se llevaba en hojas de cálculo
@@ -478,103 +552,124 @@
         </p>
       </header>
 
-      <div class="rejilla-necesidad">
+      <ol class="libro">
+        <li class="libro__cab" aria-hidden="true">
+          <span></span><span>Lo que pasaba</span><span>Por eso</span>
+        </li>
 
-        <article class="problema revela">
-          <h3 class="problema__titulo">Una planilla por docente</h3>
-          <p>
-            Los pesos del reglamento —30 % trabajos, 60 % parciales, 10 %
-            autoevaluación— se reescriben a mano en cada archivo. Una fórmula
-            mal copiada no da error: da un acta con un número distinto, y se
-            descubre cuando el estudiante reclama.
-          </p>
+        <li class="problema revela">
+          <span class="problema__num">01</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">Una planilla por docente</h3>
+            <p>
+              Los pesos del reglamento —30 % trabajos, 60 % parciales, 10 %
+              autoevaluación— se reescriben a mano en cada archivo. Una fórmula
+              mal copiada no da error: da un acta con un número distinto, y se
+              descubre cuando el estudiante reclama.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>el cálculo tiene que vivir en un solo sitio, fuera de la hoja
             de cada quien.</span>
           </p>
-        </article>
+        </li>
 
-        <article class="problema revela">
-          <h3 class="problema__titulo">La asistencia solo dice sí o no</h3>
-          <p>
-            En papel se marca presente o ausente. Llegar veinte minutos tarde y
-            faltar la clase entera cuentan igual, así que el porcentaje del
-            semestre no representa lo que de verdad pasó en el salón.
-          </p>
+        <li class="problema revela">
+          <span class="problema__num">02</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">La asistencia solo dice sí o no</h3>
+            <p>
+              En papel se marca presente o ausente. Llegar veinte minutos tarde y
+              faltar la clase entera cuentan igual, así que el porcentaje del
+              semestre no representa lo que de verdad pasó en el salón.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>se registran los minutos reales de cada clase y el porcentaje
             sale ponderado.</span>
           </p>
-        </article>
+        </li>
 
-        <article class="problema revela">
-          <h3 class="problema__titulo">El riesgo se ve cuando ya se perdió</h3>
-          <p>
-            La señal está en los datos desde marzo: notas que bajan entre
-            cortes, faltas seguidas los mismos días. Pero nadie cruza notas con
-            asistencia hasta el cierre, y para entonces ya no hay nada que
-            hacer.
-          </p>
+        <li class="problema revela">
+          <span class="problema__num">03</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">El riesgo se ve cuando ya se perdió</h3>
+            <p>
+              La señal está en los datos desde marzo: notas que bajan entre
+              cortes, faltas seguidas los mismos días. Pero nadie cruza notas con
+              asistencia hasta el cierre, y para entonces ya no hay nada que
+              hacer.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>el sistema revisa solo y avisa antes, con la razón del aviso
             escrita.</span>
           </p>
-        </article>
+        </li>
 
-        <article class="problema revela">
-          <h3 class="problema__titulo">El consolidado se arma a mano</h3>
-          <p>
-            Coordinación pide los cortes por correo y recibe archivos con
-            formatos distintos. Unificarlos es un trabajo manual que se repite
-            en cada corte y que, además, envejece el mismo día que alguien
-            corrige una nota.
-          </p>
+        <li class="problema revela">
+          <span class="problema__num">04</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">El consolidado se arma a mano</h3>
+            <p>
+              Coordinación pide los cortes por correo y recibe archivos con
+              formatos distintos. Unificarlos es un trabajo manual que se repite
+              en cada corte y que, además, envejece el mismo día que alguien
+              corrige una nota.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>el consolidado se genera del mismo dato vivo, no de copias
             enviadas.</span>
           </p>
-        </article>
+        </li>
 
-        <article class="problema revela">
-          <h3 class="problema__titulo">Cada quien ve de más o de menos</h3>
-          <p>
-            Un archivo compartido no distingue roles: o se manda completo, y
-            entonces un docente ve los estudiantes de otro, o se recorta a mano
-            y se pierde el rastro de quién cambió qué.
-          </p>
+        <li class="problema revela">
+          <span class="problema__num">05</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">Cada quien ve de más o de menos</h3>
+            <p>
+              Un archivo compartido no distingue roles: o se manda completo, y
+              entonces un docente ve los estudiantes de otro, o se recorta a mano
+              y se pierde el rastro de quién cambió qué.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>el alcance de cada rol lo decide el servidor y todo cambio
             queda auditado.</span>
           </p>
-        </article>
+        </li>
 
-        <article class="problema revela">
-          <h3 class="problema__titulo">El salón no es el escritorio</h3>
-          <p>
-            Pasar lista ocurre de pie, con el teléfono en la mano y a veces sin
-            wifi; armar el semestre ocurre sentado, con teclado y pantalla
-            grande. Una sola herramienta para las dos cosas sirve mal a las dos.
-          </p>
+        <li class="problema revela">
+          <span class="problema__num">06</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">El salón no es el escritorio</h3>
+            <p>
+              Pasar lista ocurre de pie, con el teléfono en la mano y a veces sin
+              wifi; armar el semestre ocurre sentado, con teclado y pantalla
+              grande. Una sola herramienta para las dos cosas sirve mal a las dos.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>hay aplicación de escritorio y de teléfono sobre los mismos
             datos.</span>
           </p>
-        </article>
-
-      </div>
+        </li>
+      </ol>
     </div>
   </section>
 
-  <!-- ── Créditos ───────────────────────────────────────────────────────── -->
+  <!-- ── 05 Créditos ────────────────────────────────────────────────────── -->
   <section class="seccion" id="creditos">
     <div class="envoltorio envoltorio--angosto">
       <header class="seccion__cab">
+        <p class="seccion__num"><span>05</span><i class="regla" aria-hidden="true"></i></p>
         <h2 class="titulo2">Quién lo hizo</h2>
       </header>
 
@@ -620,11 +715,21 @@
 
 <footer class="pie">
   <div class="envoltorio pie__interior">
-    <p>UTS Nexus Académico · Grupo CIAI · Unidades Tecnológicas de Santander</p>
-    <p class="pie__tenue">
-      <a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener">
-        Licencia PolyForm Noncommercial
-      </a>
+    <div class="pie__marca">
+      <img src="assets/logo.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+      <div>
+        <p class="pie__nombre">UTS Nexus Académico</p>
+        <p class="pie__tenue">Grupo CIAI · Unidades Tecnológicas de Santander</p>
+      </div>
+    </div>
+    <nav class="pie__enlaces" aria-label="Enlaces del pie">
+      <a href="#descargas">Descargar</a>
+      <a href="requerimientos-uml.html">Requerimientos y UML</a>
+      <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico" target="_blank" rel="noopener">Código</a>
+      <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases" target="_blank" rel="noopener">Versiones</a>
+    </nav>
+    <p class="pie__tenue pie__licencia">
+      <a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener">Licencia PolyForm Noncommercial 1.0.0</a>
     </p>
   </div>
 </footer>

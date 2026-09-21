@@ -1,9 +1,11 @@
 /* Novedades: las dos últimas versiones, leídas de los Releases de GitHub.
 
-   Las tarjetas van HORNEADAS en el HTML: se ven siempre, con o sin
+   Las entradas van HORNEADAS en el HTML: se ven siempre, con o sin
    JavaScript y aunque un bloqueador corte la petición. Este guion solo las
-   REEMPLAZA cuando la API responde con algo más nuevo. Si no responde (sin
-   red, límite de peticiones), no pasa nada visible: nunca un error.
+   REEMPLAZA cuando la API responde con algo más nuevo, y con la misma
+   respuesta actualiza la «versión actual» de la sección de descargas: una
+   petición, dos usos. Si no responde (sin red, límite de peticiones), no
+   pasa nada visible: nunca un error.
 
    La respuesta se guarda seis horas. GitHub da 60 peticiones por hora por
    dirección IP, y un campus entero comparte una o dos. */
@@ -15,6 +17,17 @@ const CLAVE = 'uts-novedades';
 const MINUTOS = 6 * 60;
 const PLAZO_MS = 6000;
 
+/** «1 sept 2026»: corta, porque va en una columna angosta de la línea. */
+function fechaCorta(iso) {
+  const fecha = new Date(iso);
+  if (isNaN(fecha)) return '';
+  // Armada a mano: el formato corto del navegador da «1 de sept de 2026»,
+  // y los dos «de» no caben en la columna.
+  const mes = fecha.toLocaleDateString('es-CO', { month: 'short' }).replace('.', '');
+  return fecha.getDate() + ' ' + mes + ' ' + fecha.getFullYear();
+}
+
+/** «1 de septiembre de 2026»: para la versión actual, donde hay sitio. */
 function fechaLarga(iso) {
   const fecha = new Date(iso);
   if (isNaN(fecha)) return '';
@@ -30,33 +43,59 @@ function titulares(cuerpo) {
     .filter(Boolean);
 }
 
-function tarjeta(release) {
-  const articulo = document.createElement('article');
-  articulo.className = 'tarjeta revela revela--visto';
+function nombreCorto(release) {
+  return String(release.name || release.tag_name || '').replace('UTS Nexus Académico ', '');
+}
+
+function hito(release) {
+  const li = document.createElement('li');
+  li.className = 'hito revela revela--visto';
+
+  const fecha = document.createElement('time');
+  fecha.className = 'hito__fecha';
+  fecha.dateTime = String(release.published_at || '').slice(0, 10);
+  fecha.textContent = fechaCorta(release.published_at);
+  li.appendChild(fecha);
+
+  const cuerpo = document.createElement('div');
+  cuerpo.className = 'hito__cuerpo';
 
   const titulo = document.createElement('h3');
-  titulo.className = 'tarjeta__titulo';
-  titulo.textContent = String(release.name || release.tag_name || '')
-    .replace('UTS Nexus Académico ', '');
-  articulo.appendChild(titulo);
-
-  const fecha = document.createElement('p');
-  fecha.className = 'tarjeta__fecha';
-  fecha.textContent = fechaLarga(release.published_at);
-  articulo.appendChild(fecha);
+  titulo.className = 'hito__titulo';
+  titulo.textContent = nombreCorto(release);
+  cuerpo.appendChild(titulo);
 
   const cambios = titulares(release.body);
   if (cambios.length) {
     const lista = document.createElement('ul');
-    lista.className = 'tarjeta__cambios';
+    lista.className = 'hito__cambios';
     cambios.forEach((cambio) => {
       const item = document.createElement('li');
       item.textContent = cambio;
       lista.appendChild(item);
     });
-    articulo.appendChild(lista);
+    cuerpo.appendChild(lista);
   }
-  return articulo;
+
+  li.appendChild(cuerpo);
+  return li;
+}
+
+/** «Versión actual v2.16.0 · 1 de septiembre de 2026», con la más nueva. */
+function pintarVersion(release) {
+  const nodo = document.getElementById('version-actual');
+  if (!nodo || !release.tag_name) return;
+  const punto = nodo.querySelector('.version__punto');
+
+  const etiqueta = document.createElement('b');
+  etiqueta.textContent = release.tag_name;
+  const fecha = document.createElement('time');
+  fecha.dateTime = String(release.published_at || '').slice(0, 10);
+  fecha.textContent = fechaLarga(release.published_at);
+
+  nodo.replaceChildren();
+  if (punto) nodo.appendChild(punto);
+  nodo.append('Versión actual ', etiqueta, ' · ', fecha);
 }
 
 /** Se queda solo con lo que la página usa; el resto no merece ocupar caché. */
@@ -73,7 +112,8 @@ export function iniciarNovedades() {
 
   function pintar(releases) {
     if (!Array.isArray(releases) || !releases.length) return;
-    contenedor.replaceChildren(...releases.map(tarjeta));
+    contenedor.replaceChildren(...releases.map(hito));
+    pintarVersion(releases[0]);
   }
 
   const guardadas = leer(CLAVE);
@@ -87,6 +127,6 @@ export function iniciarNovedades() {
         guardar(CLAVE, breves, MINUTOS);
         pintar(breves);
       })
-      .catch(() => { /* quedan las tarjetas horneadas en el HTML */ });
+      .catch(() => { /* quedan las entradas horneadas en el HTML */ });
   });
 }

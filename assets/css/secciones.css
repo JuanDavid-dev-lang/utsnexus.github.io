@@ -1,15 +1,56 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    Secciones de la página de descarga: descargas, qué hace, novedades, la
-   necesidad, créditos y pie. Cada bloque va bajo su propio rótulo.
+   necesidad, créditos y pie.
+
+   El motivo visual de toda la página es el libro de notas: papel rayado,
+   números en mono, reglas horizontales que se dibujan. Menos tarjetas
+   iguales y más lista con reglas, que es como se lee una planilla.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* El padding vertical vive solo aquí. Ninguna clase de contenido lo redefine,
    para que dos secciones seguidas no acumulen espacios distintos. */
-.seccion { padding: clamp(56px, 8vw, 100px) 0; }
+.seccion { padding: clamp(56px, 8vw, 104px) 0; }
 .seccion--marca { background: var(--marca); color: var(--sobre-marca); }
-.seccion--sutil { background: var(--fondo-sutil); }
+
+/* Papel rayado: una línea cada 32 px, del color del borde. La rejilla se
+   ancla al fondo de la sección para que las filas del libro caigan sobre
+   ella y no entre medias. */
+.seccion--rayada {
+  background-color: var(--fondo-sutil);
+  background-image: repeating-linear-gradient(
+    to bottom, transparent 0 31px, var(--borde) 31px 32px);
+  background-attachment: local;
+}
 
 .seccion__cab { margin-bottom: clamp(26px, 4vw, 44px); }
+.seccion__cab--fila {
+  display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between;
+  gap: 16px 32px;
+}
+
+/* Número de sección: «01» en mono seguido de una regla que se dibuja al
+   entrar en pantalla. Es el índice del libro, no un adorno. */
+.seccion__num {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px;
+  font-family: var(--dato); font-size: 12px; font-weight: 600;
+  letter-spacing: .14em;
+  color: var(--marca-texto);
+}
+.seccion--marca .seccion__num { color: var(--lima); }
+.regla {
+  display: block; flex: 0 0 56px; height: 1px;
+  background: currentColor; opacity: .55;
+  transform-origin: left;
+}
+html.js .seccion__num > span { opacity: 0; transform: translateX(-6px); }
+html.js .seccion__num .regla { transform: scaleX(0); }
+html.js .seccion__num.revela--visto > span {
+  opacity: 1; transform: none;
+  transition: opacity var(--dur-2) var(--suave), transform var(--dur-3) var(--sale);
+}
+html.js .seccion__num.revela--visto .regla { transform: scaleX(1); transition: transform 700ms var(--sale) 160ms; }
+
 .titulo2 {
   font-size: clamp(1.7rem, 3.4vw, 2.5rem);
   font-weight: 700;
@@ -24,15 +65,40 @@
 }
 .seccion--marca .seccion__sub { color: rgb(255 255 255 / .75); }
 
-/* ── Tarjeta genérica ─────────────────────────────────────────────────────
-   La usan descargas y novedades. Sube 3 px al pasar el cursor con la curva
-   de salida: se nota, no salta. */
+/* Versión vigente, junto al título de descargas. El punto late despacio:
+   está vivo, viene de la API. */
+.version {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 8px 14px 8px 12px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  font-family: var(--dato); font-size: 12.5px;
+  color: var(--tinta-suave);
+  white-space: nowrap;
+}
+.version b { color: var(--tinta); font-weight: 600; }
+.version__punto {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--exito);
+  box-shadow: 0 0 0 0 rgb(20 121 90 / .45);
+  animation: latir 2.4s ease-out infinite;
+}
+@keyframes latir {
+  0%   { box-shadow: 0 0 0 0 rgb(20 121 90 / .45); }
+  70%  { box-shadow: 0 0 0 7px rgb(20 121 90 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(20 121 90 / 0); }
+}
+
+/* ── Tarjeta de descarga ──────────────────────────────────────────────────
+   Sube 3 px al pasar el cursor con la curva de salida: se nota, no salta. */
 .tarjeta {
+  position: relative;
   display: flex; flex-direction: column;
   background: var(--superficie);
   border: 1px solid var(--borde);
   border-radius: var(--radio);
-  padding: 26px;
+  padding: 24px;
   box-shadow: var(--sombra);
   transition: transform var(--dur-2) var(--sale),
               box-shadow var(--dur-2) var(--suave),
@@ -43,12 +109,30 @@
 }
 .tarjeta--destacada { border-color: var(--borde-fuerte); box-shadow: var(--sombra-alta); }
 
+/* El equipo desde el que se está mirando: lo marca `descargas.js` con un
+   sello en la esquina. La tarjeta no cambia de sitio —el orden dice cuál
+   es la aplicación principal— solo se señala. */
+.tarjeta--tuya { border-color: var(--lima); box-shadow: 0 0 0 3px var(--lima-tenue), var(--sombra-alta); }
+.tarjeta__tuya {
+  position: absolute; top: -11px; right: 18px;
+  padding: 3px 10px;
+  background: var(--lima); color: #12271e;
+  border-radius: 999px;
+  font-family: var(--dato); font-size: 10.5px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  animation: sellar var(--dur-3) var(--rebote) both;
+}
+@keyframes sellar {
+  from { opacity: 0; transform: scale(.6) rotate(-6deg); }
+  to   { opacity: 1; transform: none; }
+}
+
+.tarjeta__cab { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; }
 .tarjeta__icono {
   display: grid; place-items: center;
   width: 46px; height: 46px;
   background: var(--fondo-sutil);
   border-radius: 12px;
-  margin-bottom: 18px;
 }
 .tarjeta__icono svg {
   width: 23px; height: 23px;
@@ -56,19 +140,16 @@
   stroke-linecap: round; stroke-linejoin: round;
 }
 .tarjeta--destacada .tarjeta__icono { background: var(--lima-tenue); }
+.tarjeta__formato {
+  font-family: var(--dato); font-size: 11.5px;
+  color: var(--tinta-suave);
+  border: 1px dashed var(--borde-fuerte);
+  border-radius: 6px; padding: 3px 8px;
+}
 
 .tarjeta__titulo { font-size: 1.32rem; font-weight: 700; }
 .tarjeta__desc { margin: 10px 0 22px; color: var(--tinta-suave); font-size: 15px; flex: 1; }
-.tarjeta__fecha { margin-top: 4px; font-family: var(--dato); font-size: 12.5px; color: var(--tinta-suave); }
-.tarjeta__cambios { margin: 12px 0 0; padding-left: 1.1em; color: var(--tinta-suave); font-size: 14.5px; }
-.tarjeta__cambios li + li { margin-top: 5px; }
 
-.tarjeta__alterna { margin: 10px 0 0; font-size: 13px; color: var(--tinta-suave); text-align: center; }
-.tarjeta__alterna a { color: var(--marca-texto); font-weight: 600; }
-
-/* ── Descargas ────────────────────────────────────────────────────────────
-   Windows va primero y destacado porque es donde un docente arma el semestre;
-   el teléfono es la herramienta del salón, no la principal. */
 .rejilla-descargas {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
@@ -76,7 +157,6 @@
   max-width: 1010px;
   margin-inline: auto;
 }
-.rejilla-descargas--dos { max-width: 760px; }
 
 .requisitos { margin: 20px 0 0; display: grid; gap: 9px; }
 .requisitos > div {
@@ -87,8 +167,7 @@
 .requisitos dt { font-size: 13px; color: var(--tinta-suave); }
 .requisitos dd { margin: 0; font-size: 13px; font-weight: 500; text-align: right; }
 
-/* Ayuda de instalación: tres notas que antes iban una debajo de otra y
-   empujaban el resto de la página. Ahora se abren solo si hacen falta. */
+/* Ayuda de instalación, plegada. */
 .ayuda { max-width: 1010px; margin: 28px auto 0; display: grid; gap: 8px; }
 .ayuda__item {
   background: var(--superficie);
@@ -121,8 +200,6 @@
   max-width: 78ch;
 }
 .ayuda__cuerpo a { color: var(--marca-texto); font-weight: 600; }
-/* El contenido entra con un fundido corto. Sin `@starting-style` el navegador
-   no tiene «desde dónde» animar un elemento que acaba de aparecer. */
 .ayuda__item[open] .ayuda__cuerpo {
   opacity: 1; transform: translateY(0);
   transition: opacity var(--dur-2) var(--suave), transform var(--dur-2) var(--sale);
@@ -131,58 +208,227 @@
   .ayuda__item[open] .ayuda__cuerpo { opacity: 0; transform: translateY(-4px); }
 }
 
-/* ── Qué hace ─────────────────────────────────────────────────────────────
-   Sin numerar: son cuatro cosas que la app hace a la vez, no una secuencia. */
-.rejilla-capacidades {
+/* ── 02 Qué hace ──────────────────────────────────────────────────────────
+   Intro pegada a la izquierda mientras la lista pasa por la derecha. Cada
+   capacidad es una fila con regla, número, texto y una pieza pequeña que
+   se mueve al entrar. */
+.capas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 258px), 1fr));
-  gap: 2px;
-  background: rgb(255 255 255 / .13);
-  border-radius: var(--radio);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: start;
+}
+.capas__intro { position: sticky; top: 92px; }
+.capas__intro .seccion__sub { color: rgb(255 255 255 / .75); }
+
+.capas__lista { list-style: none; margin: 0; padding: 0; }
+.capa {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-areas: "num texto" "num demo";
+  gap: 14px 12px;
+  padding: 26px 0;
+  border-top: 1px solid rgb(255 255 255 / .16);
+}
+.capa:last-child { border-bottom: 1px solid rgb(255 255 255 / .16); }
+.capa__num {
+  grid-area: num;
+  font-family: var(--dato); font-size: 13px; font-weight: 600;
+  color: var(--lima);
+  padding-top: 5px;
+}
+.capa__texto { grid-area: texto; }
+.capa__titulo { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+.capa__texto p { color: rgb(255 255 255 / .8); font-size: 15px; max-width: 54ch; }
+.capa__demo { grid-area: demo; }
+
+/* Demo 01: la fórmula que suma. Los sumandos entran uno a uno y el
+   resultado, al final, con rebote. */
+.demo-notas {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  font-family: var(--dato); font-size: 12.5px;
+  color: rgb(255 255 255 / .7);
+}
+.demo-notas__chip {
+  padding: 5px 10px;
+  background: rgb(255 255 255 / .08);
+  border: 1px solid rgb(255 255 255 / .14);
+  border-radius: 7px;
+  color: var(--sobre-marca);
+}
+.demo-notas__chip small { font-size: 10.5px; opacity: .6; }
+.demo-notas i { font-style: normal; opacity: .5; }
+.demo-notas__igual { margin-left: 4px; }
+.demo-notas__igual b {
+  display: inline-block;
+  padding: 5px 11px;
+  background: var(--lima); color: #12271e;
+  border-radius: 7px; font-weight: 600; font-size: 13px;
+}
+html.js .demo-notas > * { opacity: 0; transform: translateY(6px); }
+html.js .revela--visto .demo-notas > * {
+  opacity: 1; transform: none;
+  transition: opacity var(--dur-2) var(--suave), transform var(--dur-3) var(--sale);
+}
+html.js .revela--visto .demo-notas > :nth-child(2) { transition-delay: 120ms; }
+html.js .revela--visto .demo-notas > :nth-child(3) { transition-delay: 200ms; }
+html.js .revela--visto .demo-notas > :nth-child(4) { transition-delay: 320ms; }
+html.js .revela--visto .demo-notas > :nth-child(5) { transition-delay: 400ms; }
+html.js .revela--visto .demo-notas > :nth-child(6) { transition-delay: 640ms; transition-timing-function: var(--rebote); }
+
+/* Demo 02: la barra que se llena hasta 84 %. */
+.demo-asis { max-width: 360px; }
+.demo-asis__barra {
+  height: 10px; border-radius: 999px;
+  background: rgb(255 255 255 / .12);
   overflow: hidden;
 }
-.capacidad { background: var(--marca); padding: 26px 24px; }
-.capacidad__icono {
-  width: 40px; height: 40px;
-  display: grid; place-items: center;
-  background: rgb(255 255 255 / .08);
-  border-radius: 10px;
-  margin-bottom: 16px;
+.demo-asis__lleno {
+  display: block; height: 100%; width: 84%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--lima) 0%, #e2e86a 100%);
+  transform-origin: left;
 }
-.capacidad__icono svg {
-  width: 22px; height: 22px;
-  fill: none; stroke: var(--lima); stroke-width: 1.8;
-  stroke-linecap: round; stroke-linejoin: round;
+html.js .demo-asis__lleno { transform: scaleX(0); }
+html.js .revela--visto .demo-asis__lleno { transform: scaleX(1); transition: transform 900ms var(--sale) 200ms; }
+.demo-asis__dato {
+  margin-top: 8px;
+  font-family: var(--dato); font-size: 12.5px;
+  color: rgb(255 255 255 / .7);
 }
-.capacidad__titulo { font-size: 1.13rem; font-weight: 700; color: var(--lima); margin-bottom: 10px; }
-.capacidad p { color: rgb(255 255 255 / .8); font-size: 15px; }
+.demo-asis__dato b { color: var(--sobre-marca); font-weight: 600; }
 
-/* ── La necesidad ─────────────────────────────────────────────────────── */
-.rejilla-necesidad {
+/* Demo 03: la alerta que salta, y la razón debajo. */
+.demo-riesgo {
+  display: inline-flex; flex-direction: column; gap: 6px;
+  padding: 12px 14px;
+  background: rgb(255 255 255 / .06);
+  border: 1px solid rgb(255 255 255 / .12);
+  border-left: 3px solid var(--alarma);
+  border-radius: var(--radio-sm);
+}
+.demo-riesgo__marca {
+  align-self: flex-start;
+  background: var(--alarma-tenue); color: var(--alarma);
+  border-radius: 999px; padding: 2px 9px;
+  font-size: 11px; font-weight: 600;
+}
+.demo-riesgo__razon { font-size: 13.5px; color: rgb(255 255 255 / .8); }
+html.js .demo-riesgo { opacity: 0; transform: translateX(-8px); }
+html.js .revela--visto .demo-riesgo {
+  opacity: 1; transform: none;
+  transition: opacity var(--dur-2) var(--suave) 260ms, transform var(--dur-3) var(--sale) 260ms;
+}
+html.js .demo-riesgo__marca { transform: scale(.7); opacity: 0; }
+html.js .revela--visto .demo-riesgo__marca {
+  transform: none; opacity: 1;
+  transition: transform var(--dur-3) var(--rebote) 620ms, opacity var(--dur-1) linear 620ms;
+}
+
+/* Demo 04: la hoja que se dibuja a trazo y el sello que cae. */
+.demo-pdf { position: relative; width: 64px; height: 80px; }
+.demo-pdf svg { width: 100%; height: 100%; fill: none; stroke: rgb(255 255 255 / .75); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.demo-pdf__hoja, .demo-pdf__doblez, .demo-pdf__linea { stroke-dasharray: 260; stroke-dashoffset: 0; }
+html.js .demo-pdf__hoja, html.js .demo-pdf__doblez, html.js .demo-pdf__linea { stroke-dashoffset: 260; }
+html.js .revela--visto .demo-pdf__hoja { stroke-dashoffset: 0; transition: stroke-dashoffset 900ms var(--suave) 100ms; }
+html.js .revela--visto .demo-pdf__doblez { stroke-dashoffset: 0; transition: stroke-dashoffset 500ms var(--suave) 700ms; }
+html.js .revela--visto .demo-pdf__linea { stroke-dashoffset: 0; transition: stroke-dashoffset 700ms var(--suave) 900ms; }
+.demo-pdf__sello {
+  position: absolute; right: -14px; bottom: 8px;
+  padding: 3px 8px;
+  background: var(--lima); color: #12271e;
+  border-radius: 6px;
+  font-family: var(--dato); font-size: 11px; font-weight: 700;
+  transform: rotate(-8deg);
+}
+html.js .demo-pdf__sello { opacity: 0; transform: rotate(-8deg) scale(1.6); }
+html.js .revela--visto .demo-pdf__sello {
+  opacity: 1; transform: rotate(-8deg) scale(1);
+  transition: transform var(--dur-2) var(--sale) 1400ms, opacity var(--dur-1) linear 1400ms;
+}
+
+/* ── 03 Novedades: línea de tiempo ─────────────────────────────────────── */
+.linea { list-style: none; margin: 0; padding: 0; max-width: 760px; }
+.hito {
+  position: relative;
   display: grid;
-  /* 300 px reparte los 1140 del envoltorio en TRES columnas, no en cuatro: con
-     cuatro, las seis tarjetas dejan la última fila a medias. */
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: 16px;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 8px 28px;
+  padding: 0 0 34px 0;
+}
+.hito::before {
+  content: ''; position: absolute;
+  left: 132px; top: 8px; bottom: 0;
+  width: 1px; background: var(--borde-fuerte);
+  transform: translateX(13px);
+}
+/* La línea no sigue después del último hito: termina en su punto. */
+.hito:last-child::before { display: none; }
+.hito:last-child { padding-bottom: 8px; }
+.hito::after {
+  content: ''; position: absolute;
+  left: 132px; top: 6px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--lima);
+  box-shadow: 0 0 0 4px var(--fondo);
+  transform: translateX(9px);
+}
+.hito:first-child::after { background: var(--exito); }
+.hito__fecha {
+  font-family: var(--dato); font-size: 12.5px;
+  color: var(--tinta-suave);
+  padding-top: 2px;
+  text-align: right;
+}
+.hito__cuerpo { padding-left: 32px; }
+.hito__titulo { font-size: 1.15rem; font-weight: 700; }
+.hito__cambios { list-style: none; margin: 8px 0 0; padding: 0; color: var(--tinta-suave); font-size: 14.5px; }
+.hito__cambios li { position: relative; padding-left: 16px; }
+.hito__cambios li::before {
+  content: ''; position: absolute; left: 2px; top: .62em;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--borde-fuerte);
+}
+.hito__cambios li + li { margin-top: 4px; }
+.linea__pie { margin-top: 18px; font-size: 14px; }
+.linea__pie a { color: var(--marca-texto); font-weight: 600; text-underline-offset: 3px; }
+
+/* ── 04 La necesidad: el libro de dos columnas ────────────────────────── */
+.libro { list-style: none; margin: 0; padding: 0; }
+.libro__cab, .problema {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 8px 28px;
+  align-items: start;
+}
+.libro__cab {
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--tinta);
+  font-family: var(--dato); font-size: 11px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--tinta-suave);
 }
 .problema {
-  display: flex; flex-direction: column;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--borde-fuerte);
+}
+.problema__num {
+  font-family: var(--dato); font-size: 13px; font-weight: 600;
+  color: var(--marca-texto);
+  padding-top: 4px;
+}
+.problema__titulo { font-size: 1.08rem; font-weight: 700; margin-bottom: 8px; }
+.problema__antes p { color: var(--tinta-suave); font-size: 14.7px; }
+/* La consecuencia es lo que convierte una queja en un requisito. Va en su
+   propia columna, con un tono más firme que la descripción. */
+.problema__porque {
+  display: flex; gap: 10px;
+  padding: 10px 14px;
   background: var(--superficie);
   border: 1px solid var(--borde);
-  border-left: 3px solid var(--alarma);
-  border-radius: var(--radio);
-  padding: 22px 22px 18px;
-  box-shadow: var(--sombra);
-}
-.problema__titulo { font-size: 1.08rem; font-weight: 700; margin-bottom: 9px; }
-.problema p { color: var(--tinta-suave); font-size: 14.7px; }
-/* La consecuencia es lo que convierte una queja en un requisito. Va separada
-   del párrafo para que se lea como la conclusión, no como más descripción. */
-.problema__porque {
-  display: flex; gap: 9px;
-  margin-top: auto; padding-top: 14px;
-  border-top: 1px solid var(--fondo-sutil);
-  font-size: 13.6px;
+  border-left: 3px solid var(--lima);
+  border-radius: var(--radio-sm);
+  font-size: 14px;
   color: var(--tinta);
 }
 .problema__porque b {
@@ -191,10 +437,10 @@
   letter-spacing: .07em; text-transform: uppercase;
   color: var(--marca-texto);
   white-space: nowrap;
-  padding-top: 2px;
+  padding-top: 3px;
 }
 
-/* ── Créditos ─────────────────────────────────────────────────────────── */
+/* ── 05 Créditos ─────────────────────────────────────────────────────── */
 .creditos {
   background: var(--superficie);
   border: 1px solid var(--borde);
@@ -235,17 +481,28 @@
 /* ── Pie ──────────────────────────────────────────────────────────────── */
 .pie {
   background: var(--marca-noche);
-  color: rgb(255 255 255 / .68);
-  padding: 30px 0;
+  color: rgb(255 255 255 / .72);
+  padding: 44px 0 36px;
   font-size: 14px;
 }
 .pie__interior {
-  display: flex; flex-wrap: wrap; gap: 8px 24px;
-  align-items: center; justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 28px 40px;
+  align-items: center;
 }
+.pie__marca { display: flex; align-items: center; gap: 14px; }
+.pie__marca img { flex: none; }
+.pie__nombre { font-family: var(--display); font-weight: 700; font-size: 16px; color: #fff; }
 .pie__tenue { color: rgb(255 255 255 / .6); }
-.pie__tenue a { text-decoration: underline; text-underline-offset: 3px; transition: color var(--dur-1) var(--suave); }
-.pie__tenue a:hover { color: var(--lima); }
+.pie__enlaces { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.pie__enlaces a, .pie__tenue a {
+  text-decoration: none; color: rgb(255 255 255 / .78);
+  text-underline-offset: 3px;
+  transition: color var(--dur-1) var(--suave);
+}
+.pie__enlaces a:hover, .pie__tenue a:hover { color: var(--lima); text-decoration: underline; }
+.pie__licencia { font-family: var(--dato); font-size: 12px; }
 
 /* ── Página 404 ───────────────────────────────────────────────────────── */
 .perdida {
@@ -264,6 +521,30 @@
 .perdida .boton--fantasma { color: var(--marca-texto); }
 .perdida .boton--fantasma:hover { background: var(--fondo-sutil); }
 
+/* ── Adaptación ───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .capas { grid-template-columns: 1fr; }
+  .capas__intro { position: static; }
+  .pie__interior { grid-template-columns: 1fr; gap: 20px; }
+}
+/* Con la cabecera del libro a la vista, el rótulo «Por eso» dentro de cada
+   caja repetiría la columna. Solo aparece cuando la cabecera se va. */
+@media (min-width: 721px) {
+  .problema__porque b { display: none; }
+}
+@media (max-width: 720px) {
+  .libro__cab { display: none; }
+  .problema { grid-template-columns: 40px minmax(0, 1fr); }
+  .problema__porque { grid-column: 2; }
+  .hito { grid-template-columns: 1fr; gap: 4px; padding-left: 26px; }
+  .hito::before { left: 0; transform: translateX(4px); }
+  .hito::after { left: 0; transform: none; }
+  .hito__fecha { text-align: left; }
+  .hito__cuerpo { padding-left: 0; }
+}
 @media (max-width: 480px) {
   .creditos__acciones .boton, .perdida__acciones .boton { width: 100%; }
+  .capa { grid-template-columns: 32px minmax(0, 1fr); }
+  .problema { grid-template-columns: 32px minmax(0, 1fr); gap: 8px 16px; }
+  .version { white-space: normal; }
 }

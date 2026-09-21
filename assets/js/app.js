@@ -5,6 +5,7 @@
    corre después de construir el árbol, sin bloquear la primera pintura. */
 import { iniciarTema } from './tema.js';
 import { iniciarMenu } from './menu.js';
+import { iniciarBarra } from './barra.js';
 import { iniciarRevelar } from './revelar.js';
 import { iniciarPlanilla } from './planilla.js';
 import { iniciarDescargas } from './descargas.js';
@@ -13,6 +14,7 @@ import { iniciarPestanas } from './pestanas.js';
 
 iniciarTema();
 iniciarMenu();
+iniciarBarra();
 iniciarPestanas();
 iniciarRevelar();
 iniciarPlanilla();

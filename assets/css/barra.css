@@ -9,6 +9,15 @@
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--borde);
 }
+/* Progreso de lectura: una línea lima de 2 px pegada al borde inferior de
+   la barra. `scaleX` la pinta sin maquetar nada. */
+.barra__progreso {
+  position: absolute; left: 0; bottom: -1px;
+  width: 100%; height: 2px;
+  background: var(--lima);
+  transform: scaleX(0); transform-origin: left;
+  pointer-events: none;
+}
 .barra__interior {
   width: min(100% - 32px, var(--ancho));
   margin-inline: auto;
@@ -64,6 +73,9 @@
 }
 .barra__enlaces > a:hover { color: var(--tinta); }
 .barra__enlaces > a:hover::after { transform: scaleX(1); }
+/* La sección que está en pantalla: `barra.js` la marca con `aria-current`. */
+.barra__enlaces > a[aria-current="true"] { color: var(--tinta); }
+.barra__enlaces > a[aria-current="true"]::after { transform: scaleX(1); }
 .barra__nav > .boton { color: #12271e; }
 
 /* ── Interruptor de tema ─────────────────────────────────────────────────
@@ -71,6 +83,7 @@
    cuanto alguien lo toca una vez, y el equipo que cambia solo al anochecer
    deja de hacerlo sin explicación. */
 .tema {
+  position: relative;
   display: flex; align-items: center; gap: 2px;
   padding: 3px;
   background: var(--fondo-sutil);
@@ -97,9 +110,20 @@
 }
 .tema__op:hover { color: var(--tinta); }
 .tema__op:active { transform: scale(.9); }
-/* El estado activo no se dice solo con color: el lima de fondo lo marca para
-   quien lo ve, y `aria-pressed` para quien lo escucha. */
-.tema__op[aria-pressed="true"] { background: var(--lima); color: #12271e; }
+/* El estado activo no se dice solo con color: el disco lima que se desliza
+   lo marca para quien lo ve, y `aria-pressed` para quien lo escucha. El
+   disco es un elemento aparte para poder DESLIZARLO de un botón a otro;
+   con un fondo por botón, el cambio sería un salto. */
+.tema__indicador {
+  position: absolute; top: 3px; left: 3px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--lima);
+  transition: transform var(--dur-2) var(--sale);
+}
+.tema[data-activo="oscuro"] .tema__indicador { transform: translateX(32px); }
+.tema[data-activo="sistema"] .tema__indicador { transform: translateX(64px); }
+.tema__op { position: relative; }
+.tema__op[aria-pressed="true"] { color: #12271e; }
 
 /* ── Menú de teléfono ────────────────────────────────────────────────────
    Un `popover` nativo: se abre y se cierra sin JavaScript, cierra con Escape
@@ -199,6 +223,9 @@
   .marca__nombre em { display: none; }
   .tema__op { width: 28px; height: 28px; }
   .tema__op svg { width: 15px; height: 15px; }
+  .tema__indicador { width: 28px; height: 28px; }
+  .tema[data-activo="oscuro"] .tema__indicador { transform: translateX(30px); }
+  .tema[data-activo="sistema"] .tema__indicador { transform: translateX(60px); }
   .barra__nav .boton--sm { padding: 9px 14px; }
 }
 

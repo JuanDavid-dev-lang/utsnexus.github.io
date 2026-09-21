@@ -41,6 +41,9 @@ export function iniciarTema() {
     opciones.forEach((boton) => {
       boton.setAttribute('aria-pressed', boton.dataset.temaOp === eleccion ? 'true' : 'false');
     });
+    // El disco que se desliza lee este atributo desde la hoja de estilos.
+    const grupo = opciones[0].closest('.tema');
+    if (grupo) grupo.dataset.activo = eleccion;
   }
 
   /* El cambio de tema pasa por una transición de vista cuando el navegador

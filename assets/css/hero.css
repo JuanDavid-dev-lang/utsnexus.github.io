@@ -7,8 +7,14 @@
 
 .hero {
   position: relative;
+  /* Cuatro capas: el halo lima, el papel rayado del libro (una línea cada
+     32 px, casi invisible), la cuadrícula vertical más tenue aún, y el
+     campo verde. El rayado es el motivo que después repite la sección de la
+     necesidad. */
   background:
     radial-gradient(120% 90% at 88% 4%, rgb(202 210 37 / .13), transparent 58%),
+    repeating-linear-gradient(to bottom, transparent 0 31px, rgb(255 255 255 / .045) 31px 32px),
+    repeating-linear-gradient(to right, transparent 0 127px, rgb(255 255 255 / .03) 127px 128px),
     linear-gradient(168deg, var(--marca) 0%, var(--marca-noche) 100%);
   color: var(--sobre-marca);
   padding: clamp(48px, 9vw, 104px) 0 clamp(64px, 10vw, 124px);
@@ -119,6 +125,61 @@ html.js .fila.esta {
 .def--alta { color: var(--exito); }
 .def--baja { color: var(--alarma); }
 
+/* La celda que se puede cambiar lleva un subrayado punteado, como una nota
+   escrita a lápiz que todavía se puede borrar. */
+.celda--viva {
+  text-decoration: underline dotted var(--lima);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+/* Un número que acaba de cambiar destella una vez. */
+.def--cambia { animation: destello var(--dur-3) var(--suave); }
+@keyframes destello {
+  0%   { background: var(--lima-tenue); }
+  100% { background: transparent; }
+}
+
+/* ── Probar: los controles que recalculan la planilla ───────────────────
+   Un paso de 0,3 hace que en cinco toques Laura pase de reprobar a
+   adelantar a Camilo: el recorrido entero de lo que hace el producto. */
+.probar {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px 16px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: var(--fondo);
+  border: 1px dashed var(--borde-fuerte);
+  border-radius: var(--radio-sm);
+}
+.probar__texto { font-size: 13px; color: var(--tinta-suave); }
+.probar__texto b { color: var(--tinta); font-weight: 600; }
+.paso {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 3px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+}
+.paso__boton {
+  display: grid; place-items: center;
+  width: 32px; height: 32px;
+  padding: 0;
+  background: var(--fondo-sutil);
+  border: 0; border-radius: 50%;
+  font-size: 18px; line-height: 1;
+  color: var(--marca-texto);
+  cursor: pointer;
+  transition: background-color var(--dur-1) var(--suave), transform var(--dur-1) var(--sale);
+}
+.paso__boton:hover { background: var(--lima-tenue); }
+.paso__boton:active { transform: scale(.9); background: var(--lima); color: #12271e; }
+.paso__boton:disabled { opacity: .35; cursor: default; transform: none; }
+.paso__valor {
+  min-width: 44px; text-align: center;
+  font-family: var(--dato); font-size: 15px; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
 .marca-riesgo {
   display: inline-flex; align-items: center; gap: 5px;
   margin-left: 8px;
@@ -146,8 +207,10 @@ html.js .marca-riesgo.esta {
 }
 .umbral.esta {
   opacity: 1; transform: scaleX(1);
-  transition: opacity var(--dur-2) var(--suave), transform 550ms var(--sale);
+  transition: opacity var(--dur-2) var(--suave), transform 550ms var(--sale),
+              top var(--dur-3) var(--sale);
 }
+.umbral[hidden] { display: none; }
 .umbral__etiqueta {
   position: absolute; left: 0; top: 0;
   transform: translateY(-50%);

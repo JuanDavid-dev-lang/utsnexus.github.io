@@ -20,7 +20,32 @@ const CLAVE = 'uts-descargas';
 const MINUTOS = 60;
 const PLAZO_MS = 4000;
 
+/** windows | android | linux | null, a partir de lo que el navegador cuenta. */
+function plataforma() {
+  const datos = navigator.userAgentData;
+  const texto = ((datos && datos.platform) || navigator.userAgent || '').toLowerCase();
+  if (texto.includes('android')) return 'android';
+  if (texto.includes('win')) return 'windows';
+  if (texto.includes('linux') || texto.includes('x11')) return 'linux';
+  return null;
+}
+
+/** Señala la tarjeta del equipo desde el que se mira, sin moverla de sitio. */
+function sellarTuEquipo() {
+  const cual = plataforma();
+  if (!cual) return;
+  const tarjeta = document.querySelector('[data-plataforma="' + cual + '"]');
+  if (!tarjeta) return;
+  const sello = document.createElement('span');
+  sello.className = 'tarjeta__tuya';
+  sello.textContent = 'Tu equipo';
+  tarjeta.classList.add('tarjeta--tuya');
+  tarjeta.prepend(sello);
+}
+
 export function iniciarDescargas() {
+  sellarTuEquipo();
+
   // Linux no lleva `data-descarga`: su botón entrega el INSTALADOR, no el
   // archivo de la aplicación, y el servidor devuelve la dirección de la
   // AppImage. Sustituirla dejaría el botón entregando otra cosa que la que

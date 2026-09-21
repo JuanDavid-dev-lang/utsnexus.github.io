@@ -85,7 +85,8 @@
         <a href="index.html#descargas">Descargar</a>
       </div>
 
-      <div class="tema" role="group" aria-label="Tema de la página">
+      <div class="tema" role="group" aria-label="Tema de la página" data-activo="sistema">
+        <span class="tema__indicador" aria-hidden="true"></span>
         <button class="tema__op" type="button" data-tema-op="claro" aria-pressed="false" title="Claro">
           <span class="visualmente-oculto">Tema claro</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"/></svg>
@@ -167,6 +168,7 @@
   <section class="seccion" id="requerimientos">
     <div class="envoltorio">
       <header class="seccion__cab">
+        <p class="seccion__num"><span>01</span><i class="regla" aria-hidden="true"></i></p>
         <h2 class="titulo2">Requerimientos</h2>
         <p class="seccion__sub">
           Lo que el sistema tiene que hacer, y lo que tiene que cumplir mientras
@@ -467,6 +469,7 @@
   <section class="seccion" id="uml">
     <div class="envoltorio">
       <header class="seccion__cab">
+        <p class="seccion__num"><span>02</span><i class="regla" aria-hidden="true"></i></p>
         <h2 class="titulo2">Modelo UML</h2>
         <p class="seccion__sub">
           Cuatro vistas del mismo sistema: quién lo usa, qué guarda, de qué
@@ -892,9 +895,21 @@
 
 <footer class="pie">
   <div class="envoltorio pie__interior">
-    <p>UTS Nexus Académico · Grupo CIAI · Unidades Tecnológicas de Santander</p>
-    <p class="pie__tenue">
-      <a href="index.html">Volver a la página de descarga</a>
+    <div class="pie__marca">
+      <img src="assets/logo.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+      <div>
+        <p class="pie__nombre">UTS Nexus Académico</p>
+        <p class="pie__tenue">Grupo CIAI · Unidades Tecnológicas de Santander</p>
+      </div>
+    </div>
+    <nav class="pie__enlaces" aria-label="Enlaces del pie">
+      <a href="index.html#descargas">Descargar</a>
+      <a href="requerimientos-uml.html">Requerimientos y UML</a>
+      <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Academico" target="_blank" rel="noopener">Código</a>
+      <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases" target="_blank" rel="noopener">Versiones</a>
+    </nav>
+    <p class="pie__tenue pie__licencia">
+      <a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener">Licencia PolyForm Noncommercial 1.0.0</a>
     </p>
   </div>
 </footer>

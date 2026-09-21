@@ -75,13 +75,15 @@
     </ol>
   </section>
 
-  <!-- ── La necesidad ───────────────────────────────────────────────────────
-       Lo que hacía falta antes de que esto existiera. Cada tarjeta termina en
+  <!-- ── 04 La necesidad ────────────────────────────────────────────────────
+       Un libro de dos columnas sobre papel rayado: a la izquierda lo que
+       pasaba, a la derecha lo que se decidió por eso. Cada fila termina en
        la consecuencia, porque es la consecuencia —y no la queja— la que se
        convierte en un requisito del documento. -->
   <section class="seccion" id="necesidad">
     <div class="envoltorio">
       <header class="seccion__cab">
+        <p class="seccion__num"><span>04</span><i class="regla" aria-hidden="true"></i></p>
         <h2 class="titulo2">La necesidad</h2>
         <p class="seccion__sub">
           El seguimiento académico de un semestre se llevaba en hojas de cálculo
@@ -90,96 +92,116 @@
         </p>
       </header>
 
-      <div class="rejilla-necesidad">
+      <ol class="libro">
+        <li class="libro__cab" aria-hidden="true">
+          <span></span><span>Lo que pasaba</span><span>Por eso</span>
+        </li>
 
-        <article class="problema">
-          <h3 class="problema__titulo">Una planilla por docente</h3>
-          <p>
-            Los pesos del reglamento —30 % trabajos, 60 % parciales, 10 %
-            autoevaluación— se reescriben a mano en cada archivo. Una fórmula
-            mal copiada no da error: da un acta con un número distinto, y se
-            descubre cuando el estudiante reclama.
-          </p>
+        <li class="problema">
+          <span class="problema__num">01</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">Una planilla por docente</h3>
+            <p>
+              Los pesos del reglamento —30 % trabajos, 60 % parciales, 10 %
+              autoevaluación— se reescriben a mano en cada archivo. Una fórmula
+              mal copiada no da error: da un acta con un número distinto, y se
+              descubre cuando el estudiante reclama.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>el cálculo tiene que vivir en un solo sitio, fuera de la hoja
             de cada quien.</span>
           </p>
-        </article>
+        </li>
 
-        <article class="problema">
-          <h3 class="problema__titulo">La asistencia solo dice sí o no</h3>
-          <p>
-            En papel se marca presente o ausente. Llegar veinte minutos tarde y
-            faltar la clase entera cuentan igual, así que el porcentaje del
-            semestre no representa lo que de verdad pasó en el salón.
-          </p>
+        <li class="problema">
+          <span class="problema__num">02</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">La asistencia solo dice sí o no</h3>
+            <p>
+              En papel se marca presente o ausente. Llegar veinte minutos tarde y
+              faltar la clase entera cuentan igual, así que el porcentaje del
+              semestre no representa lo que de verdad pasó en el salón.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>se registran los minutos reales de cada clase y el porcentaje
             sale ponderado.</span>
           </p>
-        </article>
+        </li>
 
-        <article class="problema">
-          <h3 class="problema__titulo">El riesgo se ve cuando ya se perdió</h3>
-          <p>
-            La señal está en los datos desde marzo: notas que bajan entre
-            cortes, faltas seguidas los mismos días. Pero nadie cruza notas con
-            asistencia hasta el cierre, y para entonces ya no hay nada que
-            hacer.
-          </p>
+        <li class="problema">
+          <span class="problema__num">03</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">El riesgo se ve cuando ya se perdió</h3>
+            <p>
+              La señal está en los datos desde marzo: notas que bajan entre
+              cortes, faltas seguidas los mismos días. Pero nadie cruza notas con
+              asistencia hasta el cierre, y para entonces ya no hay nada que
+              hacer.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>el sistema revisa solo y avisa antes, con la razón del aviso
             escrita.</span>
           </p>
-        </article>
+        </li>
 
-        <article class="problema">
-          <h3 class="problema__titulo">El consolidado se arma a mano</h3>
-          <p>
-            Coordinación pide los cortes por correo y recibe archivos con
-            formatos distintos. Unificarlos es un trabajo manual que se repite
-            en cada corte y que, además, envejece el mismo día que alguien
-            corrige una nota.
-          </p>
+        <li class="problema">
+          <span class="problema__num">04</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">El consolidado se arma a mano</h3>
+            <p>
+              Coordinación pide los cortes por correo y recibe archivos con
+              formatos distintos. Unificarlos es un trabajo manual que se repite
+              en cada corte y que, además, envejece el mismo día que alguien
+              corrige una nota.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>el consolidado se genera del mismo dato vivo, no de copias
             enviadas.</span>
           </p>
-        </article>
+        </li>
 
-        <article class="problema">
-          <h3 class="problema__titulo">Cada quien ve de más o de menos</h3>
-          <p>
-            Un archivo compartido no distingue roles: o se manda completo, y
-            entonces un docente ve los estudiantes de otro, o se recorta a mano
-            y se pierde el rastro de quién cambió qué.
-          </p>
+        <li class="problema">
+          <span class="problema__num">05</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">Cada quien ve de más o de menos</h3>
+            <p>
+              Un archivo compartido no distingue roles: o se manda completo, y
+              entonces un docente ve los estudiantes de otro, o se recorta a mano
+              y se pierde el rastro de quién cambió qué.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>el alcance de cada rol lo decide el servidor y todo cambio
             queda auditado.</span>
           </p>
-        </article>
+        </li>
 
-        <article class="problema">
-          <h3 class="problema__titulo">El salón no es el escritorio</h3>
-          <p>
-            Pasar lista ocurre de pie, con el teléfono en la mano y a veces sin
-            wifi; armar el semestre ocurre sentado, con teclado y pantalla
-            grande. Una sola herramienta para las dos cosas sirve mal a las dos.
-          </p>
+        <li class="problema">
+          <span class="problema__num">06</span>
+          <div class="problema__antes">
+            <h3 class="problema__titulo">El salón no es el escritorio</h3>
+            <p>
+              Pasar lista ocurre de pie, con el teléfono en la mano y a veces sin
+              wifi; armar el semestre ocurre sentado, con teclado y pantalla
+              grande. Una sola herramienta para las dos cosas sirve mal a las dos.
+            </p>
+          </div>
           <p class="problema__porque">
             <b>Por eso</b>
             <span>hay aplicación de escritorio y de teléfono sobre los mismos
             datos.</span>
           </p>
-        </article>
-
-      </div>
+        </li>
+      </ol>
     </div>
   </section>
 
@@ -191,6 +213,7 @@
   <section class="seccion" id="requerimientos">
     <div class="envoltorio">
       <header class="seccion__cab">
+        <p class="seccion__num"><span>01</span><i class="regla" aria-hidden="true"></i></p>
         <h2 class="titulo2">Requerimientos</h2>
         <p class="seccion__sub">
           Lo que el sistema tiene que hacer, y lo que tiene que cumplir mientras
@@ -491,6 +514,7 @@
   <section class="seccion" id="uml">
     <div class="envoltorio">
       <header class="seccion__cab">
+        <p class="seccion__num"><span>02</span><i class="regla" aria-hidden="true"></i></p>
         <h2 class="titulo2">Modelo UML</h2>
         <p class="seccion__sub">
           Cuatro vistas del mismo sistema: quién lo usa, qué guarda, de qué

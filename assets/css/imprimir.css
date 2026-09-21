@@ -96,7 +96,8 @@
   /* Una tarjeta partida entre dos páginas se lee como dos tarjetas a medias. */
   .problema, .req, .diag__panel, .aviso { break-inside: avoid; }
 
-  .rejilla-necesidad { grid-template-columns: repeat(2, 1fr); gap: 6mm; }
+  .libro__cab { border-color: #000; }
+  .problema__porque { background: #fff; }
   .reqs { grid-template-columns: repeat(2, 1fr); }
 
   /* Los diagramas: uno por página, entero y sin barra de desplazamiento. */
