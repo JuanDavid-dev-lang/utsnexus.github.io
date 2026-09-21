@@ -1,0 +1,217 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Barra superior: marca, enlaces, interruptor de tema y menú de teléfono.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.barra {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--barra);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borde);
+}
+.barra__interior {
+  width: min(100% - 32px, var(--ancho));
+  margin-inline: auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; height: 62px;
+}
+@media (min-width: 600px) {
+  .barra__interior { width: min(100% - 40px, var(--ancho)); height: 66px; }
+}
+
+.marca { display: flex; align-items: center; gap: 11px; text-decoration: none; min-width: 0; }
+/* El mismo archivo que usan el escritorio y el móvil, no una versión dibujada
+   aparte: si la marca cambia, cambia en los tres sitios y aquí también. */
+.marca__logo {
+  width: 36px; height: 36px;
+  object-fit: contain;
+  flex: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.marca__nombre { font-family: var(--display); font-weight: 700; font-size: 17px; white-space: nowrap; }
+.marca__nombre em { font-style: normal; font-weight: 500; color: var(--tinta-suave); }
+
+/* Etapa de desarrollo. Lima sobre lima suave: el lima es color de distintivo,
+   nunca de texto sobre el fondo de la página ni de superficie grande. */
+.etapa {
+  font-family: var(--dato);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--marca-texto); background: var(--lima-tenue);
+  border: 1px solid var(--lima);
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.barra__nav { display: flex; align-items: center; gap: 22px; }
+.barra__enlaces { display: flex; align-items: center; gap: 22px; }
+.barra__enlaces > a {
+  position: relative;
+  font-size: 15px; font-weight: 500; text-decoration: none;
+  color: var(--tinta-suave);
+  transition: color var(--dur-1) var(--suave);
+}
+/* Subrayado que crece desde el centro: el mismo gesto que usan las pestañas
+   del documento, así el sitio tiene UNA forma de decir «esto es un enlace». */
+.barra__enlaces > a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -6px;
+  height: 2px; border-radius: 2px;
+  background: var(--lima);
+  transform: scaleX(0);
+  transition: transform var(--dur-2) var(--sale);
+}
+.barra__enlaces > a:hover { color: var(--tinta); }
+.barra__enlaces > a:hover::after { transform: scaleX(1); }
+.barra__nav > .boton { color: #12271e; }
+
+/* ── Interruptor de tema ─────────────────────────────────────────────────
+   Tres posiciones, no dos. Un interruptor de dos deja la página clavada en
+   cuanto alguien lo toca una vez, y el equipo que cambia solo al anochecer
+   deja de hacerlo sin explicación. */
+.tema {
+  display: flex; align-items: center; gap: 2px;
+  padding: 3px;
+  background: var(--fondo-sutil);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  flex: none;
+}
+.tema__op {
+  display: grid; place-items: center;
+  width: 30px; height: 30px;
+  padding: 0;
+  background: transparent;
+  border: 0; border-radius: 50%;
+  color: var(--tinta-suave);
+  cursor: pointer;
+  transition: background-color var(--dur-1) var(--suave),
+              color var(--dur-1) var(--suave),
+              transform var(--dur-1) var(--sale);
+}
+.tema__op svg {
+  width: 16px; height: 16px;
+  fill: none; stroke: currentColor; stroke-width: 1.9;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.tema__op:hover { color: var(--tinta); }
+.tema__op:active { transform: scale(.9); }
+/* El estado activo no se dice solo con color: el lima de fondo lo marca para
+   quien lo ve, y `aria-pressed` para quien lo escucha. */
+.tema__op[aria-pressed="true"] { background: var(--lima); color: #12271e; }
+
+/* ── Menú de teléfono ────────────────────────────────────────────────────
+   Un `popover` nativo: se abre y se cierra sin JavaScript, cierra con Escape
+   y al tocar fuera, y el navegador lo pone en la capa superior sin pelear
+   con `z-index`. La animación de entrada la hace `@starting-style`; donde
+   no exista, el menú aparece de golpe, que es exactamente lo que hacía antes
+   de existir la animación. */
+.menu__boton {
+  display: none;
+  place-items: center;
+  width: 40px; height: 40px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--borde); border-radius: 50%;
+  color: var(--tinta);
+  cursor: pointer;
+  transition: background-color var(--dur-1) var(--suave), transform var(--dur-1) var(--sale);
+}
+.menu__boton:hover { background: var(--fondo-sutil); }
+.menu__boton:active { transform: scale(.92); }
+.menu__boton svg {
+  width: 20px; height: 20px;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.menu {
+  position: fixed;
+  inset: auto 16px auto auto;
+  top: 74px;
+  margin: 0;
+  min-width: 232px;
+  padding: 8px;
+  background: var(--superficie);
+  color: var(--tinta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra-alta);
+}
+.menu::backdrop { background: rgb(18 39 30 / .18); }
+.menu a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radio-sm);
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--tinta);
+  transition: background-color var(--dur-1) var(--suave);
+}
+.menu a:hover { background: var(--fondo-sutil); }
+.menu a svg {
+  width: 18px; height: 18px; flex: none;
+  fill: none; stroke: var(--marca-texto); stroke-width: 1.9;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.menu__separador { height: 1px; margin: 6px 8px; background: var(--borde); }
+
+/* Entrada y salida del menú. `display` y `overlay` con `allow-discrete` son
+   lo que permite animar la salida de un popover: sin ellos el navegador lo
+   quita del árbol antes de que la transición empiece. */
+.menu:popover-open {
+  opacity: 1; transform: translateY(0) scale(1);
+  transition: opacity var(--dur-2) var(--sale),
+              transform var(--dur-2) var(--sale),
+              display var(--dur-2) allow-discrete,
+              overlay var(--dur-2) allow-discrete;
+}
+.menu:popover-open::backdrop { opacity: 1; transition: opacity var(--dur-2) var(--suave); }
+@starting-style {
+  .menu:popover-open { opacity: 0; transform: translateY(-6px) scale(.97); }
+  .menu:popover-open::backdrop { opacity: 0; }
+}
+.menu:not(:popover-open) {
+  opacity: 0; transform: translateY(-6px) scale(.97);
+  transition: opacity var(--dur-1) var(--suave),
+              transform var(--dur-1) var(--suave),
+              display var(--dur-1) allow-discrete,
+              overlay var(--dur-1) allow-discrete;
+}
+/* Navegadores sin popover renderizarían el menú como un bloque más. */
+@supports not selector(:popover-open) {
+  .menu, .menu__boton { display: none !important; }
+}
+
+/* ── Pantalla estrecha ───────────────────────────────────────────────────
+   A partir de 900 px los enlaces salen de la barra y entran al menú. El
+   interruptor de tema se queda: es el único control que cambia cómo se ve
+   la página. Lo que NO se toca es el objetivo táctil. */
+@media (max-width: 900px) {
+  .barra__nav { gap: 10px; }
+  .barra__enlaces { display: none; }
+  .menu__boton { display: grid; }
+}
+
+/* "Académico" sale de la barra antes que partir la marca en dos líneas. */
+@media (max-width: 600px) {
+  .marca__nombre em { display: none; }
+  .tema__op { width: 28px; height: 28px; }
+  .tema__op svg { width: 15px; height: 15px; }
+  .barra__nav .boton--sm { padding: 9px 14px; }
+}
+
+@media (max-width: 480px) {
+  /* Se va el nombre escrito, no la marca: quedan el logotipo y la etapa. El
+     nombre completo está en el título de la página y en el titular. */
+  .marca__nombre { display: none; }
+  /* El texto del botón se oculta a la vista pero sigue siendo su nombre para
+     un lector de pantalla. Con `display: none` quedaría sin nombre. */
+  .barra__nav .boton__texto {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .barra__nav .boton--sm { padding: 9px 11px; }
+}

@@ -26,7 +26,13 @@ def entre(texto, inicio, fin):
 
 # ── Las tres secciones, sacadas de donde ya viven ───────────────────────────
 indice = leer(os.path.join(SITIO, 'index.html'))
-necesidad = entre(indice, '  <!-- ── La necesidad ─', '  <!-- ── Capacidades ─')
+necesidad = entre(indice, '  <!-- ── La necesidad ─', '  <!-- ── Créditos ─')
+# El fondo sutil es un recurso de pantalla para separar secciones; en papel
+# sería una banda gris. Y `revela` es la animación de entrada: aquí no hay
+# guion que la dispare, así que la clase sobra.
+necesidad = necesidad.replace('<section class="seccion seccion--sutil" id="necesidad">',
+                              '<section class="seccion" id="necesidad">')
+necesidad = necesidad.replace(' revela"', '"')
 
 doc = leer(os.path.join(SITIO, 'requerimientos-uml.html'))
 requerimientos = entre(doc, '  <!-- ── Requerimientos ─', '  <!-- ── Modelo UML ─')
@@ -35,6 +41,7 @@ uml = entre(doc, '  <!-- ── Modelo UML ─', '\n</main>')
 # En papel no hay pestañas: los cuatro diagramas se enseñan a la vez y la
 # alternativa en texto va abierta, porque es donde está explicado el dibujo y
 # nadie puede desplegarla en una hoja.
+requerimientos = requerimientos.replace(' revela"', '"')
 uml = uml.replace('<details class="diag__texto">', '<details class="diag__texto" open>')
 uml = uml.replace('<summary>Leer el diagrama en texto</summary>',
                   '<summary>El diagrama, en texto</summary>')
@@ -53,23 +60,27 @@ uml = re.sub(r' aria-labelledby="pest-[a-z]+"', '', uml)
 uml = uml.replace('<section class="seccion seccion--marca" id="uml">',
                   '<section class="seccion" id="uml">')
 
-estilo_impresion = leer(os.path.join(D, 'imprimir.css'))
-
 CABECERA = """<!doctype html>
 <html lang="es-CO" data-tema="claro">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
 <title>UTS Nexus Académico — Necesidad, requerimientos y modelo UML</title>
-<meta name="author" content="Grupo CIAI — Universitaria Tecnológica de Santander">
+<meta name="author" content="Grupo CIAI — Unidades Tecnológicas de Santander">
+<!-- Es la fuente del PDF, no una página para leer en el navegador: lo que
+     hay que indexar es requerimientos-uml.html, que dice lo mismo. -->
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://juandavid-dev-lang.github.io/utsnexus.github.io/requerimientos-uml.html">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
-<style>
-__ESTILO__
-</style>
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/secciones.css">
+<link rel="stylesheet" href="assets/css/documento.css">
+<link rel="stylesheet" href="assets/css/imprimir.css">
 </head>
 <body>
 
@@ -80,7 +91,7 @@ __ESTILO__
     <div class="portada-pdf__marca">
       <img src="assets/logo.png" alt="">
       <div>
-        <p class="portada-pdf__institucion">Universitaria Tecnológica de Santander · Grupo CIAI</p>
+        <p class="portada-pdf__institucion">Unidades Tecnológicas de Santander · Grupo CIAI</p>
         <p class="portada-pdf__producto">UTS Nexus Académico</p>
       </div>
     </div>
@@ -96,7 +107,7 @@ __ESTILO__
 
     <dl class="portada-pdf__ficha">
       <div><dt>Sistema</dt><dd>UTS Nexus Académico</dd></div>
-      <div><dt>Institución</dt><dd>Universitaria Tecnológica de Santander</dd></div>
+      <div><dt>Institución</dt><dd>Unidades Tecnológicas de Santander</dd></div>
       <div><dt>Contenido</dt><dd>6 necesidades · 12 requisitos funcionales · 10 no funcionales · 4 diagramas UML</dd></div>
       <div><dt>Licencia</dt><dd>PolyForm Noncommercial 1.0.0</dd></div>
     </dl>
@@ -134,7 +145,7 @@ PIE = """
 </html>
 """
 
-html = (CABECERA.replace('__ESTILO__', estilo_impresion)
+html = (CABECERA
         + necesidad.rstrip() + '\n\n'
         + requerimientos.rstrip() + '\n\n'
         + uml.rstrip() + '\n'

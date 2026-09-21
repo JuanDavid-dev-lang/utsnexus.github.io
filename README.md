@@ -13,13 +13,47 @@ Hecho por el **Grupo CIAI**. Desarrollo principal: **Juan David Gómez Vargas**.
 ## Qué hay aquí
 
 ```
-index.html            la página completa
-assets/styles.css     estilos
-assets/app.js         la planilla del hero
-assets/logo.png       logotipo (256 px)
-assets/favicon.png    ícono de pestaña (64 px)
-.nojekyll             desactiva Jekyll en GitHub Pages
+index.html                 la página de descarga
+requerimientos-uml.html    el documento: requisitos y cuatro diagramas UML
+documento-imprimible.html  la fuente del PDF (se GENERA, no se edita a mano)
+404.html                   página de error, con código 404 de verdad
+
+assets/css/
+  tokens.css     colores (claro y oscuro), tipografía, radios y MOVIMIENTO
+  base.css       reset, utilidades, tipografía de portada, botones
+  barra.css      barra superior, interruptor de tema, menú de teléfono
+  hero.css       hero y planilla de la portada
+  secciones.css  descargas, qué hace, novedades, necesidad, créditos, pie, 404
+  documento.css  portada del documento, requisitos, diagramas y pestañas
+  movimiento.css revelar al entrar, transiciones entre páginas, reduced-motion
+  imprimir.css   hoja de impresión del documento (solo el imprimible)
+
+assets/js/
+  tema-inicial.js  ÚNICO guion síncrono: aplica el tema guardado antes de
+                   pintar y marca `html.js`
+  app.js           punto de entrada (módulo ES); llama a los demás
+  tema.js          los tres botones de tema
+  menu.js          cierra el menú de teléfono al elegir una sección
+  revelar.js       observador que anima las tarjetas al entrar en pantalla
+  planilla.js      anima las filas y traza la línea del 3.0
+  descargas.js     sustituye los enlaces si la administración configuró otros
+  novedades.js     las dos últimas versiones, desde los Releases de GitHub
+  pestanas.js      pestañas accesibles de los diagramas UML
+  cache.js         caché con caducidad en localStorage y fetch con plazo
+
+assets/logo.png, favicon.png, apple-touch-icon.png, icono-192.png,
+icono-512.png, og.png      imágenes (las cuatro últimas se generan)
+favicon.ico                lo piden los navegadores aunque nadie lo enlace
+
+robots.txt, sitemap.xml, llms.txt, site.webmanifest
+herramientas/armar-documento.py     genera documento-imprimible.html
+herramientas/generar-imagenes.py    genera iconos, favicon.ico y og.png
+.nojekyll                  desactiva Jekyll en GitHub Pages
 ```
+
+Cada archivo hace una cosa y cabe en una pantalla larga. Los estilos se
+cargan como siete `<link>` en vez de uno: con HTTP/2 llegan en paralelo, y
+quien toca la barra no tiene que leer la planilla.
 
 ### El logotipo
 
@@ -58,10 +92,18 @@ Cada `git push` a `main` republica el sitio en uno o dos minutos.
 >
 > `https://juandavid-dev-lang.github.io/utsnexus.github.io/`
 >
-> Por eso todas las rutas del HTML son **relativas** (`assets/styles.css`, no
-> `/assets/styles.css`): con una ruta absoluta los estilos no cargarían en una
+> Por eso todas las rutas del HTML son **relativas** (`assets/css/base.css`, no
+> `/assets/css/base.css`): con una ruta absoluta los estilos no cargarían en una
 > subruta. Si más adelante se renombra el repositorio, la página sigue
-> funcionando sin tocar nada.
+> funcionando sin tocar nada… salvo lo que va con dirección absoluta porque
+> no le queda otra: `404.html` (se sirve desde cualquier profundidad), las
+> etiquetas `canonical` y `og:image`, el `sitemap.xml` y el `robots.txt`.
+> Todos llevan `https://juandavid-dev-lang.github.io/utsnexus.github.io/`
+> escrito; un buscar-y-reemplazar los cambia.
+>
+> **`robots.txt` y `llms.txt` solo cuentan en la raíz del dominio.** Bajo la
+> subruta actual los rastreadores no los leen: quedan escritos para el día en
+> que el sitio tenga dominio propio o pase a ser sitio de usuario.
 
 ## Los enlaces de descarga
 
@@ -86,7 +128,7 @@ Son enlaces **por archivo**, nunca el de la carpeta: el de la carpeta
 el botón de Windows acabaría trayendo también el `.apk`. Y terminan en `dl=1`,
 no `dl=0`: con `dl=0` se abre el visor de Dropbox en vez de descargarse.
 
-Si hay que apuntarlos a otro sitio sin desplegar la página, `assets/app.js`
+Si hay que apuntarlos a otro sitio sin desplegar la página, `assets/js/descargas.js`
 consulta al arrancar los enlaces que la administración haya guardado en el
 servidor (Configuración → Enlaces de descarga, en el escritorio) y sustituye los
 del HTML. Si el servidor no contesta en cuatro segundos, se queda con estos, que
@@ -105,10 +147,58 @@ instaladas; la página solo ya no depende de él para descargar.
 
 ## La planilla del hero
 
-No es una imagen ni una captura. `assets/app.js` calcula las definitivas con
-los mismos pesos que el motor de calificaciones real —C1 33% + C2 33% +
-C3 34%, se aprueba desde 3.0— y coloca la línea del umbral midiendo el DOM ya
-pintado. Si se cambia una nota de ejemplo, la definitiva, el orden de las filas
-y la línea se recolocan solos.
+No es una imagen ni una captura. Las filas van **escritas en el HTML**, con la
+definitiva ya calculada con los pesos del motor real —C1 33% + C2 33% +
+C3 34%, se aprueba desde 3.0—: así existen sin JavaScript, las lee un
+buscador y están en el primer fotograma. `assets/js/planilla.js` solo las
+anima y coloca la línea del umbral midiendo el DOM ya pintado.
 
-Las notas de ejemplo están en la constante `GRUPO`, al principio del archivo.
+Si se cambia una nota de ejemplo hay que recalcular la definitiva a mano
+(son cinco multiplicaciones) y, si alguien pasa a reprobar, mover
+`data-reprueba="si"` a su fila.
+
+## Carga y concurrencia
+
+No hay servidor propio detrás de la página. GitHub Pages la sirve desde una
+CDN, y los instaladores bajan de Dropbox y de GitHub Releases: mil docentes
+descargando a la vez no tocan nada nuestro.
+
+Lo único que sí golpea a un servidor son dos peticiones opcionales que hace
+el navegador después de pintar:
+
+| Petición | Para qué | Protección |
+|---|---|---|
+| `api.github.com/…/releases` | las dos últimas novedades | caché 6 h en el navegador, plazo 6 s |
+| `3-14-147-55.sslip.io/api/v1/descargas` | enlaces configurados por la administración | caché 1 h, plazo 4 s |
+
+Las dos se lanzan con `requestIdleCallback` (después de la primera pintura),
+se guardan en `localStorage` con caducidad, y si fallan la página se queda con
+lo que trae escrito. GitHub limita a 60 peticiones por hora **por IP**, y un
+edificio de la UTS sale por una o dos; sin la caché, el visitante 61 de la
+hora ya no vería novedades.
+
+## SEO y seguridad
+
+- Todo el contenido va en el HTML: `view-source:` muestra la página entera,
+  no un `<div id="root">` vacío.
+- Un solo `<h1>` por página; `canonical` absoluta; Open Graph y Twitter Card
+  con `assets/og.png` (1200×630); JSON-LD (`SoftwareApplication`,
+  `Organization`, `WebSite`, `TechArticle`).
+- `404.html` responde con código 404 de verdad (GitHub Pages lo hace solo)
+  y no redirige. Un `.js` o `.png` que falte también devuelve 404.
+- **CSP** en una etiqueta `<meta>` (GitHub Pages no deja poner cabeceras):
+  sin guiones ni estilos en línea, por eso no hay `unsafe-inline` ni hashes
+  que recalcular. Lo que una `meta` no puede cubrir —`frame-ancestors`,
+  `X-Frame-Options`, HSTS— exige un servidor propio o Cloudflare delante.
+- No hay sourcemaps porque no hay compilación. Ningún guion escribe en la
+  consola.
+
+## Regenerar lo que se genera
+
+```bash
+python herramientas/armar-documento.py   # documento-imprimible.html
+python herramientas/generar-imagenes.py  # iconos, favicon.ico, og.png
+```
+
+Después de armar el documento, abrirlo en Chrome, Ctrl+P, «Guardar como
+PDF», y reemplazar `UTS_Nexus_Necesidad_Requerimientos_UML.pdf`.

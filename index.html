@@ -3,39 +3,102 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>UTS Nexus Académico — Descargar</title>
-<meta name="description" content="La planilla del semestre, con alertas y todo. Notas, asistencia y riesgo académico para docentes de las Universitaria Tecnológica de Santander. Descarga para Windows, Linux y Android.">
-<meta name="author" content="Grupo CIAI — Universitaria Tecnológica de Santander">
+<!-- Política de seguridad de contenido. En GitHub Pages no se pueden poner
+     cabeceras HTTP, así que va aquí, en una etiqueta `meta`, que cubre todo
+     menos `frame-ancestors` y los informes. No hay ni un guion ni un estilo
+     en línea en la página, y por eso no hace falta `unsafe-inline` ni
+     recalcular hashes cada vez que se edita algo. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.github.com https://3-14-147-55.sslip.io; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<title>UTS Nexus Académico — Descargar para Windows, Linux y Android</title>
+<meta name="description" content="La planilla del semestre con las alertas ya hechas: notas por corte, asistencia por minutos reales y riesgo académico para docentes de las Unidades Tecnológicas de Santander. Gratis para Windows, Linux y Android.">
+<meta name="author" content="Grupo CIAI — Unidades Tecnológicas de Santander">
 <meta name="theme-color" content="#144d37" id="metaTema">
+<link rel="canonical" href="https://juandavid-dev-lang.github.io/utsnexus.github.io/">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="UTS Nexus Académico">
-<meta property="og:description" content="La planilla del semestre, con alertas y todo y las alertas ya hechas.">
+<meta property="og:site_name" content="UTS Nexus Académico">
+<meta property="og:title" content="UTS Nexus Académico — La planilla del semestre, con alertas y todo ya hechas">
+<meta property="og:description" content="Notas por corte, asistencia por minutos reales y riesgo académico para docentes. Gratis para Windows, Linux y Android.">
+<meta property="og:url" content="https://juandavid-dev-lang.github.io/utsnexus.github.io/">
+<meta property="og:image" content="https://juandavid-dev-lang.github.io/utsnexus.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="UTS Nexus Académico: la planilla del semestre, con alertas y todo ya hechas. Windows, Linux y Android.">
 <meta property="og:locale" content="es_CO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UTS Nexus Académico — Descargar">
+<meta name="twitter:description" content="Notas por corte, asistencia por minutos reales y riesgo académico para docentes. Gratis para Windows, Linux y Android.">
+<meta name="twitter:image" content="https://juandavid-dev-lang.github.io/utsnexus.github.io/assets/og.png">
 
-<link rel="icon" href="assets/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="assets/logo.png">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<!-- La preferencia se lee antes de dibujar. Leerla después deja el primer
-     fotograma con el tema del sistema y lo cambia a continuación: quien eligió
-     claro con el equipo en oscuro ve un fogonazo blanco-negro-blanco. Va aquí,
-     en línea y antes de la hoja de estilos, por eso mismo. -->
-<script>
-(function () {
-  var elegido = null;
-  try { elegido = localStorage.getItem('uts-tema'); } catch (e) { /* modo privado */ }
-  if (elegido === 'claro' || elegido === 'oscuro') {
-    document.documentElement.setAttribute('data-tema', elegido);
-  }
-  var oscuro = elegido === 'oscuro' || (elegido !== 'claro' &&
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  document.documentElement.style.colorScheme = oscuro ? 'dark' : 'light';
-})();
+
+<!-- El tema guardado se aplica ANTES de la hoja de estilos: leerlo después
+     deja un fogonazo del tema contrario en el primer fotograma. -->
+<script src="assets/js/tema-inicial.js"></script>
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/barra.css">
+<link rel="stylesheet" href="assets/css/hero.css">
+<link rel="stylesheet" href="assets/css/secciones.css">
+<link rel="stylesheet" href="assets/css/movimiento.css">
+<link rel="modulepreload" href="assets/js/app.js">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#app",
+      "name": "UTS Nexus Académico",
+      "description": "Seguimiento académico para docentes: notas por corte, asistencia por minutos reales y alerta temprana de riesgo académico.",
+      "url": "https://juandavid-dev-lang.github.io/utsnexus.github.io/",
+      "image": "https://juandavid-dev-lang.github.io/utsnexus.github.io/assets/og.png",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Windows 10, Windows 11, Linux, Android 8.0",
+      "inLanguage": "es-CO",
+      "releaseNotes": "https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest",
+      "downloadUrl": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#descargas",
+      "license": "https://polyformproject.org/licenses/noncommercial/1.0.0/",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "COP" },
+      "author": { "@id": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#ciai" },
+      "publisher": { "@id": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#uts" }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#ciai",
+      "name": "Grupo CIAI",
+      "parentOrganization": { "@id": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#uts" },
+      "member": { "@type": "Person", "name": "Juan David Gómez Vargas", "jobTitle": "Desarrollo principal" }
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      "@id": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#uts",
+      "name": "Unidades Tecnológicas de Santander",
+      "alternateName": "UTS",
+      "url": "https://www.uts.edu.co/"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#sitio",
+      "url": "https://juandavid-dev-lang.github.io/utsnexus.github.io/",
+      "name": "UTS Nexus Académico",
+      "inLanguage": "es-CO",
+      "publisher": { "@id": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#ciai" }
+    }
+  ]
+}
 </script>
-<link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
 
@@ -50,9 +113,13 @@
            que instala algo en construcción antes de instalarlo, no después. -->
       <span class="etapa">Beta</span>
     </a>
+
     <nav class="barra__nav" aria-label="Secciones">
-      <a href="#necesidad">La necesidad</a>
-      <a href="#capacidades">Qué hace</a>
+      <div class="barra__enlaces">
+        <a href="#capacidades">Qué hace</a>
+        <a href="#necesidad">La necesidad</a>
+        <a href="requerimientos-uml.html">Documento</a>
+      </div>
 
       <!-- Tres posiciones y no dos: con un interruptor de dos, quien lo toca
            una vez deja la página clavada, y el equipo que cambia solo al
@@ -79,6 +146,19 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
         <span class="boton__texto">Descargar</span>
       </a>
+
+      <!-- Menú de teléfono: un popover nativo, sin guion para abrirlo. -->
+      <button class="menu__boton" type="button" popovertarget="menu" aria-label="Abrir el menú">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="menu" id="menu" popover>
+        <a href="#descargas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>Descargar</a>
+        <a href="#capacidades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/></svg>Qué hace</a>
+        <a href="#necesidad"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4.5M12 16h.01"/></svg>La necesidad</a>
+        <a href="#creditos"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>Quién lo hizo</a>
+        <div class="menu__separador" role="separator"></div>
+        <a href="requerimientos-uml.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>Requerimientos y UML</a>
+      </div>
     </nav>
   </div>
 </header>
@@ -90,7 +170,7 @@
     <div class="hero__interior">
 
       <div class="hero__texto">
-        <p class="eyebrow">Universitaria Tecnológica de Santander</p>
+        <p class="eyebrow">Unidades Tecnológicas de Santander</p>
         <h1 class="titular">
           La planilla del semestre,<br>
           <span class="titular__acento">con alertas y todo ya hechas.</span>
@@ -105,15 +185,18 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
             Descargar
           </a>
-          <a class="boton boton--fantasma" href="#creditos">
-            Cómo está hecho
+          <a class="boton boton--fantasma" href="#capacidades">
+            Qué hace
           </a>
         </div>
 
         <p class="hero__nota">Windows, Linux y Android · Gratis · Uso académico y sin ánimo de lucro</p>
       </div>
 
-      <!-- Signature: planilla real, con los pesos reales del reglamento. -->
+      <!-- Signature: planilla real, con los pesos reales del reglamento. Las
+           filas van escritas, con la definitiva ya calculada (C1 33 % + C2
+           33 % + C3 34 %): se ven sin JavaScript y las lee un buscador. El
+           guion solo las anima y traza la línea del 3.0. -->
       <figure class="planilla" id="planilla">
         <figcaption class="planilla__cab">
           <span class="planilla__materia">Arquitectura de Software</span>
@@ -139,7 +222,13 @@
               <th scope="col" class="tabla__def">Definitiva</th>
             </tr>
           </thead>
-          <tbody id="filas"><!-- generado en assets/app.js --></tbody>
+          <tbody id="filas">
+            <tr class="fila"><td>Ana Ruiz</td><td>4.2</td><td>3.9</td><td>4.4</td><td class="def def--alta">4.2</td></tr>
+            <tr class="fila"><td>Andrés Mejía</td><td>3.8</td><td>4.1</td><td>3.7</td><td class="def def--alta">3.9</td></tr>
+            <tr class="fila"><td>Camilo Peña</td><td>3.4</td><td>3.1</td><td>3.2</td><td class="def def--alta">3.2</td></tr>
+            <tr class="fila"><td>Laura Gómez</td><td>3.1</td><td>2.9</td><td>3.3</td><td class="def def--alta">3.1</td></tr>
+            <tr class="fila" data-reprueba="si"><td>Valentina Soto</td><td>2.6</td><td>2.2</td><td>2.4</td><td class="def def--baja">2.4<span class="marca-riesgo">riesgo alto</span></td></tr>
+          </tbody>
         </table>
 
         <div class="umbral" id="umbral" aria-hidden="true">
@@ -163,9 +252,9 @@
         <p class="seccion__sub">Elegí el equipo donde vas a pasar lista.</p>
       </header>
 
-      <div class="rejilla-descargas rejilla-descargas--tres">
+      <div class="rejilla-descargas">
 
-        <article class="tarjeta tarjeta--destacada">
+        <article class="tarjeta tarjeta--destacada revela">
           <div class="tarjeta__icono" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M3 5.5 10 4.5v7H3v-6ZM11.5 4.3 21 3v8.5h-9.5v-7.2ZM3 12.5h7v7L3 18.5v-6ZM11.5 12.5H21V21l-9.5-1.3v-7.2Z"/></svg>
           </div>
@@ -176,18 +265,13 @@
           </p>
           <!-- Archivo directo en Dropbox. El publicador de versiones lo
                sobrescribe en su sitio, así que este enlace siempre entrega la
-               última: no hay que tocarlo al publicar. -->
-          <!-- Sin `target="_blank"`: los tres archivos se sirven con
+               última. Sin `target="_blank"`: se sirve con
                `Content-Disposition: attachment`, así que navegar en la misma
-               pestaña baja el archivo y la página no se mueve. Con `_blank` el
-               navegador abría una pestaña que se cerraba sola, y ese parpadeo
-               se lee como que algo falló. -->
+               pestaña baja el archivo y la página no se mueve. -->
           <a class="boton boton--marca boton--bloque" href="https://www.dropbox.com/scl/fi/b7x8vsajh5q1isjp0kbuy/UTS-Nexus-Academico-Windows.exe?rlkey=fea1cre2x5lykdjhcf9n5cr5a&st=ejqfy6he&dl=1" data-descarga="windows">
             Descargar para Windows
           </a>
-          <p class="tarjeta__alterna">
-            Descarga directa del instalador <code>.exe</code>
-          </p>
+          <p class="tarjeta__alterna">Descarga directa del instalador <code>.exe</code></p>
           <dl class="requisitos">
             <div><dt>Sistema</dt><dd>Windows 10 u 11 · 64 bits</dd></div>
             <div><dt>Archivo</dt><dd>Instalador <code>.exe</code></dd></div>
@@ -195,7 +279,7 @@
           </dl>
         </article>
 
-        <article class="tarjeta">
+        <article class="tarjeta revela">
           <div class="tarjeta__icono" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M12 2c2.2 0 3.6 1.7 3.6 3.9 0 1.3.5 2.2 1.4 3.4 1.4 1.9 2.2 3.6 2.2 5.6 0 3.3-3 5.6-7.2 5.6S4.8 18.2 4.8 14.9c0-2 .8-3.7 2.2-5.6.9-1.2 1.4-2.1 1.4-3.4C8.4 3.7 9.8 2 12 2Z"/><path d="M10.4 6.3h.01M13.6 6.3h.01"/><path d="M10.9 8.6h2.2l-1.1 1.3z"/><path d="M9.2 20.3 7.6 22M14.8 20.3 16.4 22"/></svg>
           </div>
@@ -205,20 +289,14 @@
             Ubuntu, Mint o Fedora.
           </p>
           <!-- El instalador y no el archivo suelto. Una AppImage no se instala
-               en ninguna parte: se descarga, se queda en Descargas, hay que
-               darle permiso de ejecución a mano y no aparece en el menú de
-               aplicaciones. El instalador hace las tres cosas, y si no
-               encuentra la aplicación en el equipo la descarga él.
-
-               El nombre del archivo no lleva la versión, así que
-               `releases/latest/download/…` siempre entrega el último y este
-               enlace no hay que tocarlo al publicar. -->
+               en ninguna parte; el instalador la descarga, la deja en el menú
+               con su icono y sabe desinstalarla. El nombre del archivo no
+               lleva la versión, así que `releases/latest/download/…` siempre
+               entrega el último. -->
           <a class="boton boton--marca boton--bloque" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest/download/instalar-uts-nexus.sh">
             Descargar el instalador
           </a>
-          <p class="tarjeta__alterna">
-            Instalador gráfico · <code>.sh</code> de 15 KB
-          </p>
+          <p class="tarjeta__alterna">Instalador gráfico · <code>.sh</code> de 15 KB</p>
           <dl class="requisitos">
             <div><dt>Sistema</dt><dd>Cualquier distribución · 64 bits</dd></div>
             <div><dt>Instala</dt><dd>Sin contraseña de administrador</dd></div>
@@ -226,7 +304,7 @@
           </dl>
         </article>
 
-        <article class="tarjeta">
+        <article class="tarjeta revela">
           <div class="tarjeta__icono" aria-hidden="true">
             <svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>
           </div>
@@ -235,17 +313,10 @@
             Para el salón: pasás asistencia y subís notas desde el teléfono,
             sin depender del portátil.
           </p>
-          <!-- Sin `target="_blank"`: los tres archivos se sirven con
-               `Content-Disposition: attachment`, así que navegar en la misma
-               pestaña baja el archivo y la página no se mueve. Con `_blank` el
-               navegador abría una pestaña que se cerraba sola, y ese parpadeo
-               se lee como que algo falló. -->
           <a class="boton boton--marca boton--bloque" href="https://www.dropbox.com/scl/fi/a8tjol3iwgh20hwf2ni5k/UTS-Nexus-Academico-Android.apk?rlkey=3q4cnw4677rydinkov0h1yj8d&st=la92phz1&dl=1" data-descarga="android">
             Descargar para Android
           </a>
-          <p class="tarjeta__alterna">
-            Descarga directa del paquete <code>.apk</code>
-          </p>
+          <p class="tarjeta__alterna">Descarga directa del paquete <code>.apk</code></p>
           <dl class="requisitos">
             <div><dt>Sistema</dt><dd>Android 8.0 o superior</dd></div>
             <div><dt>Archivo</dt><dd>Paquete <code>.apk</code></dd></div>
@@ -255,41 +326,148 @@
 
       </div>
 
-      <aside class="aviso">
-        <strong>Cómo se instala en Linux.</strong>
-        Descargá el instalador y abrí un terminal en la carpeta de descargas:
-        <code>bash instalar-uts-nexus.sh</code>. Se ejecuta así, con
-        <code>bash</code> delante, para no tener que darle permiso de ejecución
-        primero. Abre una ventana, descarga la aplicación si no la tenés, la
-        deja en el menú con su icono y también sabe desinstalarla. No pide
-        contraseña de administrador: todo va dentro de tu carpeta personal.
-      </aside>
+      <!-- Ayuda de instalación, plegada: antes eran tres avisos abiertos que
+           empujaban el resto de la página. Quien los necesita los abre. -->
+      <div class="ayuda">
+        <details class="ayuda__item">
+          <summary>Cómo se instala en Linux</summary>
+          <div class="ayuda__cuerpo">
+            Descargá el instalador y abrí un terminal en la carpeta de descargas:
+            <code>bash instalar-uts-nexus.sh</code>. Se ejecuta con <code>bash</code>
+            delante para no tener que darle permiso de ejecución primero. Abre una
+            ventana, descarga la aplicación si no la tenés, la deja en el menú con
+            su icono y también sabe desinstalarla. No pide contraseña de
+            administrador: todo va dentro de tu carpeta personal.
+          </div>
+        </details>
+        <details class="ayuda__item">
+          <summary>Si preferís el paquete de tu distribución</summary>
+          <div class="ayuda__cuerpo">
+            El <code>.deb</code>, el <code>.rpm</code> y la <code>.AppImage</code>
+            suelta están en
+            <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest" target="_blank" rel="noopener">la publicación</a>.
+            El <code>.deb</code> y el <code>.rpm</code> los instala el centro de
+            software del sistema, y esos sí piden contraseña porque escriben en
+            <code>/usr</code>.
+          </div>
+        </details>
+        <details class="ayuda__item">
+          <summary>Android pide permiso para instalar</summary>
+          <div class="ayuda__cuerpo">
+            No está en Play Store, así que la primera vez tu teléfono va a pedirte
+            permiso para instalar desde fuera de la tienda. Es una confirmación
+            normal de Android: aceptás una vez y las siguientes actualizaciones ya
+            entran solas.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
 
-      <aside class="aviso">
-        <strong>Si preferís el paquete de tu distribución.</strong>
-        El <code>.deb</code>, el <code>.rpm</code> y la <code>.AppImage</code>
-        suelta están en
-        <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest" target="_blank" rel="noopener">la publicación</a>.
-        El <code>.deb</code> y el <code>.rpm</code> los instala el centro de
-        software del sistema, y esos sí piden contraseña porque escriben en
-        <code>/usr</code>.
-      </aside>
+  <!-- ── Qué hace ───────────────────────────────────────────────────────── -->
+  <section class="seccion seccion--marca" id="capacidades">
+    <div class="envoltorio">
+      <header class="seccion__cab">
+        <h2 class="titulo2">Qué hace</h2>
+        <p class="seccion__sub">
+          Un servidor y una base de datos. Lo que cambiás en el escritorio
+          aparece en el teléfono sin recargar nada.
+        </p>
+      </header>
 
-      <aside class="aviso">
-        <strong>Sobre el archivo de Android.</strong>
-        No está en Play Store, así que la primera vez tu teléfono va a pedirte
-        permiso para instalar desde fuera de la tienda. Es una confirmación
-        normal de Android: aceptás una vez y las siguientes actualizaciones ya
-        entran solas.
-      </aside>
+      <div class="rejilla-capacidades">
+
+        <article class="capacidad revela">
+          <div class="capacidad__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 10h16M9 5v14M14 5v14"/></svg>
+          </div>
+          <h3 class="capacidad__titulo">Notas por corte</h3>
+          <p>
+            Trabajos, parciales y autoevaluación con sus pesos del reglamento.
+            El corte y la definitiva las calcula el servidor: ninguna app hace
+            cuentas por su cuenta, así que en los tres lados sale el mismo número.
+          </p>
+        </article>
+
+        <article class="capacidad revela">
+          <div class="capacidad__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+          </div>
+          <h3 class="capacidad__titulo">Asistencia por minutos</h3>
+          <p>
+            Registra los minutos reales de cada clase, no solo presente o ausente.
+            El porcentaje sale ponderado, así que llegar tarde media hora pesa
+            distinto que faltar el día entero.
+          </p>
+        </article>
+
+        <article class="capacidad revela">
+          <div class="capacidad__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3.5 21 19.5H3z"/><path d="M12 10v4M12 17h.01"/></svg>
+          </div>
+          <h3 class="capacidad__titulo">Riesgo académico</h3>
+          <p>
+            Un modelo mira notas, tendencia entre cortes y asistencia, y te dice
+            a quién conviene llamar antes de que sea tarde. Siempre explica en
+            qué se basó: si no puede explicarlo, no lo muestra.
+          </p>
+        </article>
+
+        <article class="capacidad revela">
+          <div class="capacidad__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>
+          </div>
+          <h3 class="capacidad__titulo">Listas y reportes</h3>
+          <p>
+            Importás la lista del grupo desde un archivo o buscás a un estudiante
+            que ya está registrado. El consolidado sale en PDF, listo para
+            entregar.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Novedades: se alimenta sola de los Releases de GitHub ──────────── -->
+  <!-- Las tarjetas van HORNEADAS en el HTML: se ven siempre, con o sin
+       JavaScript. `assets/js/novedades.js` las reemplaza cuando la API
+       responde con algo más nuevo. -->
+  <section class="seccion" id="novedades">
+    <div class="envoltorio">
+      <header class="seccion__cab">
+        <h2 class="titulo2">Últimas novedades</h2>
+        <p class="seccion__sub">Lo que trajeron las dos versiones más recientes.</p>
+      </header>
+
+      <div class="rejilla-descargas rejilla-descargas--dos" id="novedades-lista">
+        <article class="tarjeta revela">
+          <h3 class="tarjeta__titulo">Pre-release 2.16.0</h3>
+          <p class="tarjeta__fecha">1 de septiembre de 2026</p>
+          <ul class="tarjeta__cambios">
+            <li>✨ Nueva experiencia de registro en el computador</li>
+            <li>📱 Registro móvil rediseñado en el teléfono</li>
+            <li>🛠️ Debajo del capó</li>
+          </ul>
+        </article>
+        <article class="tarjeta revela">
+          <h3 class="tarjeta__titulo">Pre-release v2.15.0</h3>
+          <p class="tarjeta__fecha">25 de agosto de 2026</p>
+          <ul class="tarjeta__cambios">
+            <li>🔄 Por qué esta versión existe</li>
+            <li>🎓 Y lo que traía la anterior</li>
+            <li>Debajo del capó</li>
+          </ul>
+        </article>
+      </div>
     </div>
   </section>
 
   <!-- ── La necesidad ───────────────────────────────────────────────────────
        Lo que hacía falta antes de que esto existiera. Cada tarjeta termina en
        la consecuencia, porque es la consecuencia —y no la queja— la que se
-       convierte en un requisito de la sección siguiente. -->
-  <section class="seccion" id="necesidad">
+       convierte en un requisito del documento. -->
+  <section class="seccion seccion--sutil" id="necesidad">
     <div class="envoltorio">
       <header class="seccion__cab">
         <h2 class="titulo2">La necesidad</h2>
@@ -302,7 +480,7 @@
 
       <div class="rejilla-necesidad">
 
-        <article class="problema">
+        <article class="problema revela">
           <h3 class="problema__titulo">Una planilla por docente</h3>
           <p>
             Los pesos del reglamento —30 % trabajos, 60 % parciales, 10 %
@@ -317,7 +495,7 @@
           </p>
         </article>
 
-        <article class="problema">
+        <article class="problema revela">
           <h3 class="problema__titulo">La asistencia solo dice sí o no</h3>
           <p>
             En papel se marca presente o ausente. Llegar veinte minutos tarde y
@@ -331,7 +509,7 @@
           </p>
         </article>
 
-        <article class="problema">
+        <article class="problema revela">
           <h3 class="problema__titulo">El riesgo se ve cuando ya se perdió</h3>
           <p>
             La señal está en los datos desde marzo: notas que bajan entre
@@ -346,7 +524,7 @@
           </p>
         </article>
 
-        <article class="problema">
+        <article class="problema revela">
           <h3 class="problema__titulo">El consolidado se arma a mano</h3>
           <p>
             Coordinación pide los cortes por correo y recibe archivos con
@@ -361,7 +539,7 @@
           </p>
         </article>
 
-        <article class="problema">
+        <article class="problema revela">
           <h3 class="problema__titulo">Cada quien ve de más o de menos</h3>
           <p>
             Un archivo compartido no distingue roles: o se manda completo, y
@@ -375,7 +553,7 @@
           </p>
         </article>
 
-        <article class="problema">
+        <article class="problema revela">
           <h3 class="problema__titulo">El salón no es el escritorio</h3>
           <p>
             Pasar lista ocurre de pie, con el teléfono en la mano y a veces sin
@@ -393,59 +571,6 @@
     </div>
   </section>
 
-  <!-- ── Capacidades ────────────────────────────────────────────────────── -->
-  <section class="seccion seccion--marca" id="capacidades">
-    <div class="envoltorio">
-      <header class="seccion__cab">
-        <h2 class="titulo2">Qué hace</h2>
-        <p class="seccion__sub">
-          Un servidor y una base de datos. Lo que cambiás en el escritorio
-          aparece en el teléfono sin recargar nada.
-        </p>
-      </header>
-
-      <div class="rejilla-capacidades">
-
-        <article class="capacidad">
-          <h3 class="capacidad__titulo">Notas por corte</h3>
-          <p>
-            Trabajos, parciales y autoevaluación con sus pesos del reglamento.
-            El corte y la definitiva las calcula el servidor: ninguna app hace
-            cuentas por su cuenta, así que en los tres lados sale el mismo número.
-          </p>
-        </article>
-
-        <article class="capacidad">
-          <h3 class="capacidad__titulo">Asistencia por minutos</h3>
-          <p>
-            Registra los minutos reales de cada clase, no solo presente o ausente.
-            El porcentaje sale ponderado, así que llegar tarde media hora pesa
-            distinto que faltar el día entero.
-          </p>
-        </article>
-
-        <article class="capacidad">
-          <h3 class="capacidad__titulo">Riesgo académico</h3>
-          <p>
-            Un modelo mira notas, tendencia entre cortes y asistencia, y te dice
-            a quién conviene llamar antes de que sea tarde. Siempre explica en
-            qué se basó: si no puede explicarlo, no lo muestra.
-          </p>
-        </article>
-
-        <article class="capacidad">
-          <h3 class="capacidad__titulo">Listas y reportes</h3>
-          <p>
-            Importás la lista del grupo desde un archivo o buscás a un estudiante
-            que ya está registrado. El consolidado sale en PDF, listo para
-            entregar.
-          </p>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
   <!-- ── Créditos ───────────────────────────────────────────────────────── -->
   <section class="seccion" id="creditos">
     <div class="envoltorio envoltorio--angosto">
@@ -453,10 +578,10 @@
         <h2 class="titulo2">Quién lo hizo</h2>
       </header>
 
-      <div class="creditos">
+      <div class="creditos revela">
         <p class="creditos__grupo">Grupo <strong>CIAI</strong></p>
         <p class="creditos__linea">
-          Desarrollado en las <strong>Universitaria Tecnológica de Santander</strong>
+          Desarrollado en las <strong>Unidades Tecnológicas de Santander</strong>
           para el trabajo diario de sus docentes.
         </p>
 
@@ -493,46 +618,9 @@
 
 </main>
 
-  <!-- ── Novedades: se alimenta sola de los Releases de GitHub ──────────── -->
-  <!-- Las dos últimas versiones publicadas, leídas del repositorio de
-       instaladores al cargar la página. No hay nada que editar aquí al
-       publicar: el mismo release que actualiza los botones alimenta esto. -->
-  <section class="seccion" id="novedades">
-    <div class="envoltorio">
-      <header class="seccion__cab">
-        <h2 class="titulo2">Últimas novedades</h2>
-        <p class="seccion__sub">Lo que trajeron las dos versiones más recientes.</p>
-      </header>
-
-      <!-- Las tarjetas van HORNEADAS en el HTML: se ven siempre, con o sin
-           JavaScript y aunque un bloqueador corte la petición a la API. El
-           script de abajo solo las REEMPLAZA cuando la API responde con algo
-           más nuevo. -->
-      <div class="rejilla-descargas" id="novedades-lista">
-        <article class="tarjeta">
-          <h3 class="tarjeta__titulo">Beta v2.9.5</h3>
-          <p class="tarjeta__alterna" style="margin-top:2px">20 de agosto de 2026</p>
-          <ul class="tarjeta__desc" style="padding-left:1.1em">
-          <li>🔒 Los cortes se capturan en orden</li>
-          <li>🏛️ Los reportes salen con el logo de la UTS</li>
-          </ul>
-        </article>
-        <article class="tarjeta">
-          <h3 class="tarjeta__titulo">Beta v2.9.4</h3>
-          <p class="tarjeta__alterna" style="margin-top:2px">20 de agosto de 2026</p>
-          <ul class="tarjeta__desc" style="padding-left:1.1em">
-          <li>🎯 La lista de una materia es la de ESA materia</li>
-          <li>🔌 Registrar nota y Asistencia vuelven a funcionar</li>
-          <li>🛡️ Fallos visibles, no pantallas vacías</li>
-          </ul>
-        </article>
-      </div>
-    </div>
-  </section>
-
 <footer class="pie">
   <div class="envoltorio pie__interior">
-    <p>UTS Nexus Académico · Grupo CIAI · Universitaria Tecnológica de Santander</p>
+    <p>UTS Nexus Académico · Grupo CIAI · Unidades Tecnológicas de Santander</p>
     <p class="pie__tenue">
       <a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener">
         Licencia PolyForm Noncommercial
@@ -541,63 +629,6 @@
   </div>
 </footer>
 
-<script src="assets/app.js"></script>
-<script>
-/* Novedades: las dos últimas versiones, leídas de los Releases de GitHub.
-   Si la API no responde (sin red, límite de peticiones), la sección muestra
-   solo el enlace al historial: nunca un error. */
-(function () {
-  var contenedor = document.getElementById('novedades-lista');
-  if (!contenedor) return;
-
-  fetch('https://api.github.com/repos/JuanDavid-dev-lang/UTS_Nexus_Releases/releases?per_page=2')
-    .then(function (res) { return res.ok ? res.json() : Promise.reject(); })
-    .then(function (releases) {
-      if (!Array.isArray(releases) || releases.length === 0) return;
-
-      contenedor.textContent = '';
-      releases.forEach(function (release) {
-        var tarjeta = document.createElement('article');
-        tarjeta.className = 'tarjeta';
-
-        var titulo = document.createElement('h3');
-        titulo.className = 'tarjeta__titulo';
-        titulo.textContent = (release.name || release.tag_name)
-          .replace('UTS Nexus Académico ', '');
-        tarjeta.appendChild(titulo);
-
-        var fecha = document.createElement('p');
-        fecha.className = 'tarjeta__alterna';
-        fecha.style.marginTop = '2px';
-        fecha.textContent = new Date(release.published_at).toLocaleDateString(
-          'es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
-        tarjeta.appendChild(fecha);
-
-        /* Los titulares de las notas (líneas «### …») son el resumen de los
-           cambios principales; el detalle completo queda en GitHub. */
-        var cambios = (release.body || '')
-          .split('
-')
-          .filter(function (linea) { return linea.indexOf('### ') === 0; })
-          .map(function (linea) { return linea.slice(4).trim(); });
-
-        if (cambios.length > 0) {
-          var lista = document.createElement('ul');
-          lista.className = 'tarjeta__desc';
-          lista.style.paddingLeft = '1.1em';
-          cambios.forEach(function (cambio) {
-            var item = document.createElement('li');
-            item.textContent = cambio;
-            lista.appendChild(item);
-          });
-          tarjeta.appendChild(lista);
-        }
-
-        contenedor.appendChild(tarjeta);
-      });
-    })
-    .catch(function () { /* quedan las tarjetas horneadas en el HTML */ });
-})();
-</script>
+<script type="module" src="assets/js/app.js"></script>
 </body>
 </html>

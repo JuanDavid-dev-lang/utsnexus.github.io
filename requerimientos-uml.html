@@ -3,40 +3,69 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.github.com https://3-14-147-55.sslip.io; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
 <title>Requerimientos y modelo UML — UTS Nexus Académico</title>
-<meta name="description" content="Requerimientos funcionales y no funcionales de UTS Nexus Académico y su modelo UML: casos de uso, clases, componentes y secuencia.">
-<meta name="author" content="Grupo CIAI — Universitaria Tecnológica de Santander">
+<meta name="description" content="Requerimientos funcionales y no funcionales de UTS Nexus Académico y su modelo UML: casos de uso, clases, componentes y secuencia. Documento técnico del Grupo CIAI, Unidades Tecnológicas de Santander.">
+<meta name="author" content="Grupo CIAI — Unidades Tecnológicas de Santander">
 <meta name="theme-color" content="#144d37" id="metaTema">
+<link rel="canonical" href="https://juandavid-dev-lang.github.io/utsnexus.github.io/requerimientos-uml.html">
 
 <meta property="og:type" content="article">
+<meta property="og:site_name" content="UTS Nexus Académico">
 <meta property="og:title" content="Requerimientos y modelo UML — UTS Nexus Académico">
 <meta property="og:description" content="Qué tiene que hacer el sistema, cómo tiene que hacerlo y cuatro vistas UML del mismo.">
+<meta property="og:url" content="https://juandavid-dev-lang.github.io/utsnexus.github.io/requerimientos-uml.html">
+<meta property="og:image" content="https://juandavid-dev-lang.github.io/utsnexus.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="UTS Nexus Académico: la planilla del semestre, con alertas y todo ya hechas.">
 <meta property="og:locale" content="es_CO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Requerimientos y modelo UML — UTS Nexus Académico">
+<meta name="twitter:description" content="12 requisitos funcionales, 10 no funcionales y cuatro diagramas UML del sistema.">
+<meta name="twitter:image" content="https://juandavid-dev-lang.github.io/utsnexus.github.io/assets/og.png">
 
-<link rel="icon" href="assets/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="assets/logo.png">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- La preferencia de tema se lee antes de dibujar. Leerla después deja el
-     primer fotograma con el tema del sistema y lo cambia a continuación: quien
-     eligió claro con el equipo en oscuro ve un fogonazo. Es el mismo guion que
-     la portada, y va antes de la hoja de estilos por eso mismo. -->
-<script>
-(function () {
-  var elegido = null;
-  try { elegido = localStorage.getItem('uts-tema'); } catch (e) { /* modo privado */ }
-  if (elegido === 'claro' || elegido === 'oscuro') {
-    document.documentElement.setAttribute('data-tema', elegido);
+<!-- El tema guardado se aplica ANTES de la hoja de estilos: leerlo después
+     deja un fogonazo del tema contrario en el primer fotograma. -->
+<script src="assets/js/tema-inicial.js"></script>
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/barra.css">
+<link rel="stylesheet" href="assets/css/secciones.css">
+<link rel="stylesheet" href="assets/css/documento.css">
+<link rel="stylesheet" href="assets/css/movimiento.css">
+<link rel="modulepreload" href="assets/js/app.js">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Requerimientos y modelo UML de UTS Nexus Académico",
+  "description": "Requerimientos funcionales y no funcionales del sistema y cuatro diagramas UML: casos de uso, clases, componentes y secuencia.",
+  "url": "https://juandavid-dev-lang.github.io/utsnexus.github.io/requerimientos-uml.html",
+  "image": "https://juandavid-dev-lang.github.io/utsnexus.github.io/assets/og.png",
+  "inLanguage": "es-CO",
+  "about": { "@id": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#app" },
+  "author": { "@type": "Organization", "name": "Grupo CIAI" },
+  "publisher": { "@type": "CollegeOrUniversity", "name": "Unidades Tecnológicas de Santander" },
+  "encoding": {
+    "@type": "MediaObject",
+    "encodingFormat": "application/pdf",
+    "contentUrl": "https://juandavid-dev-lang.github.io/utsnexus.github.io/UTS_Nexus_Necesidad_Requerimientos_UML.pdf"
   }
-  var oscuro = elegido === 'oscuro' || (elegido !== 'claro' &&
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  document.documentElement.style.colorScheme = oscuro ? 'dark' : 'light';
-})();
+}
 </script>
-<link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
 
@@ -50,8 +79,11 @@
       <span class="etapa">Doc</span>
     </a>
     <nav class="barra__nav" aria-label="Secciones">
-      <a href="#requerimientos">Requerimientos</a>
-      <a href="#uml">Modelo UML</a>
+      <div class="barra__enlaces">
+        <a href="#requerimientos">Requerimientos</a>
+        <a href="#uml">Modelo UML</a>
+        <a href="index.html#descargas">Descargar</a>
+      </div>
 
       <div class="tema" role="group" aria-label="Tema de la página">
         <button class="tema__op" type="button" data-tema-op="claro" aria-pressed="false" title="Claro">
@@ -72,6 +104,17 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
         <span class="boton__texto">Volver</span>
       </a>
+
+      <button class="menu__boton" type="button" popovertarget="menu" aria-label="Abrir el menú">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="menu" id="menu" popover>
+        <a href="#requerimientos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/></svg>Requerimientos</a>
+        <a href="#uml"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="8" height="6" rx="1.5"/><rect x="13" y="14" width="8" height="6" rx="1.5"/><path d="M11 7h4v7"/></svg>Modelo UML</a>
+        <a href="UTS_Nexus_Necesidad_Requerimientos_UML.pdf" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M12 11v6m0 0 2.5-2.5M12 17l-2.5-2.5"/></svg>Descargar en PDF</a>
+        <div class="menu__separador" role="separator"></div>
+        <a href="index.html#descargas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>Descargar la app</a>
+      </div>
     </nav>
   </div>
 </header>
@@ -97,7 +140,7 @@
 
       <dl class="portada__ficha">
         <div><dt>Sistema</dt><dd>UTS Nexus Académico</dd></div>
-        <div><dt>Institución</dt><dd>Universitaria Tecnológica de Santander</dd></div>
+        <div><dt>Institución</dt><dd>Unidades Tecnológicas de Santander</dd></div>
         <div><dt>Contenido</dt><dd>12 requisitos funcionales · 10 no funcionales · 4 diagramas</dd></div>
       </dl>
 
@@ -138,7 +181,7 @@
         </header>
 
         <ul class="reqs">
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-01</span>
             <div>
               <h4 class="req__titulo">Cuentas, sesión y roles</h4>
@@ -150,7 +193,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-02</span>
             <div>
               <h4 class="req__titulo">Matrícula y listados de clase</h4>
@@ -162,7 +205,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-03</span>
             <div>
               <h4 class="req__titulo">Registro de notas por componente</h4>
@@ -174,7 +217,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-04</span>
             <div>
               <h4 class="req__titulo">Cálculo del corte y de la definitiva</h4>
@@ -186,7 +229,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-05</span>
             <div>
               <h4 class="req__titulo">Asistencia por minutos reales</h4>
@@ -197,7 +240,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-06</span>
             <div>
               <h4 class="req__titulo">Alerta temprana de riesgo</h4>
@@ -209,7 +252,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-07</span>
             <div>
               <h4 class="req__titulo">Patrones de inasistencia</h4>
@@ -221,7 +264,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-08</span>
             <div>
               <h4 class="req__titulo">Agenda y recordatorios de clase</h4>
@@ -233,7 +276,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-09</span>
             <div>
               <h4 class="req__titulo">Reportes y consolidados</h4>
@@ -245,7 +288,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-10</span>
             <div>
               <h4 class="req__titulo">Cierre del periodo académico</h4>
@@ -257,7 +300,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-11</span>
             <div>
               <h4 class="req__titulo">Sincronización en tiempo real</h4>
@@ -269,7 +312,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RF-12</span>
             <div>
               <h4 class="req__titulo">Auditoría de cambios</h4>
@@ -289,7 +332,7 @@
         </header>
 
         <ul class="reqs">
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RNF-01</span>
             <div>
               <h4 class="req__titulo">Un solo motor de cálculo</h4>
@@ -301,7 +344,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RNF-02</span>
             <div>
               <h4 class="req__titulo">El alcance se decide en el servidor</h4>
@@ -313,7 +356,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RNF-03</span>
             <div>
               <h4 class="req__titulo">Escrituras masivas en un viaje</h4>
@@ -325,7 +368,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RNF-04</span>
             <div>
               <h4 class="req__titulo">Listados paginados y acotados</h4>
@@ -337,7 +380,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RNF-05</span>
             <div>
               <h4 class="req__titulo">Accesibilidad y contraste</h4>
@@ -349,7 +392,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RNF-06</span>
             <div>
               <h4 class="req__titulo">Multiplataforma desde una base común</h4>
@@ -361,7 +404,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RNF-07</span>
             <div>
               <h4 class="req__titulo">Degradación declarada</h4>
@@ -373,7 +416,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RNF-08</span>
             <div>
               <h4 class="req__titulo">Actualización firmada</h4>
@@ -385,7 +428,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RNF-09</span>
             <div>
               <h4 class="req__titulo">Secretos fuera del código</h4>
@@ -397,7 +440,7 @@
             </div>
           </li>
 
-          <li class="req">
+          <li class="req revela">
             <span class="req__id">RNF-10</span>
             <div>
               <h4 class="req__titulo">Límites de tasa y de tamaño</h4>
@@ -433,7 +476,7 @@
 
       <!-- Las puntas de flecha se declaran una sola vez. Si vivieran dentro de
            un panel oculto, el navegador no las resolvería en los demás. -->
-      <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+      <svg class="diag__defs" width="0" height="0" aria-hidden="true" focusable="false">
         <defs>
           <marker id="flechaUml" viewBox="0 0 10 8" refX="9" refY="4"
                   markerWidth="9" markerHeight="7" orient="auto-start-reverse">
@@ -849,13 +892,13 @@
 
 <footer class="pie">
   <div class="envoltorio pie__interior">
-    <p>UTS Nexus Académico · Grupo CIAI · Universitaria Tecnológica de Santander</p>
+    <p>UTS Nexus Académico · Grupo CIAI · Unidades Tecnológicas de Santander</p>
     <p class="pie__tenue">
       <a href="index.html">Volver a la página de descarga</a>
     </p>
   </div>
 </footer>
 
-<script src="assets/app.js"></script>
+<script type="module" src="assets/js/app.js"></script>
 </body>
 </html>

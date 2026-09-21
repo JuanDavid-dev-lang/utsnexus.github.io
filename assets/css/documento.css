@@ -1,0 +1,202 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Página del documento (requerimientos-uml.html): portada, requisitos y
+   diagramas UML con sus pestañas.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Portada ──────────────────────────────────────────────────────────────
+   No es el hero de la página de descarga repetido: allí lo que importa es el
+   botón, y aquí no hay nada que descargar. Lleva la misma superficie de marca
+   para que se reconozca el mismo producto, y debajo la ficha del documento. */
+.portada {
+  background:
+    radial-gradient(120% 90% at 88% 4%, rgb(202 210 37 / .13), transparent 58%),
+    linear-gradient(168deg, var(--marca) 0%, var(--marca-noche) 100%);
+  color: var(--sobre-marca);
+  padding: clamp(44px, 7vw, 84px) 0 clamp(36px, 6vw, 68px);
+}
+.portada__titulo { font-size: clamp(2rem, 4.4vw, 3.3rem); }
+.portada .entradilla { max-width: 60ch; }
+
+.portada__ficha {
+  max-width: 760px;
+  margin: clamp(26px, 4vw, 40px) 0 0;
+  display: grid;
+  gap: 1px;
+  background: rgb(255 255 255 / .16);
+  border: 1px solid rgb(255 255 255 / .16);
+  border-radius: var(--radio-sm);
+  overflow: hidden;
+}
+.portada__ficha > div {
+  display: flex; flex-wrap: wrap; gap: 4px 18px;
+  padding: 12px 16px;
+  background: rgb(255 255 255 / .05);
+}
+.portada__ficha dt {
+  font-family: var(--dato);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .09em; text-transform: uppercase;
+  color: var(--lima);
+  min-width: 118px;
+}
+.portada__ficha dd { margin: 0; font-size: 14.6px; color: rgb(255 255 255 / .88); }
+
+.portada__indice { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+/* ── Requerimientos ─────────────────────────────────────────────────────
+   Numerados y con código porque así se citan en un documento del proyecto:
+   «RF-04» tiene que poder buscarse. El código es el ancla, no un adorno. */
+.reqs__grupo + .reqs__grupo { margin-top: clamp(34px, 4vw, 52px); }
+
+.reqs__cab {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--borde);
+}
+.reqs__titulo { font-size: 1.3rem; font-weight: 700; }
+.reqs__cuenta {
+  font-family: var(--dato);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+.reqs {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 1px;
+  background: var(--borde);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+/* El hueco sobre el fondo del borde dibuja la retícula sin una línea por
+   celda: con `border` en cada tarjeta los bordes contiguos se suman. */
+.req {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  background: var(--superficie);
+  padding: 19px 21px;
+  transition: background-color var(--dur-1) var(--suave);
+}
+.req:hover { background: var(--fondo); }
+.req__id {
+  font-family: var(--dato);
+  font-size: 11.5px; font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--marca-texto);
+  background: var(--fondo-sutil);
+  border-radius: 6px;
+  padding: 3px 8px;
+  height: max-content;
+  white-space: nowrap;
+}
+.req__titulo { font-size: 1rem; font-weight: 700; margin-bottom: 5px; }
+.req p { font-size: 14px; color: var(--tinta-suave); }
+
+@media (max-width: 560px) {
+  .req { grid-template-columns: 1fr; gap: 8px; padding: 16px; }
+  .req__id { justify-self: start; }
+}
+
+/* ── Diagramas UML ──────────────────────────────────────────────────────
+   Van dibujados en SVG dentro del HTML, no como imágenes: heredan los tokens
+   del tema, así que el mismo diagrama se lee en claro y en oscuro sin
+   mantener dos archivos. */
+.diag__defs { position: absolute; width: 0; height: 0; }
+
+.diag__pestanas {
+  display: flex; gap: 8px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+}
+.diag__pestanas::-webkit-scrollbar { display: none; }
+.diag__pestana {
+  flex: none;
+  padding: 9px 17px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  font-family: var(--texto);
+  font-size: 14px; font-weight: 600;
+  color: var(--tinta-suave);
+  cursor: pointer;
+  transition: background-color var(--dur-2) var(--suave),
+              color var(--dur-2) var(--suave),
+              border-color var(--dur-2) var(--suave),
+              transform var(--dur-1) var(--sale);
+}
+.diag__pestana:hover { color: var(--tinta); border-color: var(--borde-fuerte); }
+.diag__pestana:active { transform: scale(.96); }
+.diag__pestana[aria-selected="true"] { background: var(--lima); border-color: var(--lima); color: #12271e; }
+
+.diag__panel {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: clamp(16px, 3vw, 30px);
+  box-shadow: var(--sombra);
+}
+/* Sin JavaScript los cuatro paneles se quedan visibles uno debajo de otro. */
+.diag__panel + .diag__panel { margin-top: 16px; }
+
+/* Cambio de pestaña: el panel que entra se funde y sube 6 px. El `hidden`
+   lo pone el guion; `@starting-style` da el punto de partida. */
+.diag__panel:not([hidden]) {
+  opacity: 1; transform: translateY(0);
+  transition: opacity var(--dur-2) var(--suave), transform var(--dur-2) var(--sale);
+}
+@starting-style {
+  .diag__panel:not([hidden]) { opacity: 0; transform: translateY(6px); }
+}
+
+.diag__num {
+  font-family: var(--dato);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--marca-texto);
+  margin-bottom: 6px;
+}
+.diag__titulo { font-size: clamp(1.2rem, 2.2vw, 1.5rem); font-weight: 700; margin-bottom: 12px; }
+.diag__pie { margin-bottom: 18px; font-size: 14.6px; color: var(--tinta-suave); max-width: 72ch; }
+
+/* El diagrama no encoge hasta ser ilegible: se desplaza dentro de su caja.
+   La página nunca se desplaza en horizontal. */
+.diag__lienzo {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-bottom: 6px;
+}
+.diag__lienzo svg { display: block; min-width: 640px; width: 100%; height: auto; }
+
+/* Piezas del dibujo. Se pintan con los tokens, no con colores fijos. */
+.d-caja { fill: var(--fondo-sutil); stroke: var(--borde-fuerte); stroke-width: 1.4; }
+.d-caja--marca { fill: var(--marca); stroke: var(--marca); }
+.d-caja--tenue { fill: var(--fondo-sutil); stroke: var(--borde); stroke-width: 1.2; }
+.d-caja--limite { fill: none; stroke: var(--borde-fuerte); stroke-width: 1.4; stroke-dasharray: 7 5; }
+.d-caja--lima { fill: var(--lima-tenue); stroke: var(--lima); stroke-width: 1.4; }
+.d-linea { fill: none; stroke: var(--borde-fuerte); stroke-width: 1.4; }
+.d-linea--corte { stroke-dasharray: 5 4; }
+.d-figura { fill: none; stroke: var(--marca-texto); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.d-txt { font-family: var(--texto); font-size: 12.5px; fill: var(--tinta); }
+.d-txt--fuerte { font-family: var(--display); font-size: 13px; font-weight: 700; fill: var(--tinta); }
+.d-txt--sobre { fill: var(--sobre-marca); }
+.d-txt--tenue { font-family: var(--texto); font-size: 11.5px; fill: var(--tinta-suave); }
+.d-txt--dato { font-family: var(--dato); font-size: 10.5px; fill: var(--tinta-suave); }
+.d-txt--centro { text-anchor: middle; }
+.d-punta { fill: var(--borde-fuerte); stroke: none; }
+.d-etiqueta { fill: var(--superficie); stroke: none; }
+
+/* Alternativa en texto. Un diagrama es una imagen compleja, y quien navega
+   con lector de pantalla necesita la misma información en prosa. */
+.diag__texto { margin-top: 20px; border-top: 1px solid var(--borde); padding-top: 16px; }
+.diag__texto > summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--marca-texto); }
+.diag__texto ol, .diag__texto ul { margin: 12px 0 0; padding-left: 1.3em; font-size: 14.2px; color: var(--tinta-suave); }
+.diag__texto li + li { margin-top: 6px; }

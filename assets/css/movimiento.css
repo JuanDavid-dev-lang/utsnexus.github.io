@@ -1,0 +1,85 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Movimiento — lo que se mueve en toda la página, y cuándo no.
+
+   Tres reglas:
+   · Solo se anima `opacity` y `transform`: son las dos propiedades que el
+     navegador compone sin volver a maquetar.
+   · Nada se esconde sin JavaScript. `html.js` lo pone el guion de arranque;
+     sin él, todo está visible desde el primer fotograma.
+   · `prefers-reduced-motion` apaga TODO lo de este archivo y lo demás.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Revelar al entrar en pantalla ───────────────────────────────────────
+   Las tarjetas suben 14 px mientras se funden. Dentro de una misma rejilla
+   cada una llega 60 ms después de la anterior, hasta la sexta: más allá
+   ya no se lee como secuencia sino como lentitud. */
+html.js .revela {
+  opacity: 0;
+  transform: translateY(14px);
+}
+html.js .revela.revela--visto {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--dur-3) var(--sale), transform var(--dur-3) var(--sale);
+}
+html.js .revela.revela--visto:nth-child(2) { transition-delay: 60ms; }
+html.js .revela.revela--visto:nth-child(3) { transition-delay: 120ms; }
+html.js .revela.revela--visto:nth-child(4) { transition-delay: 180ms; }
+html.js .revela.revela--visto:nth-child(5) { transition-delay: 240ms; }
+html.js .revela.revela--visto:nth-child(6) { transition-delay: 300ms; }
+
+/* El hero no espera al observador: entra en cuanto la página pinta. Texto
+   primero, planilla 120 ms después. */
+html.js .hero__texto,
+html.js .hero .planilla,
+html.js .portada__interior {
+  animation: entrar var(--dur-3) var(--sale) both;
+}
+html.js .hero .planilla { animation-delay: 120ms; }
+
+@keyframes entrar {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+/* La planilla lleva su propia rotación; la animación no debe pisarla. */
+html.js .hero .planilla { animation-name: entrar-planilla; }
+@keyframes entrar-planilla {
+  from { opacity: 0; transform: translateY(12px) rotate(-.5deg); }
+  to   { opacity: 1; transform: rotate(-.5deg); }
+}
+@media (max-width: 900px) {
+  @keyframes entrar-planilla {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+/* ── Transición entre páginas ────────────────────────────────────────────
+   De la portada al documento y vuelta: un fundido cruzado de 260 ms en vez
+   de un fotograma en blanco. Es la API de transiciones de vista entre
+   documentos; donde no exista, la navegación es la de siempre. */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root) { animation: salir-pagina var(--dur-2) var(--suave) both; }
+::view-transition-new(root) { animation: entrar-pagina var(--dur-2) var(--sale) both; }
+@keyframes salir-pagina { to { opacity: 0; } }
+@keyframes entrar-pagina { from { opacity: 0; transform: translateY(6px); } }
+
+/* La barra es la misma en las dos páginas: no tiene por qué fundirse. */
+.barra { view-transition-name: barra; }
+::view-transition-old(barra), ::view-transition-new(barra) { animation: none; }
+
+/* ── Sin movimiento ──────────────────────────────────────────────────────
+   Se muestra el estado final, que es el que informa. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-delay: 0s !important;
+    transition-duration: .001ms !important;
+    transition-delay: 0s !important;
+  }
+  html.js .revela { opacity: 1; transform: none; }
+  .boton:hover, .tarjeta:hover { transform: none; }
+  @view-transition { navigation: none; }
+}

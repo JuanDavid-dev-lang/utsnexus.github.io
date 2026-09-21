@@ -1,0 +1,124 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tokens — UTS Nexus Académico
+
+   La paleta y la escala tipográfica salen de DESIGN.md, el mismo sistema que
+   usan las tres aplicaciones. La página no inventa una identidad paralela:
+   quien llega aquí y luego abre la app tiene que reconocer el mismo producto.
+
+   Regla heredada del sistema: el lima nunca es color de texto ni fondo de
+   superficie grande. Solo acción, selección y foco.
+
+   Este archivo solo declara variables. No pinta nada.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Color ───────────────────────────────────────────────────────────────
+     Los nombres declaran el PAPEL, no el color. `--superficie` es la tarjeta,
+     sea blanca o de oliva oscuro; `--marca` es el campo verde de la marca. */
+  --marca: #144d37;          /* superficie de marca: hero, franja verde, pie */
+  --marca-noche: #0d3325;
+  --marca-hover: #1c6b4c;
+  --marca-texto: #144d37;    /* el verde cuando tiene que SER texto o icono */
+  --sobre-marca: #ffffff;    /* texto sobre la superficie de marca */
+  --lima: #cad225;
+  --lima-tenue: #f1f6ce;
+  --fondo: #f4f7f1;
+  --fondo-sutil: #eaf0e6;
+  --superficie: #ffffff;
+  --barra: rgb(244 247 241 / .82);
+  --tinta: #12271e;
+  --tinta-suave: #5b6b61;
+  --borde: #d8e2d4;
+  --borde-fuerte: #b9cbb2;
+  --alarma: #dc2626;
+  --alarma-tenue: #fee2e2;
+  --exito: #14795a;
+  --sombra: 0 1px 2px rgb(18 39 30 / .04), 0 8px 28px rgb(18 39 30 / .07);
+  --sombra-alta: 0 2px 4px rgb(18 39 30 / .06), 0 20px 50px rgb(18 39 30 / .13);
+
+  /* Tipografía */
+  --display: 'Archivo', system-ui, sans-serif;
+  --texto: 'Inter', system-ui, sans-serif;
+  --dato: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Ritmo */
+  --radio: 14px;
+  --radio-sm: 9px;
+  --ancho: 1140px;
+
+  /* ── Movimiento ─────────────────────────────────────────────────────────
+     Tres duraciones y tres curvas para toda la página. Un solo vocabulario:
+     lo que aparece entra con `--sale` (arranca rápido y frena), lo que cambia
+     de estado usa `--suave`, y solo los toques pequeños —un botón al soltar—
+     llevan `--rebote`. Cada componente elige entre estas seis; ninguno
+     inventa la suya. */
+  --dur-1: 150ms;   /* respuesta al cursor: hover, pressed */
+  --dur-2: 260ms;   /* cambio de estado: pestaña, tema, menú */
+  --dur-3: 480ms;   /* entrada de contenido: revelar, planilla */
+  --sale: cubic-bezier(.22, 1, .36, 1);
+  --suave: cubic-bezier(.4, 0, .2, 1);
+  --rebote: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* ── Modo oscuro ────────────────────────────────────────────────────────────
+   La paleta oliva/lima de DESIGN.md, la misma que usan el escritorio y el
+   móvil: fondo #232922, tarjeta #33332A, texto #EDEFDD. No es el verde de la
+   marca oscurecido — ese dark mode se probó y el texto lima sobre verde caía
+   por debajo de AA.
+
+   Los tres estados del tema se declaran en este orden:
+     1. `:root` es el modo claro y define TODOS los tokens.
+     2. `prefers-color-scheme` cubre «seguir al sistema», que es el estado sin
+        marca en el <html>. El `:not([data-tema="claro"])` deja que la
+        elección manual gane sobre el sistema.
+     3. `[data-tema="oscuro"]` cubre la elección manual.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    color-scheme: dark;
+    --marca: #1b3b2b;
+    --marca-noche: #10241a;
+    --marca-hover: #24543d;
+    --marca-texto: #bfc663;
+    --sobre-marca: #edefdd;
+    --lima: #cad225;
+    --lima-tenue: #3a3d1c;
+    --fondo: #232922;
+    --fondo-sutil: #3b3c30;
+    --superficie: #33332a;
+    --barra: rgb(35 41 34 / .86);
+    --tinta: #edefdd;
+    --tinta-suave: #a6aa8a;
+    --borde: #45472f;
+    --borde-fuerte: #696b3e;
+    --alarma: #f87171;
+    --alarma-tenue: #43201d;
+    --exito: #4ade80;
+    --sombra: 0 1px 2px rgb(0 0 0 / .3), 0 8px 28px rgb(0 0 0 / .38);
+    --sombra-alta: 0 2px 4px rgb(0 0 0 / .34), 0 20px 50px rgb(0 0 0 / .5);
+  }
+}
+
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --marca: #1b3b2b;
+  --marca-noche: #10241a;
+  --marca-hover: #24543d;
+  --marca-texto: #bfc663;
+  --sobre-marca: #edefdd;
+  --lima: #cad225;
+  --lima-tenue: #3a3d1c;
+  --fondo: #232922;
+  --fondo-sutil: #3b3c30;
+  --superficie: #33332a;
+  --barra: rgb(35 41 34 / .86);
+  --tinta: #edefdd;
+  --tinta-suave: #a6aa8a;
+  --borde: #45472f;
+  --borde-fuerte: #696b3e;
+  --alarma: #f87171;
+  --alarma-tenue: #43201d;
+  --exito: #4ade80;
+  --sombra: 0 1px 2px rgb(0 0 0 / .3), 0 8px 28px rgb(0 0 0 / .38);
+  --sombra-alta: 0 2px 4px rgb(0 0 0 / .34), 0 20px 50px rgb(0 0 0 / .5);
+}

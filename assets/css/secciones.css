@@ -1,0 +1,269 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Secciones de la página de descarga: descargas, qué hace, novedades, la
+   necesidad, créditos y pie. Cada bloque va bajo su propio rótulo.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* El padding vertical vive solo aquí. Ninguna clase de contenido lo redefine,
+   para que dos secciones seguidas no acumulen espacios distintos. */
+.seccion { padding: clamp(56px, 8vw, 100px) 0; }
+.seccion--marca { background: var(--marca); color: var(--sobre-marca); }
+.seccion--sutil { background: var(--fondo-sutil); }
+
+.seccion__cab { margin-bottom: clamp(26px, 4vw, 44px); }
+.titulo2 {
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+.seccion__sub {
+  margin-top: 12px;
+  font-size: 1.04rem;
+  color: var(--tinta-suave);
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+.seccion--marca .seccion__sub { color: rgb(255 255 255 / .75); }
+
+/* ── Tarjeta genérica ─────────────────────────────────────────────────────
+   La usan descargas y novedades. Sube 3 px al pasar el cursor con la curva
+   de salida: se nota, no salta. */
+.tarjeta {
+  display: flex; flex-direction: column;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 26px;
+  box-shadow: var(--sombra);
+  transition: transform var(--dur-2) var(--sale),
+              box-shadow var(--dur-2) var(--suave),
+              border-color var(--dur-2) var(--suave);
+}
+@media (hover: hover) {
+  .tarjeta:hover { transform: translateY(-3px); box-shadow: var(--sombra-alta); border-color: var(--borde-fuerte); }
+}
+.tarjeta--destacada { border-color: var(--borde-fuerte); box-shadow: var(--sombra-alta); }
+
+.tarjeta__icono {
+  display: grid; place-items: center;
+  width: 46px; height: 46px;
+  background: var(--fondo-sutil);
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+.tarjeta__icono svg {
+  width: 23px; height: 23px;
+  fill: none; stroke: var(--marca-texto); stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.tarjeta--destacada .tarjeta__icono { background: var(--lima-tenue); }
+
+.tarjeta__titulo { font-size: 1.32rem; font-weight: 700; }
+.tarjeta__desc { margin: 10px 0 22px; color: var(--tinta-suave); font-size: 15px; flex: 1; }
+.tarjeta__fecha { margin-top: 4px; font-family: var(--dato); font-size: 12.5px; color: var(--tinta-suave); }
+.tarjeta__cambios { margin: 12px 0 0; padding-left: 1.1em; color: var(--tinta-suave); font-size: 14.5px; }
+.tarjeta__cambios li + li { margin-top: 5px; }
+
+.tarjeta__alterna { margin: 10px 0 0; font-size: 13px; color: var(--tinta-suave); text-align: center; }
+.tarjeta__alterna a { color: var(--marca-texto); font-weight: 600; }
+
+/* ── Descargas ────────────────────────────────────────────────────────────
+   Windows va primero y destacado porque es donde un docente arma el semestre;
+   el teléfono es la herramienta del salón, no la principal. */
+.rejilla-descargas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  gap: 18px;
+  max-width: 1010px;
+  margin-inline: auto;
+}
+.rejilla-descargas--dos { max-width: 760px; }
+
+.requisitos { margin: 20px 0 0; display: grid; gap: 9px; }
+.requisitos > div {
+  display: flex; justify-content: space-between; gap: 14px;
+  padding-top: 9px;
+  border-top: 1px solid var(--fondo-sutil);
+}
+.requisitos dt { font-size: 13px; color: var(--tinta-suave); }
+.requisitos dd { margin: 0; font-size: 13px; font-weight: 500; text-align: right; }
+
+/* Ayuda de instalación: tres notas que antes iban una debajo de otra y
+   empujaban el resto de la página. Ahora se abren solo si hacen falta. */
+.ayuda { max-width: 1010px; margin: 28px auto 0; display: grid; gap: 8px; }
+.ayuda__item {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
+  overflow: hidden;
+}
+.ayuda__item > summary {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  cursor: pointer;
+  font-weight: 600; font-size: 14.5px;
+  list-style: none;
+  transition: background-color var(--dur-1) var(--suave);
+}
+.ayuda__item > summary::-webkit-details-marker { display: none; }
+.ayuda__item > summary:hover { background: var(--fondo-sutil); }
+.ayuda__item > summary::before {
+  content: ''; flex: none;
+  width: 8px; height: 8px;
+  border-right: 2px solid var(--marca-texto); border-bottom: 2px solid var(--marca-texto);
+  transform: rotate(-45deg);
+  margin-inline: 4px 2px;
+  transition: transform var(--dur-2) var(--sale);
+}
+.ayuda__item[open] > summary::before { transform: rotate(45deg); }
+.ayuda__cuerpo {
+  padding: 2px 18px 16px 44px;
+  font-size: 14.5px; color: var(--tinta-suave);
+  max-width: 78ch;
+}
+.ayuda__cuerpo a { color: var(--marca-texto); font-weight: 600; }
+/* El contenido entra con un fundido corto. Sin `@starting-style` el navegador
+   no tiene «desde dónde» animar un elemento que acaba de aparecer. */
+.ayuda__item[open] .ayuda__cuerpo {
+  opacity: 1; transform: translateY(0);
+  transition: opacity var(--dur-2) var(--suave), transform var(--dur-2) var(--sale);
+}
+@starting-style {
+  .ayuda__item[open] .ayuda__cuerpo { opacity: 0; transform: translateY(-4px); }
+}
+
+/* ── Qué hace ─────────────────────────────────────────────────────────────
+   Sin numerar: son cuatro cosas que la app hace a la vez, no una secuencia. */
+.rejilla-capacidades {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 258px), 1fr));
+  gap: 2px;
+  background: rgb(255 255 255 / .13);
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+.capacidad { background: var(--marca); padding: 26px 24px; }
+.capacidad__icono {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  background: rgb(255 255 255 / .08);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+.capacidad__icono svg {
+  width: 22px; height: 22px;
+  fill: none; stroke: var(--lima); stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.capacidad__titulo { font-size: 1.13rem; font-weight: 700; color: var(--lima); margin-bottom: 10px; }
+.capacidad p { color: rgb(255 255 255 / .8); font-size: 15px; }
+
+/* ── La necesidad ─────────────────────────────────────────────────────── */
+.rejilla-necesidad {
+  display: grid;
+  /* 300 px reparte los 1140 del envoltorio en TRES columnas, no en cuatro: con
+     cuatro, las seis tarjetas dejan la última fila a medias. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+}
+.problema {
+  display: flex; flex-direction: column;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-left: 3px solid var(--alarma);
+  border-radius: var(--radio);
+  padding: 22px 22px 18px;
+  box-shadow: var(--sombra);
+}
+.problema__titulo { font-size: 1.08rem; font-weight: 700; margin-bottom: 9px; }
+.problema p { color: var(--tinta-suave); font-size: 14.7px; }
+/* La consecuencia es lo que convierte una queja en un requisito. Va separada
+   del párrafo para que se lea como la conclusión, no como más descripción. */
+.problema__porque {
+  display: flex; gap: 9px;
+  margin-top: auto; padding-top: 14px;
+  border-top: 1px solid var(--fondo-sutil);
+  font-size: 13.6px;
+  color: var(--tinta);
+}
+.problema__porque b {
+  font-family: var(--dato);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: var(--marca-texto);
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+/* ── Créditos ─────────────────────────────────────────────────────────── */
+.creditos {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: clamp(24px, 4vw, 42px);
+  box-shadow: var(--sombra);
+}
+.creditos__grupo { font-family: var(--display); font-size: 1.5rem; font-weight: 500; color: var(--tinta-suave); }
+.creditos__grupo strong { color: var(--marca-texto); font-weight: 800; }
+.creditos__linea { margin-top: 10px; color: var(--tinta-suave); }
+
+.autor {
+  display: flex; align-items: center; gap: 15px;
+  margin: 24px 0;
+  padding: 16px 18px;
+  background: var(--fondo);
+  border-radius: var(--radio-sm);
+}
+.autor__inicial {
+  display: grid; place-items: center;
+  width: 46px; height: 46px; flex: none;
+  background: var(--marca); color: var(--lima);
+  border-radius: 50%;
+  font-family: var(--display); font-weight: 700; font-size: 15px;
+}
+.autor__nombre { font-family: var(--display); font-weight: 700; font-size: 1.09rem; }
+.autor__rol {
+  font-family: var(--dato); font-size: 12px;
+  letter-spacing: .05em; text-transform: uppercase;
+  color: var(--tinta-suave);
+  margin-top: 2px;
+}
+.creditos__nota { font-size: 14.5px; color: var(--tinta-suave); margin-bottom: 22px; }
+.creditos__acciones { display: flex; flex-wrap: wrap; gap: 10px; }
+.creditos .boton--fantasma { color: var(--marca-texto); }
+.creditos .boton--fantasma:hover { background: var(--fondo-sutil); }
+
+/* ── Pie ──────────────────────────────────────────────────────────────── */
+.pie {
+  background: var(--marca-noche);
+  color: rgb(255 255 255 / .68);
+  padding: 30px 0;
+  font-size: 14px;
+}
+.pie__interior {
+  display: flex; flex-wrap: wrap; gap: 8px 24px;
+  align-items: center; justify-content: space-between;
+}
+.pie__tenue { color: rgb(255 255 255 / .6); }
+.pie__tenue a { text-decoration: underline; text-underline-offset: 3px; transition: color var(--dur-1) var(--suave); }
+.pie__tenue a:hover { color: var(--lima); }
+
+/* ── Página 404 ───────────────────────────────────────────────────────── */
+.perdida {
+  min-height: calc(100dvh - 66px);
+  display: grid; place-items: center;
+  padding: clamp(48px, 8vw, 96px) 0;
+}
+.perdida__codigo {
+  font-family: var(--dato); font-size: 13px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--marca-texto);
+  margin-bottom: 14px;
+}
+.perdida .titulo2 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+.perdida__acciones { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.perdida .boton--fantasma { color: var(--marca-texto); }
+.perdida .boton--fantasma:hover { background: var(--fondo-sutil); }
+
+@media (max-width: 480px) {
+  .creditos__acciones .boton, .perdida__acciones .boton { width: 100%; }
+}

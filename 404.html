@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<title>Página no encontrada — UTS Nexus Académico</title>
+<!-- GitHub Pages sirve este archivo con código 404 de verdad para cualquier
+     ruta que no exista, incluidos los archivos estáticos que falten. No hay
+     que indexarlo, y no redirige a la portada: un 404 que responde 200 o
+     manda a otra parte es un «soft 404» que confunde a los buscadores. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#144d37" id="metaTema">
+
+<!-- Rutas ABSOLUTAS, no relativas: este archivo se sirve desde cualquier
+     profundidad (`/utsnexus.github.io/lo/que/sea`), y `assets/...` se
+     resolvería contra esa carpeta inexistente. Si el sitio cambia de
+     dirección, es el único archivo cuyas rutas hay que tocar. -->
+<link rel="icon" href="/utsnexus.github.io/favicon.ico" sizes="32x32">
+<link rel="icon" href="/utsnexus.github.io/assets/favicon.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/utsnexus.github.io/assets/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="/utsnexus.github.io/assets/js/tema-inicial.js"></script>
+<link rel="stylesheet" href="/utsnexus.github.io/assets/css/tokens.css">
+<link rel="stylesheet" href="/utsnexus.github.io/assets/css/base.css">
+<link rel="stylesheet" href="/utsnexus.github.io/assets/css/barra.css">
+<link rel="stylesheet" href="/utsnexus.github.io/assets/css/secciones.css">
+<link rel="stylesheet" href="/utsnexus.github.io/assets/css/movimiento.css">
+</head>
+<body>
+
+<header class="barra">
+  <div class="barra__interior">
+    <a class="marca" href="/utsnexus.github.io/">
+      <img class="marca__logo" src="/utsnexus.github.io/assets/logo.png" alt="" width="36" height="36" decoding="async">
+      <span class="marca__nombre">UTS Nexus <em>Académico</em></span>
+      <span class="etapa">Beta</span>
+    </a>
+    <nav class="barra__nav" aria-label="Secciones">
+      <div class="tema" role="group" aria-label="Tema de la página">
+        <button class="tema__op" type="button" data-tema-op="claro" aria-pressed="false" title="Claro">
+          <span class="visualmente-oculto">Tema claro</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"/></svg>
+        </button>
+        <button class="tema__op" type="button" data-tema-op="oscuro" aria-pressed="false" title="Oscuro">
+          <span class="visualmente-oculto">Tema oscuro</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>
+        </button>
+        <button class="tema__op" type="button" data-tema-op="sistema" aria-pressed="false" title="Seguir al sistema">
+          <span class="visualmente-oculto">Seguir el tema del sistema</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.8" y="4.5" width="18.4" height="12.4" rx="2"/><path d="M8.5 20.5h7"/></svg>
+        </button>
+      </div>
+      <a class="boton boton--lima boton--sm" href="/utsnexus.github.io/#descargas">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
+        <span class="boton__texto">Descargar</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main class="perdida">
+  <div class="envoltorio envoltorio--angosto">
+    <p class="perdida__codigo">Error 404</p>
+    <h1 class="titulo2">Esta página no existe.</h1>
+    <p class="seccion__sub">
+      La dirección está mal escrita o el archivo ya no está aquí. Las
+      descargas y el documento de requerimientos siguen en su sitio.
+    </p>
+    <div class="perdida__acciones">
+      <a class="boton boton--marca" href="/utsnexus.github.io/#descargas">Ir a las descargas</a>
+      <a class="boton boton--fantasma" href="/utsnexus.github.io/requerimientos-uml.html">Requerimientos y UML</a>
+    </div>
+  </div>
+</main>
+
+<footer class="pie">
+  <div class="envoltorio pie__interior">
+    <p>UTS Nexus Académico · Grupo CIAI · Unidades Tecnológicas de Santander</p>
+    <p class="pie__tenue"><a href="/utsnexus.github.io/">Volver al inicio</a></p>
+  </div>
+</footer>
+
+<script type="module" src="/utsnexus.github.io/assets/js/app.js"></script>
+</body>
+</html>
