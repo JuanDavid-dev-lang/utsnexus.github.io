@@ -79,7 +79,16 @@
 /* La sección que está en pantalla: `barra.js` la marca con `aria-current`. */
 .barra__enlaces > a[aria-current="true"] { color: var(--tinta); }
 .barra__enlaces > a[aria-current="true"]::after { transform: scaleX(1); }
-.barra__nav > .boton { color: #12271e; }
+/* Solo el botón lima: su relleno es claro en los dos temas, así que su
+   letra es oscura siempre. Esta regla valía para todos los botones de la
+   barra cuando el único era ese; con el de iniciar sesión —que es de contorno
+   y toma el color del texto— pintaba letra oscura sobre fondo oscuro y el
+   botón desaparecía en el tema oscuro. */
+.barra__nav > .boton--lima { color: #12271e; }
+.barra__nav > .boton--fantasma { color: var(--tinta); }
+/* El hover de `boton--fantasma` es un velo blanco, pensado para el hero, que
+   va sobre verde. Sobre la barra no se ve: aquí aclara con el gris del tema. */
+.barra__nav > .boton--fantasma:hover { background: var(--fondo-sutil); }
 
 /* ── Interruptor de tema ─────────────────────────────────────────────────
    Tres posiciones, no dos. Un interruptor de dos deja la página clavada en
