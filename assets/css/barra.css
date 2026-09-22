@@ -59,6 +59,9 @@
 .barra__enlaces > a {
   position: relative;
   font-size: 15px; font-weight: 500; text-decoration: none;
+  /* «Qué hace» y «La necesidad» se partían en dos líneas al entrar el botón
+     de iniciar sesión, y una barra con enlaces de dos líneas se lee como rota. */
+  white-space: nowrap;
   color: var(--tinta-suave);
   transition: color var(--dur-1) var(--suave);
 }
@@ -208,11 +211,25 @@
   .menu, .menu__boton { display: none !important; }
 }
 
+/* Con dos botones en la barra —entrar y descargar— los enlaces ya no caben
+   por debajo de 1200 px: el de entrar se queda en icono, que es el que tiene
+   su gemelo dentro del menú. El texto se oculta A LA VISTA, no con
+   `display: none`, para que el botón conserve su nombre accesible. */
+@media (max-width: 1200px) {
+  .barra__nav .boton--entrar .boton__texto {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+}
+
 /* ── Pantalla estrecha ───────────────────────────────────────────────────
-   A partir de 900 px los enlaces salen de la barra y entran al menú. El
-   interruptor de tema se queda: es el único control que cambia cómo se ve
-   la página. Lo que NO se toca es el objetivo táctil. */
-@media (max-width: 900px) {
+   A partir de 1100 px los enlaces salen de la barra y entran al menú —eran
+   900 hasta que entró el botón de iniciar sesión, y entre 900 y 1100 la marca
+   y el primer enlace acababan uno encima del otro—. El interruptor de tema se
+   queda: es el único control que cambia cómo se ve la página. Lo que NO se
+   toca es el objetivo táctil. */
+@media (max-width: 1100px) {
   .barra__nav { gap: 10px; }
   .barra__enlaces { display: none; }
   .menu__boton { display: grid; }

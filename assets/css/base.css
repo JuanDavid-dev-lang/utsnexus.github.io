@@ -114,6 +114,9 @@ code {
   font-family: var(--texto);
   font-size: 15px; font-weight: 600;
   text-decoration: none;
+  /* Un botón de la barra parte su etiqueta en dos líneas antes que empujar
+     al vecino, y lo que se ve es una barra rota. Mejor que empuje. */
+  white-space: nowrap;
   cursor: pointer;
   transition: transform var(--dur-1) var(--sale),
               background-color var(--dur-1) var(--suave),

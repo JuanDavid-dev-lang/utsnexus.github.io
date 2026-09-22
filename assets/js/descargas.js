@@ -15,7 +15,7 @@
 
 import { leer, guardar, pedirJson, cuandoSobre } from './cache.js';
 
-const API = 'https://3-14-147-55.sslip.io/api/v1/descargas';
+const API = 'https://nexusback.ciaiuts.com/api/v1/descargas';
 const CLAVE = 'uts-descargas';
 const MINUTOS = 60;
 const PLAZO_MS = 4000;

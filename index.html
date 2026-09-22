@@ -8,11 +8,11 @@
      menos `frame-ancestors` y los informes. No hay ni un guion ni un estilo
      en línea en la página, y por eso no hace falta `unsafe-inline` ni
      recalcular hashes cada vez que se edita algo. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.github.com https://3-14-147-55.sslip.io; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.github.com https://nexusback.ciaiuts.com; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
-<title>UTS Nexus Académico — Descargar para Windows, Linux y Android</title>
-<meta name="description" content="La planilla del semestre con las alertas ya hechas: notas por corte, asistencia por minutos reales y riesgo académico para docentes de las Unidades Tecnológicas de Santander. Gratis para Windows, Linux y Android.">
+<title>UTS Nexus Académico — Windows, Linux, Android y web</title>
+<meta name="description" content="La planilla del semestre con las alertas ya hechas: notas por corte, asistencia por minutos reales y riesgo académico para docentes de las Unidades Tecnológicas de Santander. Gratis para Windows, Linux y Android, o desde el navegador.">
 <meta name="author" content="Grupo CIAI — Unidades Tecnológicas de Santander">
 <meta name="theme-color" content="#144d37" id="metaTema">
 <link rel="canonical" href="https://juandavid-dev-lang.github.io/utsnexus.github.io/">
@@ -20,16 +20,16 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="UTS Nexus Académico">
 <meta property="og:title" content="UTS Nexus Académico — La planilla del semestre, con alertas y todo ya hechas">
-<meta property="og:description" content="Notas por corte, asistencia por minutos reales y riesgo académico para docentes. Gratis para Windows, Linux y Android.">
+<meta property="og:description" content="Notas por corte, asistencia por minutos reales y riesgo académico para docentes. Gratis para Windows, Linux y Android, o desde el navegador.">
 <meta property="og:url" content="https://juandavid-dev-lang.github.io/utsnexus.github.io/">
 <meta property="og:image" content="https://juandavid-dev-lang.github.io/utsnexus.github.io/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="UTS Nexus Académico: la planilla del semestre, con alertas y todo ya hechas. Windows, Linux y Android.">
+<meta property="og:image:alt" content="UTS Nexus Académico: la planilla del semestre, con alertas y todo ya hechas. Windows, Linux, Android y web.">
 <meta property="og:locale" content="es_CO">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="UTS Nexus Académico — Descargar">
-<meta name="twitter:description" content="Notas por corte, asistencia por minutos reales y riesgo académico para docentes. Gratis para Windows, Linux y Android.">
+<meta name="twitter:description" content="Notas por corte, asistencia por minutos reales y riesgo académico para docentes. Gratis para Windows, Linux y Android, o desde el navegador.">
 <meta name="twitter:image" content="https://juandavid-dev-lang.github.io/utsnexus.github.io/assets/og.png">
 
 <link rel="icon" href="favicon.ico" sizes="32x32">
@@ -64,7 +64,7 @@
       "url": "https://juandavid-dev-lang.github.io/utsnexus.github.io/",
       "image": "https://juandavid-dev-lang.github.io/utsnexus.github.io/assets/og.png",
       "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Windows 10, Windows 11, Linux, Android 8.0",
+      "operatingSystem": "Windows 10, Windows 11, Linux, Android 8.0, Navegador web",
       "inLanguage": "es-CO",
       "releaseNotes": "https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest",
       "downloadUrl": "https://juandavid-dev-lang.github.io/utsnexus.github.io/#descargas",
@@ -147,6 +147,14 @@
       <!-- El icono y el texto van separados porque en pantalla estrecha el
            texto se oculta VISUALMENTE (no con `display:none`): así el botón
            queda del tamaño del icono y conserva su nombre accesible. -->
+      <!-- Entrar sin instalar nada: la versión web. Va antes del botón de
+           descargar y no en su lugar, porque quien ya usa la aplicación entra
+           por ella y quien la está conociendo la descarga. -->
+      <a class="boton boton--fantasma boton--sm boton--entrar" href="https://utsnexusweb.ciaiuts.com/login" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5M15 12H3"/></svg>
+        <span class="boton__texto">Iniciar sesión</span>
+      </a>
+
       <a class="boton boton--lima boton--sm" href="#descargas">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
         <span class="boton__texto">Descargar</span>
@@ -157,6 +165,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
       <div class="menu" id="menu" popover>
+        <a href="https://utsnexusweb.ciaiuts.com/login" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5M15 12H3"/></svg>Iniciar sesión</a>
         <a href="#descargas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>Descargar</a>
         <a href="#capacidades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/></svg>Qué hace</a>
         <a href="#novedades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>Novedades</a>
@@ -191,12 +200,12 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
             Descargar
           </a>
-          <a class="boton boton--fantasma" href="#capacidades">
-            Qué hace
+          <a class="boton boton--fantasma" href="https://utsnexusweb.ciaiuts.com/login" target="_blank" rel="noopener">
+            Entrar en el navegador
           </a>
         </div>
 
-        <p class="hero__nota">Windows, Linux y Android · Gratis · Uso académico y sin ánimo de lucro</p>
+        <p class="hero__nota">Windows, Linux, Android y web · Gratis · Uso académico y sin ánimo de lucro</p>
       </div>
 
       <!-- Signature: planilla real, con los pesos reales del reglamento. Las
@@ -271,7 +280,7 @@
         <div>
           <p class="seccion__num"><span>01</span><i class="regla" aria-hidden="true"></i></p>
           <h2 class="titulo2">Descargar</h2>
-          <p class="seccion__sub">Elegí el equipo donde vas a pasar lista.</p>
+          <p class="seccion__sub">Elegí el equipo donde vas a pasar lista, o entrá desde el navegador.</p>
         </div>
         <!-- La versión vigente, leída de los Releases. Escrita a mano como
              respaldo; `novedades.js` la actualiza con la misma respuesta que
@@ -360,6 +369,31 @@
             <div><dt>Sistema</dt><dd>Android 8.0 o superior</dd></div>
             <div><dt>Archivo</dt><dd>Paquete <code>.apk</code></dd></div>
             <div><dt>Se actualiza</dt><dd>Sola, desde Ajustes</dd></div>
+          </dl>
+        </article>
+
+        <article class="tarjeta revela" data-plataforma="web">
+          <div class="tarjeta__cab">
+            <div class="tarjeta__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/></svg>
+            </div>
+            <span class="tarjeta__formato">navegador</span>
+          </div>
+          <h3 class="tarjeta__titulo">Web</h3>
+          <p class="tarjeta__desc">
+            Sin instalar nada: materias, notas, asistencia y riesgo desde
+            cualquier equipo prestado. Lo demás vive en la aplicación.
+          </p>
+          <!-- Enlace externo y en otra pestaña: es la aplicación, no una
+               sección de esta página. -->
+          <a class="boton boton--marca boton--bloque" href="https://utsnexusweb.ciaiuts.com" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5M15 12H3"/></svg>
+            Entrar en el navegador
+          </a>
+          <dl class="requisitos">
+            <div><dt>Sistema</dt><dd>Cualquier navegador actual</dd></div>
+            <div><dt>Incluye</dt><dd>Notas, asistencia y riesgo</dd></div>
+            <div><dt>Se actualiza</dt><dd>Sola, al abrirla</dd></div>
           </dl>
         </article>
 

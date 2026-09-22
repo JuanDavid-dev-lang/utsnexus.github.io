@@ -1,6 +1,6 @@
 # UTS Nexus Académico
 
-> Plataforma de seguimiento académico para docentes de las Unidades Tecnológicas de Santander (UTS, Bucaramanga, Colombia): notas por corte, asistencia por minutos reales y alerta temprana de riesgo académico. Gratuita, de uso académico, para Windows, Linux y Android. Hecha por el Grupo CIAI; desarrollo principal de Juan David Gómez Vargas. Licencia PolyForm Noncommercial 1.0.0.
+> Plataforma de seguimiento académico para docentes de las Unidades Tecnológicas de Santander (UTS, Bucaramanga, Colombia): notas por corte, asistencia por minutos reales y alerta temprana de riesgo académico. Gratuita, de uso académico, para Windows, Linux y Android, y también desde el navegador. Hecha por el Grupo CIAI; desarrollo principal de Juan David Gómez Vargas. Licencia PolyForm Noncommercial 1.0.0.
 
 Este sitio es la página de descarga y la documentación pública del proyecto. Está en español de Colombia. El producto está en etapa beta.
 
@@ -10,11 +10,11 @@ Este sitio es la página de descarga y la documentación pública del proyecto. 
 - Asistencia por minutos reales de cada clase, con porcentaje ponderado.
 - Riesgo académico: un modelo cruza notas, tendencia entre cortes y asistencia, y explica en qué se basó cada aviso.
 - Listas de clase importadas desde archivo, y reportes consolidados en PDF.
-- Aplicación de escritorio (Windows y Linux, Tauri + React) y de teléfono (Android, Flutter) sobre los mismos datos, con sincronización en tiempo real. Backend en Node y TypeScript; servicio de predicción en Python.
+- Aplicación de escritorio (Windows y Linux, Tauri + React), de teléfono (Android, Flutter) y versión web en https://utsnexusweb.ciaiuts.com —el mismo cliente de escritorio en el navegador, con las pantallas del aula; agenda, reportes y el asistente completo son de la aplicación— sobre los mismos datos, con sincronización en tiempo real. Backend en Node y TypeScript; servicio de predicción en Python.
 
 ## Páginas
 
-- [Descargar](https://juandavid-dev-lang.github.io/utsnexus.github.io/): instaladores para Windows (.exe), Linux (instalador .sh, también .deb, .rpm y AppImage) y Android (.apk), qué hace el sistema, la necesidad que resuelve y quién lo hizo.
+- [Descargar](https://juandavid-dev-lang.github.io/utsnexus.github.io/): instaladores para Windows (.exe), Linux (instalador .sh, también .deb, .rpm y AppImage) y Android (.apk), acceso a la versión web, qué hace el sistema, la necesidad que resuelve y quién lo hizo.
 - [Requerimientos y modelo UML](https://juandavid-dev-lang.github.io/utsnexus.github.io/requerimientos-uml.html): 12 requisitos funcionales (RF-01 a RF-12), 10 no funcionales (RNF-01 a RNF-10) y cuatro diagramas UML (casos de uso, clases, componentes y despliegue, secuencia).
 - [Documento en PDF](https://juandavid-dev-lang.github.io/utsnexus.github.io/UTS_Nexus_Necesidad_Requerimientos_UML.pdf): necesidad, requerimientos y UML en un solo archivo.
 

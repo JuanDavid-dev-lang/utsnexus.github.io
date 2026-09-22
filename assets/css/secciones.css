@@ -152,9 +152,11 @@ html.js .seccion__num.revela--visto .regla { transform: scaleX(1); transition: t
 
 .rejilla-descargas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  /* Cuatro tarjetas —Windows, Linux, Android y web— en una fila de 1140px:
+     290px no caben (1214px), 250 sí. Debajo de 1140 la rejilla parte sola. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   gap: 18px;
-  max-width: 1010px;
+  max-width: var(--ancho);
   margin-inline: auto;
 }
 
