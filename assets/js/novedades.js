@@ -12,8 +12,23 @@
 
 import { leer, guardar, pedirJson, cuandoSobre } from './cache.js';
 
-const API = 'https://api.github.com/repos/JuanDavid-dev-lang/UTS_Nexus_Releases/releases?per_page=2';
-const CLAVE = 'uts-novedades';
+/* La ÚLTIMA publicada, no el listado.
+
+   El listado (`/releases?per_page=N`) viene ordenado por la fecha de creación
+   de cada entrada, que es la del commit etiquetado y no la de publicación. Con
+   la numeración reiniciada —las 2.x son anteriores a las 1.x—, las primeras
+   diez eran todas 2.x: la página anunciaba como versión actual una que ya no
+   se reparte, y la 1.6.1 ni aparecía. Pedir más entradas no lo arregla, solo
+   mueve el problema y engorda la respuesta.
+
+   `/releases/latest` es lo que GitHub considera publicado ahora mismo, en una
+   sola petición y sin traer el historial entero. La segunda entrada de la
+   línea de tiempo es la que ya está escrita en el HTML. */
+const API = 'https://api.github.com/repos/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest';
+// La caché guarda seis horas. Al corregir qué entrada es la más nueva hay que
+// cambiar la clave: si no, quien ya tuviera la anterior seguiría viendo la
+// versión equivocada hasta que caducara.
+const CLAVE = 'uts-novedades-2';
 const MINUTOS = 6 * 60;
 const PLAZO_MS = 6000;
 
@@ -34,13 +49,16 @@ function fechaLarga(iso) {
   return fecha.toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-/** Los titulares de las notas (líneas «### …») resumen los cambios. */
+/** Los titulares de las notas (líneas «## …» o «### …») resumen los cambios. */
 function titulares(cuerpo) {
   return String(cuerpo || '')
     .split('\n')
-    .filter((linea) => linea.startsWith('### '))
-    .map((linea) => linea.slice(4).trim())
-    .filter(Boolean);
+    .filter((linea) => /^#{2,3} /.test(linea))
+    .map((linea) => linea.replace(/^#{2,3} /, '').trim())
+    // Fuera el que repite el nombre de la versión y el de «cómo actualizarte»:
+    // ninguno de los dos es un cambio, y en una lista de tres líneas ocupan
+    // el sitio de los que sí lo son.
+    .filter((t) => Boolean(t) && !/UTS Nexus/.test(t) && !/actualizarte/i.test(t));
 }
 
 function nombreCorto(release) {
@@ -81,7 +99,7 @@ function hito(release) {
   return li;
 }
 
-/** «Versión actual v2.16.0 · 1 de septiembre de 2026», con la más nueva. */
+/** «Versión actual v1.6.1 · 22 de septiembre de 2026», con la más nueva. */
 function pintarVersion(release) {
   const nodo = document.getElementById('version-actual');
   if (!nodo || !release.tag_name) return;
@@ -110,22 +128,30 @@ export function iniciarNovedades() {
   const contenedor = document.getElementById('novedades-lista');
   if (!contenedor || !window.fetch) return;
 
-  function pintar(releases) {
-    if (!Array.isArray(releases) || !releases.length) return;
-    contenedor.replaceChildren(...releases.map(hito));
-    pintarVersion(releases[0]);
+  /* La nueva entra arriba y la primera de las escritas en el HTML se queda
+     debajo, salvo que sea la misma versión. Así la línea de tiempo sigue
+     teniendo dos hitos con una sola petición. */
+  function pintar(release) {
+    if (!release || !release.tag_name) return;
+    const nombre = nombreCorto(release);
+    const previas = Array.from(contenedor.children).filter((li) => {
+      const titulo = li.querySelector('.hito__titulo');
+      return !titulo || titulo.textContent.trim() !== nombre;
+    });
+    contenedor.replaceChildren(hito(release), ...previas.slice(0, 1));
+    pintarVersion(release);
   }
 
-  const guardadas = leer(CLAVE);
-  if (guardadas) { pintar(guardadas); return; }
+  const guardada = leer(CLAVE);
+  if (guardada) { pintar(guardada); return; }
 
   cuandoSobre(() => {
     pedirJson(API, PLAZO_MS)
-      .then((releases) => {
-        if (!Array.isArray(releases) || !releases.length) return;
-        const breves = resumir(releases);
-        guardar(CLAVE, breves, MINUTOS);
-        pintar(breves);
+      .then((release) => {
+        if (!release || !release.tag_name) return;
+        const breve = resumir(release);
+        guardar(CLAVE, breve, MINUTOS);
+        pintar(breve);
       })
       .catch(() => { /* quedan las entradas horneadas en el HTML */ });
   });
