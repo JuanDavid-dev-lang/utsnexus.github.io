@@ -20,11 +20,15 @@ const CLAVE = 'uts-descargas';
 const MINUTOS = 60;
 const PLAZO_MS = 4000;
 
-/** windows | android | linux | null, a partir de lo que el navegador cuenta. */
+/** windows | android | linux | web | null, a partir de lo que el navegador cuenta. */
 function plataforma() {
   const datos = navigator.userAgentData;
   const texto = ((datos && datos.platform) || navigator.userAgent || '').toLowerCase();
   if (texto.includes('android')) return 'android';
+  // En iPhone y iPad lo que se instala es la web. El iPad se presenta como un
+  // Mac de escritorio; lo delata la pantalla táctil.
+  const ipad = texto.includes('mac') && navigator.maxTouchPoints > 1;
+  if (texto.includes('iphone') || texto.includes('ipad') || ipad) return 'web';
   if (texto.includes('win')) return 'windows';
   if (texto.includes('linux') || texto.includes('x11')) return 'linux';
   return null;
