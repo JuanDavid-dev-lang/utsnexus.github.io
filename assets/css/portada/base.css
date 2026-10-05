@@ -39,6 +39,28 @@
   --brillo: linear-gradient(100deg, #1a6247 10%, #7fa51c 60%, #b5bf12 95%);
   --brillo-noche: linear-gradient(100deg, #e9f3c0 0%, #cad225 45%, #7cc69b 100%);
 
+  /* ── Escena: las franjas grandes (hero, novedades, cierre) ─────────────
+     Siguen el tema: claras en el claro y de noche en el oscuro. Una franja
+     negra fija en medio de una página clara se leía como un corte, no como
+     una decisión. Las ilustraciones (galería, órbita, maqueta de la app)
+     sí son oscuras siempre, y usan las variables `--noche*`. */
+  --escena: #f2f4ec;
+  --escena-2: #ffffff;
+  --escena-3: #e7ecdf;
+  --sobre-escena: #161b17;
+  --sobre-escena-2: #59625b;
+  --acento-escena: #1a6247;
+  --vidrio: rgb(20 45 30 / .04);
+  --vidrio-hover: rgb(20 45 30 / .08);
+  --vidrio-borde: rgb(20 45 30 / .13);
+  --raya: rgb(20 45 30 / .1);
+  --raya-fuerte: rgb(20 45 30 / .2);
+  --codigo: rgb(20 45 30 / .45);
+  --halo-arriba: rgb(90 214 154 / .22);
+  --halo-abajo: rgb(202 210 37 / .28);
+  --sombra-escena: 0 0 0 1px rgb(20 45 30 / .06), 0 30px 70px rgb(20 45 30 / .16), 0 8px 20px rgb(20 45 30 / .08);
+  --brillo-escena: linear-gradient(100deg, #1a6247 5%, #4c8a26 55%, #8a9c0c 100%);
+
   /* ── Tipografía ────────────────────────────────────────────────────────── */
   --sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
@@ -91,6 +113,22 @@
     --barra: rgb(12 19 15 / .74);
     --sombra: 0 1px 2px rgb(0 0 0 / .4), 0 12px 40px rgb(0 0 0 / .45);
     --brillo: var(--brillo-noche);
+    --escena: #0a110d;
+    --escena-2: #141d17;
+    --escena-3: #1f2a22;
+    --sobre-escena: #f1f4ea;
+    --sobre-escena-2: #a3aea4;
+    --acento-escena: #dbe27a;
+    --vidrio: rgb(255 255 255 / .06);
+    --vidrio-hover: rgb(255 255 255 / .1);
+    --vidrio-borde: rgb(255 255 255 / .12);
+    --raya: rgb(255 255 255 / .08);
+    --raya-fuerte: rgb(255 255 255 / .16);
+    --codigo: rgb(255 255 255 / .5);
+    --halo-arriba: rgb(20 77 55 / .55);
+    --halo-abajo: rgb(202 210 37 / .16);
+    --sombra-escena: 0 0 0 1px rgb(255 255 255 / .06), 0 30px 80px rgb(0 0 0 / .45), 0 8px 24px rgb(0 0 0 / .25);
+    --brillo-escena: var(--brillo-noche);
   }
 }
 :root[data-tema="oscuro"] {
@@ -113,6 +151,22 @@
   --barra: rgb(12 19 15 / .74);
   --sombra: 0 1px 2px rgb(0 0 0 / .4), 0 12px 40px rgb(0 0 0 / .45);
   --brillo: var(--brillo-noche);
+  --escena: #0a110d;
+  --escena-2: #141d17;
+  --escena-3: #1f2a22;
+  --sobre-escena: #f1f4ea;
+  --sobre-escena-2: #a3aea4;
+  --acento-escena: #dbe27a;
+  --vidrio: rgb(255 255 255 / .06);
+  --vidrio-hover: rgb(255 255 255 / .1);
+  --vidrio-borde: rgb(255 255 255 / .12);
+  --raya: rgb(255 255 255 / .08);
+  --raya-fuerte: rgb(255 255 255 / .16);
+  --codigo: rgb(255 255 255 / .5);
+  --halo-arriba: rgb(20 77 55 / .55);
+  --halo-abajo: rgb(202 210 37 / .16);
+  --sombra-escena: 0 0 0 1px rgb(255 255 255 / .06), 0 30px 80px rgb(0 0 0 / .45), 0 8px 24px rgb(0 0 0 / .25);
+  --brillo-escena: var(--brillo-noche);
 }
 
 /* ── Reset ─────────────────────────────────────────────────────────────── */

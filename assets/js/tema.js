@@ -9,7 +9,9 @@
    ocupa de los botones y de mantener el color de la barra del navegador. */
 
 const CLAVE = 'uts-tema';
-const COLOR = { claro: '#144d37', oscuro: '#232922' };
+// El color de la barra del navegador en el teléfono: el del fondo de la
+// página en cada tema, para que la barra y la página se lean como una.
+const COLOR = { claro: '#fbfbf8', oscuro: '#232922' };
 
 export function iniciarTema() {
   const opciones = document.querySelectorAll('[data-tema-op]');

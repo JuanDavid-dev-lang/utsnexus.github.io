@@ -9,13 +9,13 @@
 .seccion { padding: clamp(80px, 11vw, 150px) 0 clamp(88px, 12vw, 160px); }
 .seccion--alt { background: var(--lienzo-alt); }
 .seccion--noche {
-  background: var(--noche);
-  color: var(--sobre-noche);
-  --tinta: var(--sobre-noche);
-  --tinta-2: var(--sobre-noche-2);
-  --marca-texto: #dbe27a;
-  --linea: rgb(255 255 255 / .1);
-  --brillo: var(--brillo-noche);
+  background: var(--escena);
+  color: var(--sobre-escena);
+  --tinta: var(--sobre-escena);
+  --tinta-2: var(--sobre-escena-2);
+  --marca-texto: var(--acento-escena);
+  --linea: var(--raya);
+  --brillo: var(--brillo-escena);
 }
 .seccion__cab { max-width: 880px; }
 .seccion__cab--centro { margin-inline: auto; text-align: center; }
@@ -142,12 +142,10 @@
   text-align: center;
   background:
     radial-gradient(50% 70% at 50% 110%, rgb(202 210 37 / .2), transparent 70%),
-    var(--noche);
-  color: var(--sobre-noche);
-  /* Sobre la noche, el enlace y el degradado usan su versión clara también
-     en el tema claro. */
-  --marca-texto: #dbe27a;
-  --brillo: var(--brillo-noche);
+    var(--escena);
+  color: var(--sobre-escena);
+  --marca-texto: var(--acento-escena);
+  --brillo: var(--brillo-escena);
 }
 .cierre__logo { width: 76px; height: 76px; margin: 0 auto 28px; border-radius: 20px; }
 .cierre .titulo { max-width: 14ch; margin-inline: auto; }

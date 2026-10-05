@@ -11,10 +11,11 @@
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(60% 50% at 50% 100%, rgb(202 210 37 / .16), transparent 70%),
-    radial-gradient(80% 60% at 50% 0%, rgb(20 77 55 / .55), transparent 70%),
-    var(--noche);
-  color: var(--sobre-noche);
+    radial-gradient(60% 50% at 50% 100%, var(--halo-abajo), transparent 70%),
+    radial-gradient(80% 60% at 50% 0%, var(--halo-arriba), transparent 70%),
+    var(--escena);
+  color: var(--sobre-escena);
+  transition: background-color var(--dur-2) var(--suave), color var(--dur-2) var(--suave);
   text-align: center;
   padding: clamp(40px, 6.5vw, 84px) 0 clamp(72px, 10vw, 128px);
 }
@@ -23,7 +24,7 @@
   font-size: clamp(19px, 2vw, 26px);
   font-weight: 600;
   letter-spacing: -.02em;
-  color: var(--sobre-noche-2);
+  color: var(--sobre-escena-2);
   margin-bottom: 14px;
 }
 .hero__titulo {
@@ -32,7 +33,7 @@
   letter-spacing: -.045em;
   line-height: .98;
 }
-.hero__titulo .texto-brillo { background-image: var(--brillo-noche); }
+.hero__titulo .texto-brillo { background-image: var(--brillo-escena); }
 .hero__entrada {
   margin: 22px auto 0;
   max-width: 36ch;
@@ -40,20 +41,20 @@
   font-weight: 500;
   line-height: 1.4;
   letter-spacing: -.016em;
-  color: var(--sobre-noche-2);
+  color: var(--sobre-escena-2);
 }
-.hero__entrada b { color: var(--sobre-noche); font-weight: 600; }
+.hero__entrada b { color: var(--sobre-escena); font-weight: 600; }
 
 .hero__acciones {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
   gap: 14px 28px;
   margin-top: 34px;
 }
-.hero .flecha { color: #dbe27a; font-size: 17px; }
+.hero .flecha { color: var(--acento-escena); font-size: 17px; }
 .hero__nota {
   margin-top: 22px;
   font-size: 13.5px;
-  color: var(--sobre-noche-2);
+  color: var(--sobre-escena-2);
 }
 
 /* ── Dock de descargas ───────────────────────────────────────────────────
@@ -72,10 +73,10 @@
   display: grid; justify-items: center; gap: 3px;
   padding: 20px 10px 16px;
   border-radius: 22px;
-  background: rgb(255 255 255 / .06);
-  border: 1px solid rgb(255 255 255 / .12);
+  background: var(--vidrio);
+  border: 1px solid var(--vidrio-borde);
   -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-  color: var(--sobre-noche);
+  color: var(--sobre-escena);
   text-decoration: none;
   transition: transform var(--dur-2) var(--rebote),
               background-color var(--dur-1) var(--suave),
@@ -85,7 +86,7 @@
 }
 .dock__op:hover {
   transform: translateY(-4px);
-  background: rgb(255 255 255 / .1);
+  background: var(--vidrio-hover);
   border-color: rgb(202 210 37 / .55);
 }
 .dock__op:active { transform: scale(.97); transition-duration: 80ms; }
@@ -97,7 +98,7 @@
 }
 .dock__op:hover > svg { transform: translateY(-2px) scale(1.08); }
 .dock__nombre { font-size: 16.5px; font-weight: 600; letter-spacing: -.015em; }
-.dock__formato { font-family: var(--mono); font-size: 11.5px; color: var(--sobre-noche-2); }
+.dock__formato { font-family: var(--mono); font-size: 11.5px; color: var(--sobre-escena-2); }
 /* La acción, dicha: «Descargar» (o «Abrir» en la web) en una pastilla al pie
    de cada botón. La flecha baja un poco al pasar el cursor. */
 .dock__accion {
@@ -105,7 +106,7 @@
   margin-top: 12px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgb(255 255 255 / .1);
+  background: var(--vidrio-hover);
   font-size: 13.5px; font-weight: 600;
 }
 .dock__op .dock__accion svg {
@@ -168,10 +169,7 @@
   color: var(--tinta);
   border-radius: var(--radio-l);
   padding: 26px 26px 20px;
-  box-shadow:
-    0 0 0 1px rgb(255 255 255 / .06),
-    0 30px 80px rgb(0 0 0 / .45),
-    0 8px 24px rgb(0 0 0 / .25);
+  box-shadow: var(--sombra-escena);
   transform-origin: 50% 0;
 }
 
