@@ -95,9 +95,27 @@
   stroke-linecap: round; stroke-linejoin: round;
   transition: transform var(--dur-2) var(--rebote);
 }
-.dock__op:hover svg { transform: translateY(-2px) scale(1.08); }
+.dock__op:hover > svg { transform: translateY(-2px) scale(1.08); }
 .dock__nombre { font-size: 16.5px; font-weight: 600; letter-spacing: -.015em; }
 .dock__formato { font-family: var(--mono); font-size: 11.5px; color: var(--sobre-noche-2); }
+/* La acción, dicha: «Descargar» (o «Abrir» en la web) en una pastilla al pie
+   de cada botón. La flecha baja un poco al pasar el cursor. */
+.dock__accion {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / .1);
+  font-size: 13.5px; font-weight: 600;
+}
+.dock__op .dock__accion svg {
+  width: 15px; height: 15px; margin: 0;
+  stroke-width: 2.2;
+  transition: transform var(--dur-2) var(--rebote);
+}
+.dock__op:hover .dock__accion svg { transform: translateY(2px); }
+.dock__op[data-plataforma="web"]:hover .dock__accion svg { transform: translate(2px, -2px); }
+.dock__op.tarjeta--tuya .dock__accion { background: #11200f; color: #cad225; }
 
 .dock__op.tarjeta--tuya {
   background: var(--lima);

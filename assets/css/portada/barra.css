@@ -29,7 +29,7 @@
 .marca {
   display: inline-flex; align-items: center; gap: 10px;
   text-decoration: none;
-  min-width: 0;
+  flex: none;
 }
 .marca__logo { width: 28px; height: 28px; border-radius: 8px; flex: none; }
 .marca__nombre {
@@ -52,6 +52,7 @@
   font-size: 13.5px; font-weight: 500;
   color: var(--tinta-2);
   text-decoration: none;
+  white-space: nowrap;
   padding: 6px 0;
   transition: color var(--dur-1) var(--suave);
 }
@@ -150,8 +151,11 @@
   .menu, .menu__boton { display: none !important; }
 }
 
-/* ── Estrecho: las secciones pasan al menú ───────────────────────────────── */
-@media (max-width: 960px) {
+/* ── Estrecho: las secciones pasan al menú ─────────────────────────────────
+   A 1100 px y no antes: por debajo, marca, cuatro enlaces, el tema, entrar
+   y descargar ya no caben en una línea, y los enlaces se partían en dos
+   montándose sobre la marca. */
+@media (max-width: 1100px) {
   .barra__enlaces, .barra__entrar { display: none; }
   .menu__boton { display: grid; }
   .barra__nav { gap: 12px; }
