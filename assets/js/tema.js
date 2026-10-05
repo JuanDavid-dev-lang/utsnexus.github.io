@@ -28,12 +28,16 @@ export function iniciarTema() {
     }
   }
 
+  function oscuroSi(eleccion) {
+    return eleccion === 'oscuro' ||
+      (eleccion === 'sistema' && !!delSistema && delSistema.matches);
+  }
+
   function aplicar(eleccion) {
     if (eleccion === 'sistema') raiz.removeAttribute('data-tema');
     else raiz.setAttribute('data-tema', eleccion);
 
-    const esOscuro = eleccion === 'oscuro' ||
-      (eleccion === 'sistema' && !!delSistema && delSistema.matches);
+    const esOscuro = oscuroSi(eleccion);
 
     raiz.style.colorScheme = esOscuro ? 'dark' : 'light';
     if (meta) meta.setAttribute('content', esOscuro ? COLOR.oscuro : COLOR.claro);
@@ -46,23 +50,33 @@ export function iniciarTema() {
     if (grupo) grupo.dataset.activo = eleccion;
   }
 
-  /* El cambio de tema pasa por una transición de vista cuando el navegador
-     la tiene: un fundido de toda la página en vez de cada color cambiando
-     por su cuenta. Donde no, el cambio es inmediato y las transiciones de
-     color de la hoja de estilos lo suavizan. */
+  /* El cambio de tema entra como una planilla que se llena: el tema nuevo
+     barre la página fila por fila, de arriba abajo. Hacia el oscuro barre
+     desde la derecha, que es donde está el interruptor; hacia el claro, desde
+     la izquierda. El barrido lo dibuja la hoja de estilos sobre la
+     transición de vista; este guion solo marca hacia dónde va
+     (`data-cambio-tema`) mientras dura.
+
+     Sin transiciones de vista, con movimiento reducido, con la pestaña
+     oculta o cuando la elección no cambia cómo se ve la página («sistema»
+     estando ya en oscuro), el cambio es inmediato. */
   function cambiar(eleccion) {
     const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const oculta = document.visibilityState === 'hidden';
-    if (!document.startViewTransition || sinMovimiento || oculta) {
+    const igual = oscuroSi(eleccion) === (raiz.style.colorScheme === 'dark');
+    if (!document.startViewTransition || sinMovimiento || oculta || igual) {
       aplicar(eleccion);
       return;
     }
+    raiz.dataset.cambioTema = oscuroSi(eleccion) ? 'oscuro' : 'claro';
+    const transicion = document.startViewTransition(() => aplicar(eleccion));
     // Si el navegador aborta la transición (pestaña que pasa a segundo
     // plano a mitad de camino), el tema ya quedó aplicado: el rechazo no
     // tiene que llegar a la consola.
-    const transicion = document.startViewTransition(() => aplicar(eleccion));
     transicion.ready.catch(() => {});
-    transicion.finished.catch(() => {});
+    transicion.finished
+      .catch(() => {})
+      .finally(() => { delete raiz.dataset.cambioTema; });
   }
 
   opciones.forEach((boton) => {

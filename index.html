@@ -127,8 +127,8 @@
 
     <nav class="barra__nav" aria-label="Secciones">
       <div class="barra__enlaces" id="enlaces">
-        <a href="#capacidades">Qué hace</a>
         <a href="#descargas">Descargar</a>
+        <a href="#capacidades">Qué hace</a>
         <a href="#novedades">Novedades</a>
         <a href="#necesidad">La necesidad</a>
         <a href="requerimientos-uml.html">Documento</a>
@@ -160,8 +160,8 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
       </button>
       <div class="menu" id="menu" popover>
-        <a href="#capacidades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/></svg>Qué hace</a>
         <a href="#descargas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>Descargar</a>
+        <a href="#capacidades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/></svg>Qué hace</a>
         <a href="#novedades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>Novedades</a>
         <a href="#necesidad"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4.5M12 16h.01"/></svg>La necesidad</a>
         <a href="#creditos"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>Quién lo hizo</a>
@@ -188,14 +188,25 @@
         Notas por corte, asistencia por minutos reales y riesgo académico.
         <b>El servidor hace los cálculos; vos revisás y decidís.</b>
       </p>
-      <div class="hero__acciones">
-        <a class="boton boton--lima" href="#descargas">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
-          Descargar gratis
+      <!-- Lo primero que se ve: la descarga, sin bajar. Cada botón entrega el
+           archivo directo —los mismos enlaces que las tarjetas de abajo, y
+           `descargas.js` actualiza los dos a la vez— y el del equipo desde el
+           que se mira se enciende en lima. -->
+      <nav class="dock" aria-label="Descargar UTS Nexus">
+        <a class="dock__op" data-plataforma="windows" data-descarga="windows" href="https://www.dropbox.com/scl/fi/b7x8vsajh5q1isjp0kbuy/UTS-Nexus-Academico-Windows.exe?rlkey=fea1cre2x5lykdjhcf9n5cr5a&st=ejqfy6he&dl=1">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5 10 4.5v7H3v-6ZM11.5 4.3 21 3v8.5h-9.5v-7.2ZM3 12.5h7v7L3 18.5v-6ZM11.5 12.5H21V21l-9.5-1.3v-7.2Z"/></svg><span class="dock__nombre">Windows</span><span class="dock__formato">.exe · 10 y 11</span>
         </a>
-        <a class="flecha" href="https://utsnexusweb.ciaiuts.com/login" target="_blank" rel="noopener">Entrar en el navegador</a>
-      </div>
-      <p class="hero__nota">Windows, Linux, Android, iPhone y web · Uso académico y sin ánimo de lucro</p>
+        <a class="dock__op" data-plataforma="linux" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest/download/instalar-uts-nexus.sh">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c2.2 0 3.6 1.7 3.6 3.9 0 1.3.5 2.2 1.4 3.4 1.4 1.9 2.2 3.6 2.2 5.6 0 3.3-3 5.6-7.2 5.6S4.8 18.2 4.8 14.9c0-2 .8-3.7 2.2-5.6.9-1.2 1.4-2.1 1.4-3.4C8.4 3.7 9.8 2 12 2Z"/><path d="M10.4 6.3h.01M13.6 6.3h.01"/></svg><span class="dock__nombre">Linux</span><span class="dock__formato">instalador .sh</span>
+        </a>
+        <a class="dock__op" data-plataforma="android" data-descarga="android" href="https://www.dropbox.com/scl/fi/a8tjol3iwgh20hwf2ni5k/UTS-Nexus-Academico-Android.apk?rlkey=3q4cnw4677rydinkov0h1yj8d&st=la92phz1&dl=1">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg><span class="dock__nombre">Android</span><span class="dock__formato">.apk · 8.0 o más</span>
+        </a>
+        <a class="dock__op" data-plataforma="web" href="https://utsnexusweb.ciaiuts.com" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/></svg><span class="dock__nombre">Web e iPhone</span><span class="dock__formato">en el navegador</span>
+        </a>
+      </nav>
+      <p class="hero__nota">Gratis · Uso académico y sin ánimo de lucro · <a class="flecha" href="#descargas">Requisitos y ayuda para instalar</a></p>
     </div>
 
     <!-- Planilla real, con los pesos reales del reglamento. Las filas van
@@ -258,6 +269,149 @@
           Definitiva = C1&nbsp;33% + C2&nbsp;33% + C3&nbsp;34%
         </p>
       </figure>
+    </div>
+  </section>
+
+  <!-- ── Descargas: la rejilla de modelos ───────────────────────────────── -->
+  <section class="seccion" id="descargas" aria-labelledby="t-descargas">
+    <div class="envoltorio">
+      <header class="seccion__cab seccion__cab--centro">
+        <h2 class="titulo" id="t-descargas">Elegí dónde usarlo.</h2>
+        <p class="entrada">Elegí el equipo donde vas a pasar lista, o <b>entrá desde el navegador</b> sin instalar nada.</p>
+        <!-- La versión vigente, leída de los Releases. Escrita a mano como
+             respaldo; `novedades.js` la actualiza con la misma respuesta que
+             alimenta la sección de novedades. -->
+        <p class="version" id="version-actual">
+          <span class="version__punto" aria-hidden="true"></span>
+          Versión actual <b>v1.6.1</b> · <time datetime="2026-09-22">22 de septiembre de 2026</time>
+        </p>
+      </header>
+
+      <div class="modelos">
+
+        <article class="tarjeta revela" data-plataforma="windows">
+          <div class="tarjeta__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 5.5 10 4.5v7H3v-6ZM11.5 4.3 21 3v8.5h-9.5v-7.2ZM3 12.5h7v7L3 18.5v-6ZM11.5 12.5H21V21l-9.5-1.3v-7.2Z"/></svg>
+          </div>
+          <h3 class="tarjeta__titulo">Windows</h3>
+          <p class="tarjeta__formato">Instalador .exe</p>
+          <p class="tarjeta__desc">La aplicación de escritorio: pantalla completa, teclado, gráficos y reportes en PDF.</p>
+          <!-- Archivo directo en Dropbox. El publicador de versiones lo
+               sobrescribe en su sitio, así que siempre entrega la última. Sin
+               `target="_blank"`: se sirve como adjunto y la página no se mueve. -->
+          <a class="boton boton--tinta" href="https://www.dropbox.com/scl/fi/b7x8vsajh5q1isjp0kbuy/UTS-Nexus-Academico-Windows.exe?rlkey=fea1cre2x5lykdjhcf9n5cr5a&st=ejqfy6he&dl=1" data-descarga="windows">
+            Descargar
+          </a>
+          <dl class="requisitos">
+            <div><dt>Sistema</dt><dd>Windows 10 u 11 · 64 bits</dd></div>
+            <div><dt>Archivo</dt><dd>Instalador .exe</dd></div>
+            <div><dt>Se actualiza</dt><dd>Sola, desde la app</dd></div>
+          </dl>
+        </article>
+
+        <article class="tarjeta revela" data-plataforma="linux">
+          <div class="tarjeta__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2c2.2 0 3.6 1.7 3.6 3.9 0 1.3.5 2.2 1.4 3.4 1.4 1.9 2.2 3.6 2.2 5.6 0 3.3-3 5.6-7.2 5.6S4.8 18.2 4.8 14.9c0-2 .8-3.7 2.2-5.6.9-1.2 1.4-2.1 1.4-3.4C8.4 3.7 9.8 2 12 2Z"/><path d="M10.4 6.3h.01M13.6 6.3h.01"/><path d="M10.9 8.6h2.2l-1.1 1.3z"/><path d="M9.2 20.3 7.6 22M14.8 20.3 16.4 22"/></svg>
+          </div>
+          <h3 class="tarjeta__titulo">Linux</h3>
+          <p class="tarjeta__formato">Instalador .sh · 15 KB</p>
+          <p class="tarjeta__desc">La misma aplicación de escritorio, para quien da clase desde Ubuntu, Mint o Fedora.</p>
+          <!-- El instalador y no la AppImage suelta: la deja en el menú con su
+               icono y sabe desinstalarla. `releases/latest/download/…` siempre
+               entrega el último. -->
+          <a class="boton boton--tinta" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest/download/instalar-uts-nexus.sh">
+            Descargar
+          </a>
+          <dl class="requisitos">
+            <div><dt>Sistema</dt><dd>Cualquier distribución · 64 bits</dd></div>
+            <div><dt>Instala</dt><dd>Sin contraseña de administrador</dd></div>
+            <div><dt>Se actualiza</dt><dd>Sola, desde la app</dd></div>
+          </dl>
+        </article>
+
+        <article class="tarjeta revela" data-plataforma="android">
+          <div class="tarjeta__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>
+          </div>
+          <h3 class="tarjeta__titulo">Android</h3>
+          <p class="tarjeta__formato">Paquete .apk</p>
+          <p class="tarjeta__desc">Para el salón: pasás asistencia y subís notas desde el teléfono, sin depender del portátil.</p>
+          <a class="boton boton--tinta" href="https://www.dropbox.com/scl/fi/a8tjol3iwgh20hwf2ni5k/UTS-Nexus-Academico-Android.apk?rlkey=3q4cnw4677rydinkov0h1yj8d&st=la92phz1&dl=1" data-descarga="android">
+            Descargar
+          </a>
+          <dl class="requisitos">
+            <div><dt>Sistema</dt><dd>Android 8.0 o superior</dd></div>
+            <div><dt>Archivo</dt><dd>Paquete .apk</dd></div>
+            <div><dt>Se actualiza</dt><dd>Sola, desde Ajustes</dd></div>
+          </dl>
+        </article>
+
+        <article class="tarjeta revela" data-plataforma="web">
+          <div class="tarjeta__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/></svg>
+          </div>
+          <h3 class="tarjeta__titulo">Web e iPhone</h3>
+          <p class="tarjeta__formato">En el navegador</p>
+          <p class="tarjeta__desc">Sin instalar nada, desde cualquier equipo prestado. En iPhone y iPad queda como una app más, con su icono.</p>
+          <a class="boton boton--lima" href="https://utsnexusweb.ciaiuts.com" target="_blank" rel="noopener">
+            Entrar
+          </a>
+          <dl class="requisitos">
+            <div><dt>Sistema</dt><dd>Cualquier navegador actual</dd></div>
+            <div><dt>iPhone y iPad</dt><dd>Desde Safari</dd></div>
+            <div><dt>Incluye</dt><dd>Notas, asistencia y riesgo</dd></div>
+            <div><dt>Se actualiza</dt><dd>Sola, al abrirla</dd></div>
+          </dl>
+        </article>
+
+      </div>
+
+      <!-- Ayuda de instalación, plegada: quien la necesita la abre. -->
+      <div class="ayuda">
+        <details class="ayuda__item">
+          <summary>Cómo se instala en Linux</summary>
+          <div class="ayuda__cuerpo">
+            Descargá el instalador y abrí un terminal en la carpeta de descargas:
+            <code>bash instalar-uts-nexus.sh</code>. Con <code>bash</code> delante
+            no hace falta darle permiso de ejecución. Descarga la aplicación, la
+            deja en el menú con su icono y también sabe desinstalarla. No pide
+            contraseña: todo va dentro de tu carpeta personal.
+          </div>
+        </details>
+        <details class="ayuda__item">
+          <summary>Si preferís el paquete de tu distribución</summary>
+          <div class="ayuda__cuerpo">
+            El <code>.deb</code>, el <code>.rpm</code> y la <code>.AppImage</code>
+            suelta están en
+            <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest" target="_blank" rel="noopener">la publicación</a>.
+            El <code>.deb</code> y el <code>.rpm</code> piden contraseña porque
+            escriben en <code>/usr</code>.
+          </div>
+        </details>
+        <!-- iPhone no instala nada que no venga de la App Store, y publicar
+             allí cuesta una cuenta de pago de Apple. Lo que sí deja es añadir
+             una web a la pantalla de inicio: queda con su icono, a pantalla
+             completa y sin la barra de Safari. -->
+        <details class="ayuda__item" id="ayuda-iphone">
+          <summary>Cómo se instala en iPhone o iPad</summary>
+          <div class="ayuda__cuerpo">
+            Abrí <a href="https://utsnexusweb.ciaiuts.com" target="_blank" rel="noopener">utsnexusweb.ciaiuts.com</a>
+            en <b>Safari</b>, tocá <b>Compartir</b> (el cuadrado con la flecha
+            hacia arriba) y elegí <b>Añadir a pantalla de inicio</b>. Queda con
+            su icono y se abre a pantalla completa. Tiene que ser Safari: en
+            otros navegadores del iPhone esa opción no siempre aparece. Es la
+            versión web, así que incluye materias, notas, asistencia y riesgo.
+          </div>
+        </details>
+        <details class="ayuda__item">
+          <summary>Android pide permiso para instalar</summary>
+          <div class="ayuda__cuerpo">
+            No está en Play Store, así que la primera vez el teléfono pide
+            permiso para instalar desde fuera de la tienda. Aceptás una vez y
+            las siguientes actualizaciones ya entran solas.
+          </div>
+        </details>
+      </div>
     </div>
   </section>
 
@@ -435,149 +589,6 @@
         <input class="comparador__control" type="range" min="0" max="100" value="50" aria-label="Comparar la hoja de cálculo con la aplicación">
       </div>
       <p class="comparador__pie">Arrastrá la línea: los mismos cinco estudiantes, antes y ahora.</p>
-    </div>
-  </section>
-
-  <!-- ── Descargas: la rejilla de modelos ───────────────────────────────── -->
-  <section class="seccion" id="descargas" aria-labelledby="t-descargas">
-    <div class="envoltorio">
-      <header class="seccion__cab seccion__cab--centro">
-        <h2 class="titulo" id="t-descargas">Elegí dónde usarlo.</h2>
-        <p class="entrada">Elegí el equipo donde vas a pasar lista, o <b>entrá desde el navegador</b> sin instalar nada.</p>
-        <!-- La versión vigente, leída de los Releases. Escrita a mano como
-             respaldo; `novedades.js` la actualiza con la misma respuesta que
-             alimenta la sección de novedades. -->
-        <p class="version" id="version-actual">
-          <span class="version__punto" aria-hidden="true"></span>
-          Versión actual <b>v1.6.1</b> · <time datetime="2026-09-22">22 de septiembre de 2026</time>
-        </p>
-      </header>
-
-      <div class="modelos">
-
-        <article class="tarjeta revela" data-plataforma="windows">
-          <div class="tarjeta__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M3 5.5 10 4.5v7H3v-6ZM11.5 4.3 21 3v8.5h-9.5v-7.2ZM3 12.5h7v7L3 18.5v-6ZM11.5 12.5H21V21l-9.5-1.3v-7.2Z"/></svg>
-          </div>
-          <h3 class="tarjeta__titulo">Windows</h3>
-          <p class="tarjeta__formato">Instalador .exe</p>
-          <p class="tarjeta__desc">La aplicación de escritorio: pantalla completa, teclado, gráficos y reportes en PDF.</p>
-          <!-- Archivo directo en Dropbox. El publicador de versiones lo
-               sobrescribe en su sitio, así que siempre entrega la última. Sin
-               `target="_blank"`: se sirve como adjunto y la página no se mueve. -->
-          <a class="boton boton--tinta" href="https://www.dropbox.com/scl/fi/b7x8vsajh5q1isjp0kbuy/UTS-Nexus-Academico-Windows.exe?rlkey=fea1cre2x5lykdjhcf9n5cr5a&st=ejqfy6he&dl=1" data-descarga="windows">
-            Descargar
-          </a>
-          <dl class="requisitos">
-            <div><dt>Sistema</dt><dd>Windows 10 u 11 · 64 bits</dd></div>
-            <div><dt>Archivo</dt><dd>Instalador .exe</dd></div>
-            <div><dt>Se actualiza</dt><dd>Sola, desde la app</dd></div>
-          </dl>
-        </article>
-
-        <article class="tarjeta revela" data-plataforma="linux">
-          <div class="tarjeta__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M12 2c2.2 0 3.6 1.7 3.6 3.9 0 1.3.5 2.2 1.4 3.4 1.4 1.9 2.2 3.6 2.2 5.6 0 3.3-3 5.6-7.2 5.6S4.8 18.2 4.8 14.9c0-2 .8-3.7 2.2-5.6.9-1.2 1.4-2.1 1.4-3.4C8.4 3.7 9.8 2 12 2Z"/><path d="M10.4 6.3h.01M13.6 6.3h.01"/><path d="M10.9 8.6h2.2l-1.1 1.3z"/><path d="M9.2 20.3 7.6 22M14.8 20.3 16.4 22"/></svg>
-          </div>
-          <h3 class="tarjeta__titulo">Linux</h3>
-          <p class="tarjeta__formato">Instalador .sh · 15 KB</p>
-          <p class="tarjeta__desc">La misma aplicación de escritorio, para quien da clase desde Ubuntu, Mint o Fedora.</p>
-          <!-- El instalador y no la AppImage suelta: la deja en el menú con su
-               icono y sabe desinstalarla. `releases/latest/download/…` siempre
-               entrega el último. -->
-          <a class="boton boton--tinta" href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest/download/instalar-uts-nexus.sh">
-            Descargar
-          </a>
-          <dl class="requisitos">
-            <div><dt>Sistema</dt><dd>Cualquier distribución · 64 bits</dd></div>
-            <div><dt>Instala</dt><dd>Sin contraseña de administrador</dd></div>
-            <div><dt>Se actualiza</dt><dd>Sola, desde la app</dd></div>
-          </dl>
-        </article>
-
-        <article class="tarjeta revela" data-plataforma="android">
-          <div class="tarjeta__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>
-          </div>
-          <h3 class="tarjeta__titulo">Android</h3>
-          <p class="tarjeta__formato">Paquete .apk</p>
-          <p class="tarjeta__desc">Para el salón: pasás asistencia y subís notas desde el teléfono, sin depender del portátil.</p>
-          <a class="boton boton--tinta" href="https://www.dropbox.com/scl/fi/a8tjol3iwgh20hwf2ni5k/UTS-Nexus-Academico-Android.apk?rlkey=3q4cnw4677rydinkov0h1yj8d&st=la92phz1&dl=1" data-descarga="android">
-            Descargar
-          </a>
-          <dl class="requisitos">
-            <div><dt>Sistema</dt><dd>Android 8.0 o superior</dd></div>
-            <div><dt>Archivo</dt><dd>Paquete .apk</dd></div>
-            <div><dt>Se actualiza</dt><dd>Sola, desde Ajustes</dd></div>
-          </dl>
-        </article>
-
-        <article class="tarjeta revela" data-plataforma="web">
-          <div class="tarjeta__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"/></svg>
-          </div>
-          <h3 class="tarjeta__titulo">Web e iPhone</h3>
-          <p class="tarjeta__formato">En el navegador</p>
-          <p class="tarjeta__desc">Sin instalar nada, desde cualquier equipo prestado. En iPhone y iPad queda como una app más, con su icono.</p>
-          <a class="boton boton--lima" href="https://utsnexusweb.ciaiuts.com" target="_blank" rel="noopener">
-            Entrar
-          </a>
-          <dl class="requisitos">
-            <div><dt>Sistema</dt><dd>Cualquier navegador actual</dd></div>
-            <div><dt>iPhone y iPad</dt><dd>Desde Safari</dd></div>
-            <div><dt>Incluye</dt><dd>Notas, asistencia y riesgo</dd></div>
-            <div><dt>Se actualiza</dt><dd>Sola, al abrirla</dd></div>
-          </dl>
-        </article>
-
-      </div>
-
-      <!-- Ayuda de instalación, plegada: quien la necesita la abre. -->
-      <div class="ayuda">
-        <details class="ayuda__item">
-          <summary>Cómo se instala en Linux</summary>
-          <div class="ayuda__cuerpo">
-            Descargá el instalador y abrí un terminal en la carpeta de descargas:
-            <code>bash instalar-uts-nexus.sh</code>. Con <code>bash</code> delante
-            no hace falta darle permiso de ejecución. Descarga la aplicación, la
-            deja en el menú con su icono y también sabe desinstalarla. No pide
-            contraseña: todo va dentro de tu carpeta personal.
-          </div>
-        </details>
-        <details class="ayuda__item">
-          <summary>Si preferís el paquete de tu distribución</summary>
-          <div class="ayuda__cuerpo">
-            El <code>.deb</code>, el <code>.rpm</code> y la <code>.AppImage</code>
-            suelta están en
-            <a href="https://github.com/JuanDavid-dev-lang/UTS_Nexus_Releases/releases/latest" target="_blank" rel="noopener">la publicación</a>.
-            El <code>.deb</code> y el <code>.rpm</code> piden contraseña porque
-            escriben en <code>/usr</code>.
-          </div>
-        </details>
-        <!-- iPhone no instala nada que no venga de la App Store, y publicar
-             allí cuesta una cuenta de pago de Apple. Lo que sí deja es añadir
-             una web a la pantalla de inicio: queda con su icono, a pantalla
-             completa y sin la barra de Safari. -->
-        <details class="ayuda__item" id="ayuda-iphone">
-          <summary>Cómo se instala en iPhone o iPad</summary>
-          <div class="ayuda__cuerpo">
-            Abrí <a href="https://utsnexusweb.ciaiuts.com" target="_blank" rel="noopener">utsnexusweb.ciaiuts.com</a>
-            en <b>Safari</b>, tocá <b>Compartir</b> (el cuadrado con la flecha
-            hacia arriba) y elegí <b>Añadir a pantalla de inicio</b>. Queda con
-            su icono y se abre a pantalla completa. Tiene que ser Safari: en
-            otros navegadores del iPhone esa opción no siempre aparece. Es la
-            versión web, así que incluye materias, notas, asistencia y riesgo.
-          </div>
-        </details>
-        <details class="ayuda__item">
-          <summary>Android pide permiso para instalar</summary>
-          <div class="ayuda__cuerpo">
-            No está en Play Store, así que la primera vez el teléfono pide
-            permiso para instalar desde fuera de la tienda. Aceptás una vez y
-            las siguientes actualizaciones ya entran solas.
-          </div>
-        </details>
-      </div>
     </div>
   </section>
 

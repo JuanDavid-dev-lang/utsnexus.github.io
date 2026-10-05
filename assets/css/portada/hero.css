@@ -16,7 +16,7 @@
     var(--noche);
   color: var(--sobre-noche);
   text-align: center;
-  padding: clamp(56px, 10vw, 112px) 0 clamp(72px, 10vw, 128px);
+  padding: clamp(40px, 6.5vw, 84px) 0 clamp(72px, 10vw, 128px);
 }
 
 .hero__producto {
@@ -27,14 +27,14 @@
   margin-bottom: 14px;
 }
 .hero__titulo {
-  font-size: clamp(3.1rem, 10.5vw, 8rem);
+  font-size: clamp(3rem, 9.4vw, 7.2rem);
   font-weight: 700;
   letter-spacing: -.045em;
   line-height: .98;
 }
 .hero__titulo .texto-brillo { background-image: var(--brillo-noche); }
 .hero__entrada {
-  margin: 26px auto 0;
+  margin: 22px auto 0;
   max-width: 36ch;
   font-size: clamp(1.1rem, 1.9vw, 1.45rem);
   font-weight: 500;
@@ -54,6 +54,74 @@
   margin-top: 22px;
   font-size: 13.5px;
   color: var(--sobre-noche-2);
+}
+
+/* ── Dock de descargas ───────────────────────────────────────────────────
+   Cuatro botones de vidrio bajo el titular, uno por equipo, que bajan el
+   archivo directo. El del equipo desde el que se mira (lo marca
+   `descargas.js` con `tarjeta--tuya`) se enciende en lima con su sello. */
+.dock {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: min(100%, 780px);
+  margin: 34px auto 0;
+}
+.dock__op {
+  position: relative;
+  display: grid; justify-items: center; gap: 3px;
+  padding: 20px 10px 16px;
+  border-radius: 22px;
+  background: rgb(255 255 255 / .06);
+  border: 1px solid rgb(255 255 255 / .12);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  color: var(--sobre-noche);
+  text-decoration: none;
+  transition: transform var(--dur-2) var(--rebote),
+              background-color var(--dur-1) var(--suave),
+              border-color var(--dur-1) var(--suave),
+              box-shadow var(--dur-2) var(--suave);
+  -webkit-tap-highlight-color: transparent;
+}
+.dock__op:hover {
+  transform: translateY(-4px);
+  background: rgb(255 255 255 / .1);
+  border-color: rgb(202 210 37 / .55);
+}
+.dock__op:active { transform: scale(.97); transition-duration: 80ms; }
+.dock__op svg {
+  width: 30px; height: 30px; margin-bottom: 8px;
+  fill: none; stroke: currentColor; stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+  transition: transform var(--dur-2) var(--rebote);
+}
+.dock__op:hover svg { transform: translateY(-2px) scale(1.08); }
+.dock__nombre { font-size: 16.5px; font-weight: 600; letter-spacing: -.015em; }
+.dock__formato { font-family: var(--mono); font-size: 11.5px; color: var(--sobre-noche-2); }
+
+.dock__op.tarjeta--tuya {
+  background: var(--lima);
+  border-color: transparent;
+  color: #11200f;
+  box-shadow: 0 12px 40px rgb(202 210 37 / .35);
+}
+.dock__op.tarjeta--tuya:hover { background: var(--lima-hover); }
+.dock__op.tarjeta--tuya .dock__formato { color: rgb(17 32 15 / .7); }
+.dock .tarjeta__tuya {
+  position: absolute; top: -11px; left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #11200f; color: #cad225;
+  border: 1px solid #cad225;
+  font-size: 11.5px; font-weight: 600;
+  white-space: nowrap;
+}
+
+.hero__nota .flecha { font-size: inherit; }
+
+@media (max-width: 600px) {
+  .dock { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 10px; }
 }
 
 /* ── Escena: el halo y la perspectiva ───────────────────────────────────── */

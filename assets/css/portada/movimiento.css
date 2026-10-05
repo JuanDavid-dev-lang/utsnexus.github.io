@@ -27,6 +27,14 @@ html.js .momento__visual.revela { opacity: 1; transform: none; }
 /* El hero entra en cuanto pinta: el texto, y la escena un poco después. */
 html.js .hero__texto { animation: entrar 900ms var(--sale) both; }
 html.js .hero__escena { animation: entrar 1100ms var(--sale) 180ms both; }
+/* Los botones de descarga llegan uno tras otro, detrás del titular.
+   `backwards` y no `both`: al terminar, la animación suelta el
+   `transform` y el botón vuelve a poder subir al pasar el cursor. */
+html.js .dock__op { animation: entrar 800ms var(--sale) backwards; }
+html.js .dock__op:nth-child(1) { animation-delay: 260ms; }
+html.js .dock__op:nth-child(2) { animation-delay: 330ms; }
+html.js .dock__op:nth-child(3) { animation-delay: 400ms; }
+html.js .dock__op:nth-child(4) { animation-delay: 470ms; }
 @keyframes entrar {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: none; }
@@ -58,6 +66,71 @@ html.js .hero__escena { animation: entrar 1100ms var(--sale) 180ms both; }
     to   { opacity: 1; transform: none; }
   }
 }
+
+/* ── Cambio de tema: la planilla que se llena ───────────────────────────
+   El tema nuevo entra en 8 filas, una tras otra de arriba abajo, cada una
+   corriéndose de un lado al otro como una fila de planilla que se llena.
+   Es una máscara de 8 franjas sobre la captura nueva de la transición de
+   vista; el ancho de cada franja sale de un solo número animado,
+   `--barrido`, con un desfase por fila.
+
+   `--barrido` arranca en 1: si un navegador no supiera animar la propiedad
+   registrada, la captura nueva se ve entera y el cambio es inmediato, en
+   vez de quedarse tapada.
+
+   Mientras dura, la barra y las filas de la planilla del hero dejan de ser
+   capturas aparte: si no, cambiarían de golpe por encima del barrido. */
+@property --barrido { syntax: '<number>'; inherits: false; initial-value: 1; }
+
+html[data-cambio-tema] .barra,
+html[data-cambio-tema] .fila,
+html[data-cambio-tema] .umbral { view-transition-name: none !important; }
+
+html[data-cambio-tema]::view-transition-old(root) { animation: none; }
+html[data-cambio-tema]::view-transition-new(root) {
+  animation: barrido-tema 1100ms cubic-bezier(.65, 0, .35, 1) both;
+  -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: right 0%, right 14.29%, right 28.57%, right 42.86%, right 57.14%, right 71.43%, right 85.71%, right 100%;
+  mask-position: right 0%, right 14.29%, right 28.57%, right 42.86%, right 57.14%, right 71.43%, right 85.71%, right 100%;
+  -webkit-mask-size:
+    calc(clamp(0, var(--barrido) * 1.7 - 0.0, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.1, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.2, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.3, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.4, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.5, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.6, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.7, 1) * 100%) 12.6%;
+  mask-size:
+    calc(clamp(0, var(--barrido) * 1.7 - 0.0, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.1, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.2, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.3, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.4, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.5, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.6, 1) * 100%) 12.6%,
+    calc(clamp(0, var(--barrido) * 1.7 - 0.7, 1) * 100%) 12.6%;
+}
+html[data-cambio-tema="claro"]::view-transition-new(root) {
+  -webkit-mask-position: left 0%, left 14.29%, left 28.57%, left 42.86%, left 57.14%, left 71.43%, left 85.71%, left 100%;
+  mask-position: left 0%, left 14.29%, left 28.57%, left 42.86%, left 57.14%, left 71.43%, left 85.71%, left 100%;
+}
+@keyframes barrido-tema {
+  from { --barrido: 0; }
+  to   { --barrido: 1; }
+}
+
+/* El icono elegido entra girando: el sol da un cuarto de vuelta, la luna
+   se mece y la pantalla asiente. */
+.tema__op[aria-pressed="true"] svg { animation: icono-sol 600ms var(--rebote); }
+.tema__op[data-tema-op="oscuro"][aria-pressed="true"] svg { animation-name: icono-luna; }
+.tema__op[data-tema-op="sistema"][aria-pressed="true"] svg { animation-name: icono-sistema; }
+@keyframes icono-sol { from { transform: rotate(-90deg) scale(.6); } }
+@keyframes icono-luna { 0% { transform: rotate(40deg) scale(.6); } 60% { transform: rotate(-12deg); } }
+@keyframes icono-sistema { 0% { transform: translateY(4px) scale(.7); } 60% { transform: translateY(-2px); } }
 
 /* ── Entre páginas ─────────────────────────────────────────────────────── */
 @view-transition { navigation: auto; }

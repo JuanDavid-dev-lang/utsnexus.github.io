@@ -34,17 +34,18 @@ function plataforma() {
   return null;
 }
 
-/** Señala la tarjeta del equipo desde el que se mira, sin moverla de sitio. */
+/** Señala el equipo desde el que se mira, sin mover nada de sitio: el botón
+ *  del hero y la tarjeta de la sección de descargas. */
 function sellarTuEquipo() {
   const cual = plataforma();
   if (!cual) return;
-  const tarjeta = document.querySelector('[data-plataforma="' + cual + '"]');
-  if (!tarjeta) return;
-  const sello = document.createElement('span');
-  sello.className = 'tarjeta__tuya';
-  sello.textContent = 'Tu equipo';
-  tarjeta.classList.add('tarjeta--tuya');
-  tarjeta.prepend(sello);
+  document.querySelectorAll('[data-plataforma="' + cual + '"]').forEach((tarjeta) => {
+    const sello = document.createElement('span');
+    sello.className = 'tarjeta__tuya';
+    sello.textContent = 'Tu equipo';
+    tarjeta.classList.add('tarjeta--tuya');
+    tarjeta.prepend(sello);
+  });
 }
 
 export function iniciarDescargas() {
