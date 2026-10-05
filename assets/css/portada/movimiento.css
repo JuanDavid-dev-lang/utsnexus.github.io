@@ -68,11 +68,17 @@ html.js .dock__op:nth-child(4) { animation-delay: 470ms; }
 }
 
 /* ── Cambio de tema: la planilla que se llena ───────────────────────────
-   El tema nuevo entra en 8 filas, una tras otra de arriba abajo, cada una
+   El tema nuevo entra en 10 filas, una tras otra de arriba abajo, cada una
    corriéndose de un lado al otro como una fila de planilla que se llena.
-   Es una máscara de 8 franjas sobre la captura nueva de la transición de
+   Es una máscara de 10 franjas sobre la captura nueva de la transición de
    vista; el ancho de cada franja sale de un solo número animado,
    `--barrido`, con un desfase por fila.
+
+   El borde de cada fila se funde a lo largo de un tercio de la pantalla
+   (`--pluma`), no es un corte: sobre el hero, que es oscuro en los dos
+   temas, un borde duro dibujaba
+   escalones de negro sobre negro que parecían un fallo de pantalla. Con la
+   pluma se lee como una ola que pasa.
 
    `--barrido` arranca en 1: si un navegador no supiera animar la propiedad
    registrada, la captura nueva se ve entera y el cambio es inmediato, en
@@ -88,35 +94,42 @@ html[data-cambio-tema] .umbral { view-transition-name: none !important; }
 
 html[data-cambio-tema]::view-transition-old(root) { animation: none; }
 html[data-cambio-tema]::view-transition-new(root) {
-  animation: barrido-tema 1100ms cubic-bezier(.65, 0, .35, 1) both;
-  -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
-  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  --pluma: 38vw;
+  animation: barrido-tema 1300ms cubic-bezier(.45, 0, .25, 1) both;
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000);
+  mask-image: linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to left, #000 calc(100% - var(--pluma)), #0000);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  -webkit-mask-position: right 0%, right 14.29%, right 28.57%, right 42.86%, right 57.14%, right 71.43%, right 85.71%, right 100%;
-  mask-position: right 0%, right 14.29%, right 28.57%, right 42.86%, right 57.14%, right 71.43%, right 85.71%, right 100%;
+  -webkit-mask-position: right 0%, right 11.11%, right 22.22%, right 33.33%, right 44.44%, right 55.56%, right 66.67%, right 77.78%, right 88.89%, right 100%;
+  mask-position: right 0%, right 11.11%, right 22.22%, right 33.33%, right 44.44%, right 55.56%, right 66.67%, right 77.78%, right 88.89%, right 100%;
   -webkit-mask-size:
-    calc(clamp(0, var(--barrido) * 1.7 - 0.0, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.1, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.2, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.3, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.4, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.5, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.6, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.7, 1) * 100%) 12.6%;
+    calc(clamp(0, var(--barrido) * 1.54 - 0.00, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.06, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.12, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.18, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.24, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.30, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.36, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.42, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.48, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.54, 1) * (100% + var(--pluma))) 10.2%;
   mask-size:
-    calc(clamp(0, var(--barrido) * 1.7 - 0.0, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.1, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.2, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.3, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.4, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.5, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.6, 1) * 100%) 12.6%,
-    calc(clamp(0, var(--barrido) * 1.7 - 0.7, 1) * 100%) 12.6%;
+    calc(clamp(0, var(--barrido) * 1.54 - 0.00, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.06, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.12, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.18, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.24, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.30, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.36, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.42, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.48, 1) * (100% + var(--pluma))) 10.2%,
+    calc(clamp(0, var(--barrido) * 1.54 - 0.54, 1) * (100% + var(--pluma))) 10.2%;
 }
 html[data-cambio-tema="claro"]::view-transition-new(root) {
-  -webkit-mask-position: left 0%, left 14.29%, left 28.57%, left 42.86%, left 57.14%, left 71.43%, left 85.71%, left 100%;
-  mask-position: left 0%, left 14.29%, left 28.57%, left 42.86%, left 57.14%, left 71.43%, left 85.71%, left 100%;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000);
+  mask-image: linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000), linear-gradient(to right, #000 calc(100% - var(--pluma)), #0000);
+  -webkit-mask-position: left 0%, left 11.11%, left 22.22%, left 33.33%, left 44.44%, left 55.56%, left 66.67%, left 77.78%, left 88.89%, left 100%;
+  mask-position: left 0%, left 11.11%, left 22.22%, left 33.33%, left 44.44%, left 55.56%, left 66.67%, left 77.78%, left 88.89%, left 100%;
 }
 @keyframes barrido-tema {
   from { --barrido: 0; }
