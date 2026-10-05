@@ -1,0 +1,115 @@
+<!doctype html>
+<!-- Plantilla de la imagen para compartir (Open Graph, 1200×630).
+
+     No se publica: `generar-imagenes.py` la abre en Chrome o Edge sin
+     ventana y guarda la captura en assets/og.png. Se dibuja con HTML y no con
+     PIL para que lleve las mismas fuentes, degradados y planilla que el hero.
+
+     WhatsApp, en la vista pequeña, recorta un cuadrado del CENTRO: por eso el
+     logo y «La planilla» van centrados, y lo que sobra a los lados es fondo. -->
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700&family=Geist+Mono:wght@500;600&display=block" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    font-family: 'Geist', system-ui, sans-serif;
+    color: #f1f4ea;
+    text-align: center;
+    background:
+      radial-gradient(46% 60% at 50% 108%, rgb(202 210 37 / .30), transparent 70%),
+      radial-gradient(70% 70% at 50% -10%, rgb(20 77 55 / .85), transparent 72%),
+      radial-gradient(30% 40% at 8% 90%, rgb(90 214 154 / .10), transparent 70%),
+      #0a110d;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .marca {
+    display: inline-flex; align-items: center; gap: 14px;
+    margin-top: 48px;
+    font-size: 30px; font-weight: 600; letter-spacing: -.02em;
+    color: #c9d2c8;
+  }
+  .marca img { width: 48px; height: 48px; border-radius: 12px; }
+
+  h1 {
+    margin-top: 18px;
+    font-size: 110px;
+    font-weight: 700;
+    letter-spacing: -.05em;
+    line-height: .96;
+  }
+  h1 span {
+    background: linear-gradient(100deg, #e9f3c0 0%, #cad225 45%, #7cc69b 100%);
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+  }
+
+  .plataformas {
+    margin-top: 22px;
+    font-size: 24px; font-weight: 500; letter-spacing: -.01em;
+    color: #a3aea4;
+  }
+  .plataformas b { color: #cad225; font-weight: 600; }
+
+  /* La planilla asomando por abajo, recostada como en el hero. */
+  .escena {
+    position: absolute; left: 50%; top: 466px;
+    width: 760px; margin-left: -380px;
+    perspective: 1400px;
+  }
+  .planilla {
+    background: #ffffff;
+    color: #161b17;
+    border-radius: 22px;
+    padding: 16px 26px 22px;
+    text-align: left;
+    transform: rotateX(24deg);
+    transform-origin: 50% 100%;
+    box-shadow: 0 0 0 1px rgb(255 255 255 / .08), 0 -20px 80px rgb(202 210 37 / .25);
+  }
+  .fila {
+    display: grid; grid-template-columns: 1fr 70px 70px 70px 150px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e1e5dc;
+    font-family: 'Geist Mono', monospace; font-size: 19px;
+  }
+  .fila span:not(:first-child) { text-align: right; }
+  .fila span:first-child { font-family: 'Geist', sans-serif; font-weight: 500; font-size: 20px; }
+  .ok { color: #12795a; font-weight: 600; }
+  .mal { color: #d92d20; font-weight: 600; }
+  .chip {
+    display: inline-block; margin-left: 8px; padding: 2px 9px; border-radius: 6px;
+    background: #fde4e1; color: #d92d20;
+    font-family: 'Geist', sans-serif; font-style: normal; font-size: 13px; font-weight: 600; vertical-align: 2px;
+  }
+  .umbral { position: relative; height: 0; border-top: 3px dashed #cad225; margin: 4px 0; }
+  .umbral i {
+    position: absolute; left: 0; top: -14px;
+    background: #cad225; color: #11200f;
+    border-radius: 999px; padding: 3px 12px;
+    font-family: 'Geist Mono', monospace; font-style: normal; font-size: 14px; font-weight: 600;
+  }
+</style>
+</head>
+<body>
+  <p class="marca"><img src="../assets/logo.png" alt="">UTS Nexus Académico</p>
+  <h1>La planilla<br><span>que avisa sola.</span></h1>
+  <p class="plataformas"><b>Gratis</b> · Windows · Linux · Android · iPhone · Web</p>
+
+  <div class="escena">
+    <div class="planilla">
+      <div class="fila"><span>Camilo Peña</span><span>3.4</span><span>3.1</span><span>3.2</span><span class="ok">3.2</span></div>
+      <div class="fila"><span>Laura Gómez</span><span>3.1</span><span>2.9</span><span>3.3</span><span class="ok">3.1</span></div>
+      <div class="umbral"><i>3.0 · aprueba</i></div>
+      <div class="fila"><span>Valentina Soto</span><span>2.6</span><span>2.2</span><span>2.4</span><span class="mal">2.4<em class="chip">riesgo</em></span></div>
+    </div>
+  </div>
+</body>
+</html>
