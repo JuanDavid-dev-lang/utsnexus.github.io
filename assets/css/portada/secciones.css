@@ -1,0 +1,190 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Secciones de la portada.
+
+   Ritmo de página de producto: franjas claras y oscuras que alternan, cada
+   una con un titular grande y una sola idea. Las tarjetas existen solo
+   donde agrupan algo; el resto es tipografía y aire.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.seccion { padding: clamp(80px, 11vw, 150px) 0 clamp(88px, 12vw, 160px); }
+.seccion--alt { background: var(--lienzo-alt); }
+.seccion--noche {
+  background: var(--noche);
+  color: var(--sobre-noche);
+  --tinta: var(--sobre-noche);
+  --tinta-2: var(--sobre-noche-2);
+  --marca-texto: #dbe27a;
+  --linea: rgb(255 255 255 / .1);
+  --brillo: var(--brillo-noche);
+}
+.seccion__cab { max-width: 880px; }
+.seccion__cab--centro { margin-inline: auto; text-align: center; }
+.seccion__cab--centro .entrada { margin-inline: auto; }
+.seccion__cab .entrada { margin-top: 22px; }
+
+/* ── Descargas: la rejilla de «modelos» ───────────────────────────────────
+   Cuatro columnas centradas que se comparan de un vistazo: icono, nombre,
+   una línea, el botón y después los requisitos alineados fila a fila. */
+.version {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 26px;
+  padding: 8px 16px;
+  background: var(--lienzo-alt);
+  border-radius: 999px;
+  font-size: 14px; color: var(--tinta-2);
+}
+.version b { color: var(--tinta); font-family: var(--mono); font-weight: 600; }
+.version__punto {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--exito);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--exito) 22%, transparent);
+}
+
+.modelos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin-top: clamp(48px, 6vw, 80px);
+}
+.tarjeta {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto auto;
+  justify-items: center;
+  text-align: center;
+  padding: 8px clamp(14px, 2vw, 28px) 0;
+  border-left: 1px solid var(--linea);
+}
+.tarjeta:first-child { border-left: 0; }
+.tarjeta__icono {
+  display: grid; place-items: center;
+  width: 84px; height: 84px;
+  margin-bottom: 22px;
+  border-radius: 24px;
+  background: var(--lienzo-alt);
+  color: var(--tinta);
+  transition: transform var(--dur-2) var(--rebote), background-color var(--dur-2) var(--suave);
+}
+.tarjeta:hover .tarjeta__icono { transform: translateY(-4px); }
+.tarjeta__icono svg {
+  width: 40px; height: 40px;
+  fill: none; stroke: currentColor; stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.tarjeta__titulo { font-size: clamp(1.7rem, 2.6vw, 2.2rem); letter-spacing: -.035em; }
+.tarjeta__formato {
+  margin-top: 8px;
+  font-family: var(--mono); font-size: 12.5px;
+  color: var(--tinta-2);
+}
+.tarjeta__desc { margin: 18px 0 24px; color: var(--tinta-2); font-size: 15.5px; max-width: 26ch; }
+.tarjeta .boton { width: 100%; max-width: 240px; }
+.requisitos {
+  width: 100%;
+  margin: 32px 0 0; padding-top: 8px;
+  border-top: 1px solid var(--linea);
+}
+.requisitos div { padding: 16px 0; border-bottom: 1px solid var(--linea); }
+.requisitos div:last-child { border-bottom: 0; }
+.requisitos dt { font-size: 12.5px; color: var(--tinta-2); }
+.requisitos dd { margin: 4px 0 0; font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+
+/* «Tu equipo»: lo pone `descargas.js` en la columna del sistema que se
+   está usando. La columna no se mueve; solo se marca. */
+.tarjeta__tuya {
+  position: absolute; top: -30px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px; font-weight: 600;
+  color: var(--marca-texto);
+  white-space: nowrap;
+}
+.tarjeta--tuya .tarjeta__icono { background: var(--lima-tenue); }
+
+/* Ayuda de instalación: tres preguntas en fila, plegadas. */
+.ayuda {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
+  margin-top: clamp(56px, 7vw, 88px);
+}
+.ayuda__item {
+  background: var(--lienzo-alt);
+  border-radius: var(--radio-l);
+  padding: 4px 22px;
+}
+.ayuda__item summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  min-height: 60px;
+  font-weight: 600; font-size: 15.5px; letter-spacing: -.01em;
+  cursor: pointer;
+  list-style: none;
+}
+.ayuda__item summary::-webkit-details-marker { display: none; }
+.ayuda__item summary::after {
+  content: '+';
+  flex: none;
+  display: grid; place-items: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--tarjeta);
+  font-size: 18px; font-weight: 500; line-height: 1;
+  transition: transform var(--dur-2) var(--sale);
+}
+.ayuda__item[open] summary::after { transform: rotate(45deg); }
+.ayuda__cuerpo { padding: 0 0 20px; color: var(--tinta-2); font-size: 15px; }
+.ayuda__cuerpo a { color: var(--marca-texto); }
+
+/* ── Cierre ────────────────────────────────────────────────────────────── */
+.cierre {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(96px, 13vw, 170px) 0;
+  text-align: center;
+  background:
+    radial-gradient(50% 70% at 50% 110%, rgb(202 210 37 / .2), transparent 70%),
+    var(--noche);
+  color: var(--sobre-noche);
+  /* Sobre la noche, el enlace y el degradado usan su versión clara también
+     en el tema claro. */
+  --marca-texto: #dbe27a;
+  --brillo: var(--brillo-noche);
+}
+.cierre__logo { width: 76px; height: 76px; margin: 0 auto 28px; border-radius: 20px; }
+.cierre .titulo { max-width: 14ch; margin-inline: auto; }
+.cierre .hero__acciones { margin-top: 36px; }
+
+/* ── Pie ───────────────────────────────────────────────────────────────── */
+.pie {
+  background: var(--lienzo-alt);
+  color: var(--tinta-2);
+  font-size: 13px;
+  padding: 28px 0 40px;
+}
+.pie__migas {
+  display: flex; align-items: center; gap: 8px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--linea);
+}
+.pie__migas img { width: 18px; height: 18px; border-radius: 5px; }
+.pie__migas span[aria-hidden] { opacity: .6; }
+.pie__migas a { text-decoration: none; }
+.pie__migas a:hover { text-decoration: underline; }
+.pie__fila {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 14px 24px;
+  padding-top: 18px;
+}
+.pie__enlaces { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.pie__enlaces a { text-decoration: none; }
+.pie__enlaces a:hover { color: var(--tinta); text-decoration: underline; }
+
+/* ── Adaptación ────────────────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+  .modelos { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 72px; }
+  .tarjeta:nth-child(3) { border-left: 0; }
+  .ayuda { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .modelos { grid-template-columns: 1fr; row-gap: 64px; }
+  .tarjeta { border-left: 0; }
+}

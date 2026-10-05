@@ -1,0 +1,342 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Lo más destacado — una galería horizontal, una idea por tarjeta.
+
+   Cada tarjeta tiene su propia luz: verde para las notas, menta para la
+   asistencia, coral para el riesgo, papel para el PDF. La ilustración
+   ocupa la tarjeta y el texto va abajo, como el pie de una foto. Con guion
+   avanza sola (con pausa), y el punto activo se llena mientras dura.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.galeria { position: relative; margin-top: clamp(36px, 5vw, 56px); }
+
+.galeria__pista {
+  --lado: max(var(--margen), (100% - var(--ancho)) / 2);
+  display: flex; gap: 22px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--lado);
+  padding: 4px var(--lado) 8px;
+  scrollbar-width: none;
+}
+.galeria__pista::-webkit-scrollbar { display: none; }
+.galeria__pista:focus-visible { outline-offset: -3px; border-radius: 0; }
+
+/* Grano fino sobre las tarjetas: rompe lo plano del degradado digital. */
+.momento {
+  --luz: rgb(202 210 37 / .22);
+  --luz-2: rgb(20 77 55 / .6);
+  position: relative;
+  isolation: isolate;
+  flex: none;
+  width: min(86vw, 1040px);
+  min-height: clamp(520px, 70vh, 660px);
+  scroll-snap-align: start;
+  display: grid; grid-template-rows: 1fr auto;
+  overflow: hidden;
+  border-radius: var(--radio-xl);
+  background:
+    radial-gradient(60% 70% at 78% 30%, var(--luz), transparent 70%),
+    radial-gradient(70% 80% at 10% 100%, var(--luz-2), transparent 70%),
+    #0d1510;
+  color: var(--sobre-noche);
+  padding: clamp(26px, 4vw, 52px);
+}
+.momento::after {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  opacity: .09;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.momento--asis   { --luz: rgb(90 214 154 / .2);  --luz-2: rgb(16 70 56 / .7); }
+.momento--riesgo { --luz: rgb(255 122 107 / .2); --luz-2: rgb(70 24 20 / .6); }
+.momento--lados  { --luz: rgb(202 210 37 / .16); --luz-2: rgb(90 214 154 / .18); }
+.momento--pdf {
+  --luz: rgb(202 210 37 / .35); --luz-2: rgb(255 255 255 / .8);
+  background:
+    radial-gradient(60% 70% at 78% 30%, var(--luz), transparent 70%),
+    radial-gradient(70% 80% at 10% 100%, var(--luz-2), transparent 70%),
+    #e9ede1;
+  color: #161b17;
+}
+
+/* El texto va abajo aunque en el HTML vaya primero: así se lee antes que
+   la ilustración, y se ve después, como un pie de foto. */
+.momento__texto {
+  order: 2;
+  max-width: 34ch;
+  font-size: clamp(1.15rem, 2vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.024em;
+  color: rgb(241 244 234 / .62);
+}
+.momento__texto b { color: var(--sobre-noche); font-weight: 600; }
+.momento--pdf .momento__texto { color: rgb(22 27 23 / .6); }
+.momento--pdf .momento__texto b { color: #161b17; }
+.momento__visual {
+  order: 1;
+  justify-self: center;
+  display: grid; place-items: center; align-content: center;
+  padding-bottom: 28px;
+  min-height: 0;
+}
+
+/* ── Controles: puntos que se llenan y un botón de pausa ───────────────── */
+.galeria__controles {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  margin-top: 30px;
+}
+.galeria__controles[hidden] { display: none; }
+.galeria__puntos {
+  display: flex; align-items: center; gap: 12px;
+  height: 56px;
+  padding: 0 22px;
+  background: var(--lienzo-alt);
+  border-radius: 999px;
+}
+.galeria__punto {
+  position: relative;
+  width: 8px; height: 8px;
+  padding: 0; border: 0; border-radius: 999px;
+  background: var(--linea-fuerte);
+  overflow: hidden;
+  cursor: pointer;
+  transition: width var(--dur-2) var(--sale), background-color var(--dur-2) var(--suave);
+}
+.galeria__punto::before {
+  /* Objetivo táctil de 32 px alrededor de un punto de 8. */
+  content: ''; position: absolute; inset: -12px;
+}
+.galeria__punto[aria-current="true"] { width: 48px; }
+.galeria__relleno {
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: var(--tinta);
+  transform: scaleX(0); transform-origin: left;
+}
+.galeria__punto[aria-current="true"] .galeria__relleno { transform: scaleX(1); }
+/* Mientras corre, el punto activo se llena en lo que dura la tarjeta; al
+   terminar su animación, `galeria.js` pasa a la siguiente. */
+.galeria--corre .galeria__punto[aria-current="true"] .galeria__relleno {
+  animation: llenar var(--dur-tarjeta, 6s) linear both;
+}
+.galeria--quieta .galeria__punto[aria-current="true"] .galeria__relleno { animation-play-state: paused; }
+@keyframes llenar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.galeria__pausa {
+  display: grid; place-items: center;
+  width: 56px; height: 56px;
+  padding: 0; border: 0; border-radius: 50%;
+  background: var(--lienzo-alt);
+  color: var(--tinta);
+  cursor: pointer;
+  transition: background-color var(--dur-1) var(--suave), transform var(--dur-1) var(--sale);
+}
+.galeria__pausa[hidden] { display: none; }
+.galeria__pausa:hover { background: var(--linea); }
+.galeria__pausa:active { transform: scale(.94); }
+.galeria__pausa svg { width: 18px; height: 18px; fill: currentColor; }
+.galeria__pausa .icono-reanudar { display: none; }
+.galeria__pausa[aria-pressed="true"] .icono-pausa { display: none; }
+.galeria__pausa[aria-pressed="true"] .icono-reanudar { display: block; }
+
+/* ═══ Las ilustraciones ═══════════════════════════════════════════════════
+   Todas arrancan en su estado final; solo con guion (`html.js`) esperan a
+   `.revela--visto` para armarse. */
+
+/* ── Notas: la barra de pesos ──────────────────────────────────────────────
+   El corte es una barra partida en 30 / 60 / 10, cada tramo con su nota.
+   Se ve de un vistazo que el parcial pesa el doble que los trabajos. */
+.pesos { width: min(100%, 720px); display: grid; gap: 22px; }
+/* La barra de pesos y la línea de la clase se estiran a lo ancho: el
+   centrado de las demás ilustraciones las dejaría del ancho de su texto. */
+.momento__visual.pesos,
+.momento__visual.clase { place-items: stretch; justify-self: center; align-content: center; }
+.pesos__cab { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.pesos__corte { font-family: var(--mono); font-size: 13px; color: rgb(241 244 234 / .6); }
+.pesos__total {
+  font-size: clamp(4.5rem, 12vw, 9rem);
+  font-weight: 700; letter-spacing: -.055em; line-height: .9;
+  background: var(--brillo-noche);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+.pesos__barra { display: grid; grid-template-columns: 30fr 60fr 10fr; gap: 6px; height: 92px; }
+.tramo {
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-width: 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #cad225; color: #11200f;
+  transform-origin: left;
+}
+.tramo:nth-child(2) { background: #9fc23a; }
+.tramo:nth-child(3) { background: #5ad69a; padding-inline: 8px; }
+.tramo b { font-family: var(--mono); font-size: clamp(18px, 2.4vw, 26px); font-weight: 700; }
+.tramo span { font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html.js .pesos .tramo { transform: scaleX(0); }
+html.js .pesos.revela--visto .tramo { transform: none; transition: transform .7s var(--sale); }
+html.js .pesos.revela--visto .tramo:nth-child(2) { transition-delay: .15s; }
+html.js .pesos.revela--visto .tramo:nth-child(3) { transition-delay: .3s; }
+
+/* ── Asistencia: la clase como línea de tiempo ─────────────────────────── */
+.clase { width: min(100%, 720px); display: grid; gap: 18px; }
+.clase__cifra { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+.clase__cifra b { font-size: clamp(4.5rem, 12vw, 9rem); letter-spacing: -.055em; line-height: .9; color: #8ff0bd; }
+.clase__cifra span { font-family: var(--mono); font-size: 14px; color: rgb(241 244 234 / .62); }
+.clase__pista {
+  position: relative;
+  height: 64px;
+  border-radius: 16px;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / .07) 0 1px, transparent 1px calc(100% / 7.4)),
+    rgb(255 255 255 / .05);
+  overflow: hidden;
+}
+/* 12 de 74 minutos tarde: un tramo rayado, y el resto lleno. */
+.clase__tarde {
+  position: absolute; inset: 0 auto 0 0; width: 16.2%;
+  background: repeating-linear-gradient(-45deg, rgb(255 143 130 / .55) 0 6px, transparent 6px 12px);
+}
+.clase__dentro {
+  position: absolute; inset: 0 0 0 16.2%;
+  background: linear-gradient(90deg, #5ad69a, #8ff0bd);
+  border-radius: 0 16px 16px 0;
+  transform-origin: left;
+}
+html.js .clase .clase__dentro { transform: scaleX(0); }
+html.js .clase.revela--visto .clase__dentro { transform: none; transition: transform 1.3s var(--sale) .25s; }
+.clase__eje { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: rgb(241 244 234 / .5); }
+.clase__nota {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; color: rgb(241 244 234 / .7);
+}
+.clase__nota::before {
+  content: ''; width: 14px; height: 14px; border-radius: 4px;
+  background: repeating-linear-gradient(-45deg, rgb(255 143 130 / .8) 0 3px, transparent 3px 6px);
+}
+
+/* ── Riesgo: tres avisos apilados ──────────────────────────────────────── */
+.avisos { position: relative; width: min(100%, 460px); height: 300px; }
+.aviso {
+  position: absolute; left: 0; right: 0; top: 40px;
+  background: rgb(36 30 28 / .92);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  border: 1px solid rgb(255 255 255 / .09);
+  border-radius: 24px;
+  padding: 20px 22px;
+  box-shadow: 0 30px 60px rgb(0 0 0 / .4);
+  transition: transform .8s var(--sale), opacity .8s var(--sale);
+}
+.aviso--atras-2 { transform: translateY(-36px) scale(.86); opacity: .45; }
+.aviso--atras-1 { transform: translateY(-18px) scale(.93); opacity: .7; }
+html.js .avisos .aviso--atras-1,
+html.js .avisos .aviso--atras-2 { transform: none; opacity: 0; }
+html.js .avisos.revela--visto .aviso--atras-2 { transform: translateY(-36px) scale(.86); opacity: .45; }
+html.js .avisos.revela--visto .aviso--atras-1 { transform: translateY(-18px) scale(.93); opacity: .7; transition-delay: .12s; }
+.aviso__cab { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.aviso__quien { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 17px; }
+.aviso__inicial {
+  display: grid; place-items: center;
+  width: 38px; height: 38px; border-radius: 12px;
+  background: rgb(255 143 130 / .18); color: #ffb3a9;
+  font-size: 14px;
+}
+.aviso__marca { background: rgb(255 122 107 / .18); color: #ff9d91; border-radius: 7px; padding: 3px 9px; font-size: 12px; font-weight: 600; }
+.aviso__razon { margin-top: 12px; color: rgb(241 244 234 / .7); font-size: 15px; }
+.aviso__curva { margin-top: 14px; width: 100%; height: 64px; overflow: visible; }
+.aviso__curva path { fill: none; stroke: #ff8f82; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.aviso__curva circle { fill: #ff8f82; }
+.aviso__curva .aviso__umbral { stroke: rgb(255 255 255 / .25); stroke-width: 1.5; stroke-dasharray: 4 5; }
+html.js .avisos .aviso__trazo { stroke-dasharray: 1; stroke-dashoffset: 1; }
+html.js .avisos.revela--visto .aviso__trazo { stroke-dashoffset: 0; transition: stroke-dashoffset 1.2s var(--sale) .4s; }
+
+/* ── Plataformas: portátil y teléfono con el mismo dato ────────────────── */
+.equipos { display: flex; align-items: flex-end; justify-content: center; gap: clamp(18px, 4vw, 48px); width: min(100%, 760px); }
+.portatil { flex: 1 1 0; max-width: 500px; }
+.portatil__pantalla {
+  aspect-ratio: 16 / 10;
+  border: 10px solid #2a332c; border-bottom-width: 14px;
+  border-radius: 18px 18px 6px 6px;
+  background: #f4f6ef;
+  padding: 12px;
+  display: grid; align-content: start; gap: 7px;
+}
+.portatil__base { height: 12px; margin: 0 -8%; border-radius: 0 0 14px 14px; background: linear-gradient(#3a453c, #222a24); }
+.telefono {
+  flex: none;
+  width: clamp(92px, 15vw, 150px);
+  aspect-ratio: 9 / 19;
+  border: 7px solid #2a332c;
+  border-radius: 26px;
+  background: #f4f6ef;
+  padding: 18px 8px 8px;
+  display: grid; align-content: start; gap: 6px;
+}
+.fila-mini { display: flex; align-items: center; gap: 6px; height: 14px; padding: 0 6px; border-radius: 5px; background: #e3e8db; }
+.fila-mini::before { content: ''; flex: 1; height: 4px; border-radius: 4px; background: #c4ccb9; }
+.fila-mini::after { content: ''; width: 22px; height: 6px; border-radius: 4px; background: #12795a; }
+.fila-mini--viva { background: #eef3c4; }
+.fila-mini--viva::after { background: #cad225; animation: parpadeo 2.4s var(--suave) infinite; }
+@keyframes parpadeo { 50% { background: #7fa51c; } }
+.equipos__enlace { position: relative; flex: none; width: clamp(36px, 7vw, 90px); height: 2px; margin-bottom: 30%; background: repeating-linear-gradient(90deg, rgb(202 210 37 / .7) 0 6px, transparent 6px 12px); }
+.equipos__enlace::after {
+  content: ''; position: absolute; top: 50%; left: 0;
+  width: 10px; height: 10px; margin-top: -5px; border-radius: 50%;
+  background: #cad225; box-shadow: 0 0 14px #cad225;
+  animation: viajar 2.4s var(--suave) infinite;
+}
+@keyframes viajar { 0% { left: 0; } 50% { left: calc(100% - 10px); } 100% { left: 0; } }
+.equipos__nombres { display: flex; justify-content: center; gap: 22px; margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: rgb(241 244 234 / .55); }
+
+/* ── PDF: tres hojas en abanico y el sello ─────────────────────────────── */
+.abanico { position: relative; width: min(100%, 420px); height: 330px; }
+.hoja {
+  position: absolute; left: 50%; top: 10px;
+  width: 210px; height: 290px; margin-left: -105px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgb(10 30 20 / .08), 0 24px 50px rgb(10 30 20 / .16);
+  padding: 22px 18px;
+  display: grid; align-content: start; gap: 9px;
+  transform-origin: 50% 110%;
+  transition: transform .9s var(--sale);
+}
+.hoja:nth-child(1) { transform: rotate(-11deg); }
+.hoja:nth-child(2) { transform: rotate(-4deg); }
+.hoja:nth-child(3) { transform: rotate(5deg); }
+html.js .abanico .hoja { transform: none; }
+html.js .abanico.revela--visto .hoja:nth-child(1) { transform: rotate(-11deg); }
+html.js .abanico.revela--visto .hoja:nth-child(2) { transform: rotate(-4deg); }
+html.js .abanico.revela--visto .hoja:nth-child(3) { transform: rotate(5deg); }
+.hoja__titulo { font-size: 13px; font-weight: 700; color: #161b17; }
+.hoja__sub { font-family: var(--mono); font-size: 10px; color: #6b746c; margin-top: -6px; margin-bottom: 6px; }
+.hoja__fila { height: 9px; border-radius: 3px; background: #eceee6; }
+.hoja__fila:nth-child(odd) { background: #f4f6ef; }
+.hoja__fila--mala { background: #fde4e1 !important; }
+.sello {
+  position: absolute; right: 8%; bottom: 14%;
+  transform: rotate(-9deg);
+  background: #cad225; color: #11200f;
+  border-radius: 10px; padding: 8px 14px;
+  font-family: var(--mono); font-size: 17px; font-weight: 700;
+  box-shadow: 0 10px 24px rgb(80 90 0 / .35);
+}
+html.js .abanico .sello { opacity: 0; transform: rotate(-9deg) scale(1.7); }
+html.js .abanico.revela--visto .sello {
+  opacity: 1; transform: rotate(-9deg);
+  transition: opacity .2s var(--suave) .7s, transform .5s var(--rebote) .7s;
+}
+
+@media (max-width: 600px) {
+  .momento { width: 88vw; min-height: 540px; }
+  .pesos__barra { height: 76px; }
+  .tramo span { display: none; }
+  .avisos { height: 270px; }
+  .abanico { height: 300px; transform: scale(.85); }
+  .telefono { display: none; }
+  .equipos__enlace { display: none; }
+}

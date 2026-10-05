@@ -1,0 +1,253 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Hero — el producto en escena.
+
+   Campo oscuro, titular centrado y enorme, y debajo la planilla como si
+   fuera la foto del producto: grande, iluminada desde atrás y recostada
+   hacia el fondo, que se endereza a medida que se baja. La planilla no es
+   una captura: calcula de verdad y se puede tocar.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 50% at 50% 100%, rgb(202 210 37 / .16), transparent 70%),
+    radial-gradient(80% 60% at 50% 0%, rgb(20 77 55 / .55), transparent 70%),
+    var(--noche);
+  color: var(--sobre-noche);
+  text-align: center;
+  padding: clamp(56px, 10vw, 112px) 0 clamp(72px, 10vw, 128px);
+}
+
+.hero__producto {
+  font-size: clamp(19px, 2vw, 26px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--sobre-noche-2);
+  margin-bottom: 14px;
+}
+.hero__titulo {
+  font-size: clamp(3.1rem, 10.5vw, 8rem);
+  font-weight: 700;
+  letter-spacing: -.045em;
+  line-height: .98;
+}
+.hero__titulo .texto-brillo { background-image: var(--brillo-noche); }
+.hero__entrada {
+  margin: 26px auto 0;
+  max-width: 36ch;
+  font-size: clamp(1.1rem, 1.9vw, 1.45rem);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -.016em;
+  color: var(--sobre-noche-2);
+}
+.hero__entrada b { color: var(--sobre-noche); font-weight: 600; }
+
+.hero__acciones {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 14px 28px;
+  margin-top: 34px;
+}
+.hero .flecha { color: #dbe27a; font-size: 17px; }
+.hero__nota {
+  margin-top: 22px;
+  font-size: 13.5px;
+  color: var(--sobre-noche-2);
+}
+
+/* ── Escena: el halo y la perspectiva ───────────────────────────────────── */
+.hero__escena {
+  position: relative;
+  width: min(100% - var(--margen) * 2, 780px);
+  margin: clamp(48px, 7vw, 84px) auto 0;
+  perspective: 1600px;
+}
+.hero__escena::before {
+  content: '';
+  position: absolute; inset: 8% -12% -14%;
+  background:
+    radial-gradient(closest-side, rgb(202 210 37 / .30), transparent),
+    radial-gradient(closest-side at 30% 70%, rgb(90 214 154 / .18), transparent);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+/* ── Planilla ──────────────────────────────────────────────────────────── */
+.planilla {
+  position: relative;
+  margin: 0;
+  text-align: left;
+  background: var(--tarjeta);
+  color: var(--tinta);
+  border-radius: var(--radio-l);
+  padding: 26px 26px 20px;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / .06),
+    0 30px 80px rgb(0 0 0 / .45),
+    0 8px 24px rgb(0 0 0 / .25);
+  transform-origin: 50% 0;
+}
+
+.planilla__cab {
+  display: flex; align-items: baseline; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--linea);
+}
+.planilla__materia { font-weight: 700; font-size: 18px; letter-spacing: -.02em; }
+.planilla__periodo { font-family: var(--mono); font-size: 12px; color: var(--tinta-2); }
+
+.planilla__formula {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 7px;
+  margin: 14px 0 4px;
+  font-family: var(--mono); font-size: 11.5px;
+  color: var(--tinta-2);
+}
+.planilla__formula > span { text-transform: uppercase; letter-spacing: .1em; font-weight: 600; color: var(--tinta); }
+.planilla__formula b { background: var(--lienzo-alt); border-radius: 6px; padding: 3px 8px; font-weight: 500; }
+.planilla__formula i { font-style: normal; opacity: .5; }
+
+.tabla { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.tabla th {
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: var(--tinta-2);
+  text-align: right;
+  padding: 9px 6px;
+  border-bottom: 1px solid var(--linea);
+}
+.tabla .tabla__est { text-align: left; }
+.tabla .tabla__def { color: var(--tinta); font-weight: 600; }
+.tabla td {
+  padding: 12px 6px;
+  border-bottom: 1px solid var(--linea);
+  font-family: var(--mono);
+  font-size: 14.5px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.tabla td:first-child {
+  font-family: var(--sans);
+  font-size: 15px; font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+}
+.tabla tbody tr:last-child td { border-bottom: 0; }
+/* Aire a los dos lados de la línea del 3.0, para que su etiqueta no se
+   monte sobre la fila de arriba. */
+.tabla tbody tr:has(+ tr[data-reprueba]) td { padding-bottom: 20px; }
+.tabla tbody tr[data-reprueba] td { padding-top: 20px; }
+
+html.js .fila { opacity: 0; transform: translateY(7px); }
+html.js .fila.esta {
+  opacity: 1; transform: none;
+  transition: opacity var(--dur-3) var(--sale), transform var(--dur-3) var(--sale);
+}
+
+.def { font-weight: 600; }
+.def--alta { color: var(--exito); }
+.def--baja { color: var(--alarma); }
+
+.celda--viva {
+  text-decoration: underline dotted var(--lima);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.def--cambia { animation: destello var(--dur-3) var(--suave); }
+@keyframes destello {
+  0%   { background: var(--lima-tenue); }
+  100% { background: transparent; }
+}
+
+.marca-riesgo {
+  display: inline-flex; align-items: center;
+  margin-left: 8px;
+  background: var(--alarma-tenue); color: var(--alarma);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-family: var(--sans); font-size: 11px; font-weight: 600;
+}
+html.js .marca-riesgo { opacity: 0; transform: scale(.85); }
+html.js .marca-riesgo.esta {
+  opacity: 1; transform: none;
+  transition: opacity var(--dur-2) var(--suave) .1s, transform var(--dur-3) var(--rebote) .1s;
+}
+
+/* La línea del 3.0 atraviesa la lista. Sin guion no se puede medir dónde
+   va, así que no se muestra. */
+.umbral {
+  position: absolute; left: 26px; right: 26px;
+  height: 0;
+  border-top: 2px dashed var(--lima);
+  opacity: 0;
+  transform: scaleX(.2); transform-origin: left;
+  pointer-events: none;
+}
+.umbral.esta {
+  opacity: 1; transform: scaleX(1);
+  transition: opacity var(--dur-2) var(--suave), transform 550ms var(--sale),
+              top var(--dur-3) var(--sale);
+}
+.umbral[hidden] { display: none; }
+.umbral__etiqueta {
+  position: absolute; left: 0; top: 0;
+  transform: translateY(-50%);
+  background: var(--lima); color: #11200f;
+  border-radius: 999px; padding: 2px 10px;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Probar ────────────────────────────────────────────────────────────── */
+.probar {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px 16px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: var(--lienzo-alt);
+  border-radius: var(--radio-m);
+}
+.probar__texto { font-size: 14px; color: var(--tinta-2); }
+.probar__texto b { color: var(--tinta); font-weight: 600; }
+.paso {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 3px;
+  background: var(--tarjeta);
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+}
+.paso__boton {
+  display: grid; place-items: center;
+  width: 34px; height: 34px;
+  padding: 0; border: 0; border-radius: 50%;
+  background: var(--lienzo-alt);
+  font-size: 18px; line-height: 1;
+  color: var(--marca-texto);
+  cursor: pointer;
+  transition: background-color var(--dur-1) var(--suave), transform var(--dur-1) var(--sale);
+}
+.paso__boton:hover { background: var(--lima-tenue); }
+.paso__boton:active { transform: scale(.9); background: var(--lima); color: #11200f; }
+.paso__boton:disabled { opacity: .35; cursor: default; transform: none; }
+.paso__valor {
+  min-width: 44px; text-align: center;
+  font-family: var(--mono); font-size: 15px; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.planilla__pie {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 15px;
+  font-family: var(--mono); font-size: 11.5px;
+  color: var(--tinta-2);
+}
+.punto { width: 7px; height: 7px; border-radius: 50%; background: var(--exito); flex: none; }
+
+@media (max-width: 480px) {
+  .tabla th, .tabla td { padding-inline: 3px; font-size: 13px; }
+  .tabla td:first-child { font-size: 13.5px; }
+  .planilla { padding: 18px 14px 14px; }
+  .umbral { left: 14px; right: 14px; }
+}

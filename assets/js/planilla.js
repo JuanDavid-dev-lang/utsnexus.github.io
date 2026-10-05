@@ -56,14 +56,20 @@ export function iniciarPlanilla() {
    * Se mide contra el DOM ya pintado en vez de calcularse por número de
    * filas: si un nombre se parte en dos líneas en un teléfono, la línea
    * sigue cayendo en el sitio correcto.
+   *
+   * Con `offsetTop` y no con `getBoundingClientRect`: la planilla de la
+   * portada llega inclinada y escalada por una animación atada al
+   * desplazamiento, y un rectángulo medido en pantalla trae esa escala
+   * dentro. `offsetTop` es la posición de maqueta, que no la ve.
    */
   function colocarUmbral() {
     const primeraQueReprueba = cuerpo.querySelector('tr[data-reprueba]');
     umbral.hidden = !primeraQueReprueba;
     if (!primeraQueReprueba) return;
-    const alto = planilla.getBoundingClientRect().top;
-    const fila = primeraQueReprueba.getBoundingClientRect().top;
-    umbral.style.top = Math.round(fila - alto) + 'px';
+    const tabla = cuerpo.closest('table');
+    let top = primeraQueReprueba.offsetTop;
+    if (tabla && primeraQueReprueba.offsetParent === tabla) top += tabla.offsetTop;
+    umbral.style.top = Math.round(top) + 'px';
   }
 
   /** Vuelca una fila a sus celdas: notas, definitiva, color y marca. */

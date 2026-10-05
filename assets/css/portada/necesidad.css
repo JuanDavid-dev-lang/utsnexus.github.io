@@ -1,0 +1,114 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   La necesidad — una lista que se va tachando.
+
+   Cada fila es un problema de antes. Cuando entra en pantalla, una raya lo
+   tacha y aparece, en verde, lo que se decidió por eso. A la izquierda el
+   titular se queda quieto mientras la lista pasa.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.necesidad {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+.necesidad .seccion__cab {
+  position: sticky;
+  top: calc(var(--alto-barra) + 48px);
+}
+.necesidad .titulo { font-size: clamp(2.3rem, 4.6vw, 3.9rem); }
+
+.tachados { counter-reset: tachado; border-top: 1px solid var(--linea); }
+.problema {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(56px, 7vw, 92px) 1fr;
+  gap: 4px 18px;
+  padding: clamp(28px, 3.6vw, 40px) 0;
+  border-bottom: 1px solid var(--linea);
+}
+
+/* El número, en contorno: está ahí pero no compite con el texto. */
+.problema__num {
+  grid-row: 1 / span 3;
+  font-size: clamp(2.6rem, 4.6vw, 3.8rem);
+  font-weight: 700;
+  letter-spacing: -.05em;
+  line-height: .9;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--linea-fuerte);
+  transition: -webkit-text-stroke-color .6s var(--suave);
+}
+.problema.revela--visto .problema__num { -webkit-text-stroke-color: var(--marca-texto); }
+
+.problema__titulo {
+  justify-self: start;
+  position: relative;
+  font-size: clamp(1.5rem, 2.4vw, 2.05rem);
+  letter-spacing: -.032em;
+  line-height: 1.1;
+  transition: color .5s var(--suave) .5s;
+}
+/* La raya: lima y gruesa, como un resaltador pasado de lado. */
+.problema__titulo::after {
+  content: '';
+  position: absolute; left: -4px; right: -4px; top: 52%;
+  height: .2em;
+  border-radius: 1em;
+  background: var(--lima);
+  mix-blend-mode: multiply;
+  transform-origin: left;
+}
+:root[data-tema="oscuro"] .problema__titulo::after { mix-blend-mode: normal; opacity: .55; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .problema__titulo::after { mix-blend-mode: normal; opacity: .55; }
+}
+html.js .problema .problema__titulo::after { transform: scaleX(0); }
+html.js .problema.revela--visto .problema__titulo::after { transform: scaleX(1); transition: transform .55s var(--sale) .35s; }
+html.js .problema.revela--visto .problema__titulo { color: var(--tinta-2); }
+
+.problema__antes { grid-column: 2; margin-top: 10px; color: var(--tinta-2); font-size: 16px; max-width: 54ch; }
+
+.problema__porque {
+  grid-column: 2;
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-top: 18px;
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: -.018em;
+  color: var(--tinta);
+}
+.problema__porque svg {
+  flex: none;
+  width: 28px; height: 28px;
+  margin-top: -2px;
+}
+.problema__porque svg circle { fill: var(--lima); }
+.problema__porque svg path { fill: none; stroke: #11200f; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.problema__porque b {
+  display: block;
+  font-size: 12.5px; font-weight: 600;
+  color: var(--marca-texto);
+  margin-bottom: 2px;
+}
+html.js .problema .problema__porque { opacity: 0; transform: translateY(10px); }
+html.js .problema.revela--visto .problema__porque {
+  opacity: 1; transform: none;
+  transition: opacity .5s var(--suave) .8s, transform .6s var(--sale) .8s;
+}
+html.js .problema .problema__porque svg { transform: scale(0) rotate(-30deg); }
+html.js .problema.revela--visto .problema__porque svg { transform: none; transition: transform .5s var(--rebote) 1s; }
+
+/* Las filas no se esconden enteras: la animación ya la hacen la raya y la
+   respuesta. Solo la fila se mantiene en su sitio. */
+html.js .problema.revela { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  .necesidad { grid-template-columns: 1fr; }
+  .necesidad .seccion__cab { position: static; }
+}
+@media (max-width: 480px) {
+  .problema { grid-template-columns: 1fr; }
+  .problema__num { grid-row: auto; font-size: 2.2rem; margin-bottom: 8px; }
+  .problema__antes, .problema__porque { grid-column: 1; }
+}

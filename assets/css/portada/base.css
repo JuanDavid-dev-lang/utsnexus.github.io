@@ -1,0 +1,248 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Portada — tokens, reset, tipografía y botones.
+
+   La portada es una página de producto: campos grandes, titulares enormes y
+   una sola acción por pantalla. Los colores siguen siendo los de la marca
+   (verde UTS y lima), pero el campo dominante pasa a ser un casi-negro
+   teñido de verde, y el lima queda reservado a la acción principal.
+
+   El documento de requerimientos y la 404 siguen con sus hojas de siempre;
+   nada de esta carpeta las toca.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Color: papel, no tono ─────────────────────────────────────────────── */
+  --lienzo: #fbfbf8;          /* fondo de la página */
+  --lienzo-alt: #f1f3ec;      /* la franja que alterna, como el gris de Apple */
+  --tarjeta: #ffffff;
+  --tinta: #161b17;
+  --tinta-2: #5d665f;         /* texto secundario: 5.9:1 sobre el lienzo */
+  --linea: #e1e5dc;
+  --linea-fuerte: #c9d1c3;
+  --marca: #144d37;
+  --marca-texto: #1a6247;     /* el verde cuando es texto o enlace */
+  --lima: #cad225;
+  --lima-hover: #d9e14a;
+  --lima-tenue: #eef3c4;
+  --noche: #0a110d;           /* campo oscuro: hero, novedades, cierre */
+  --noche-2: #141d17;         /* tarjeta sobre la noche */
+  --noche-3: #1f2a22;
+  --sobre-noche: #f1f4ea;
+  --sobre-noche-2: #a3aea4;
+  --alarma: #d92d20;
+  --alarma-tenue: #fde4e1;
+  --exito: #12795a;
+  --barra: rgb(251 251 248 / .78);
+  --sombra: 0 1px 2px rgb(10 30 20 / .05), 0 12px 40px rgb(10 30 20 / .08);
+
+  /* El degradado de las cifras: del verde de la marca al lima. */
+  --brillo: linear-gradient(100deg, #1a6247 10%, #7fa51c 60%, #b5bf12 95%);
+  --brillo-noche: linear-gradient(100deg, #e9f3c0 0%, #cad225 45%, #7cc69b 100%);
+
+  /* ── Tipografía ────────────────────────────────────────────────────────── */
+  --sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ── Ritmo ─────────────────────────────────────────────────────────────── */
+  --ancho: 1180px;
+  --margen: 16px;
+  --radio-xl: 30px;
+  --radio-l: 22px;
+  --radio-m: 14px;
+  --radio-s: 9px;
+  --alto-barra: 56px;
+
+  /* ── Movimiento ────────────────────────────────────────────────────────── */
+  --dur-1: 160ms;
+  --dur-2: 280ms;
+  --dur-3: 620ms;
+  --sale: cubic-bezier(.22, 1, .36, 1);
+  --suave: cubic-bezier(.4, 0, .2, 1);
+  --rebote: cubic-bezier(.34, 1.56, .64, 1);
+
+  /* ── Capas ─────────────────────────────────────────────────────────────── */
+  --z-barra: 50;
+  --z-saltar: 60;
+}
+
+@media (min-width: 600px) { :root { --margen: 24px; } }
+
+/* ── Oscuro ──────────────────────────────────────────────────────────────
+   Mismo orden que el resto del sitio: el sistema manda salvo que se haya
+   elegido «claro», y la elección manual «oscuro» va aparte. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    color-scheme: dark;
+    --lienzo: #0c130f;
+    --lienzo-alt: #111a14;
+    --tarjeta: #18221b;
+    --tinta: #eef2e8;
+    --tinta-2: #a0aba2;
+    --linea: #253029;
+    --linea-fuerte: #36433a;
+    --marca-texto: #cdd65a;
+    --lima-tenue: #2f3418;
+    --noche: #060a08;
+    --noche-2: #121a15;
+    --noche-3: #1c261f;
+    --alarma: #ff7a6b;
+    --alarma-tenue: #3d1d19;
+    --exito: #5ad69a;
+    --barra: rgb(12 19 15 / .74);
+    --sombra: 0 1px 2px rgb(0 0 0 / .4), 0 12px 40px rgb(0 0 0 / .45);
+    --brillo: var(--brillo-noche);
+  }
+}
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --lienzo: #0c130f;
+  --lienzo-alt: #111a14;
+  --tarjeta: #18221b;
+  --tinta: #eef2e8;
+  --tinta-2: #a0aba2;
+  --linea: #253029;
+  --linea-fuerte: #36433a;
+  --marca-texto: #cdd65a;
+  --lima-tenue: #2f3418;
+  --noche: #060a08;
+  --noche-2: #121a15;
+  --noche-3: #1c261f;
+  --alarma: #ff7a6b;
+  --alarma-tenue: #3d1d19;
+  --exito: #5ad69a;
+  --barra: rgb(12 19 15 / .74);
+  --sombra: 0 1px 2px rgb(0 0 0 / .4), 0 12px 40px rgb(0 0 0 / .45);
+  --brillo: var(--brillo-noche);
+}
+
+/* ── Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--alto-barra); }
+body {
+  margin: 0;
+  background: var(--lienzo);
+  color: var(--tinta);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.5;
+  letter-spacing: -.011em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color var(--dur-2) var(--suave), color var(--dur-2) var(--suave);
+}
+h1, h2, h3, h4 { margin: 0; line-height: 1.06; text-wrap: balance; font-weight: 700; }
+p { margin: 0; text-wrap: pretty; }
+ol, ul { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; }
+img, svg { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; }
+code {
+  font-family: var(--mono); font-size: .86em;
+  background: var(--lienzo-alt); border: 1px solid var(--linea);
+  border-radius: 6px; padding: 1px 6px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--lima);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.visualmente-oculto {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.saltar {
+  position: absolute; left: -9999px; top: 0;
+  z-index: var(--z-saltar);
+  background: var(--lima); color: #12271e;
+  padding: 12px 18px; border-radius: 0 0 var(--radio-s) 0;
+  font-weight: 600; text-decoration: none;
+}
+.saltar:focus { left: 0; }
+
+.envoltorio { width: min(100% - var(--margen) * 2, var(--ancho)); margin-inline: auto; }
+.envoltorio--angosto { width: min(100% - var(--margen) * 2, 860px); margin-inline: auto; }
+
+/* ── Tipografía de producto ──────────────────────────────────────────────
+   Tres voces: el antetítulo (corto, de color), el titular (enorme, apretado)
+   y la entrada (grande y gris, con la idea clave en negrita y en tinta). */
+.antetitulo {
+  font-size: clamp(17px, 1.6vw, 21px);
+  font-weight: 600;
+  color: var(--marca-texto);
+  margin-bottom: 12px;
+}
+.titulo {
+  font-size: clamp(2.5rem, 6vw, 4.8rem);
+  letter-spacing: -.038em;
+  line-height: 1.02;
+}
+.entrada {
+  font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -.016em;
+  color: var(--tinta-2);
+  max-width: 40ch;
+}
+.entrada b { color: var(--tinta); font-weight: 600; }
+.texto-brillo {
+  background: var(--brillo);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+
+/* ── Botones ──────────────────────────────────────────────────────────────
+   Una píldora llena para la acción principal y un enlace con flecha para
+   la segunda. Nunca dos píldoras compitiendo. */
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 46px;
+  padding: 12px 24px;
+  border: 0; border-radius: 999px;
+  font-family: var(--sans); font-size: 16px; font-weight: 600;
+  letter-spacing: -.01em;
+  text-decoration: none; white-space: nowrap;
+  cursor: pointer;
+  transition: transform var(--dur-1) var(--sale),
+              background-color var(--dur-1) var(--suave),
+              box-shadow var(--dur-2) var(--suave);
+  -webkit-tap-highlight-color: transparent;
+}
+.boton svg {
+  width: 18px; height: 18px;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.boton:active { transform: scale(.97); transition-duration: 80ms; }
+
+.boton--lima { background: var(--lima); color: #11200f; }
+.boton--lima:hover { background: var(--lima-hover); box-shadow: 0 8px 30px rgb(202 210 37 / .35); }
+
+.boton--tinta { background: var(--tinta); color: var(--lienzo); }
+.boton--tinta:hover { box-shadow: 0 8px 26px rgb(10 30 20 / .22); }
+
+.boton--sm { min-height: 32px; padding: 6px 14px; font-size: 13.5px; }
+.boton--sm svg { width: 15px; height: 15px; }
+.boton--bloque { display: flex; width: 100%; }
+
+/* Enlace con flecha: el «Más información ›» de las páginas de producto.
+   La flecha se adelanta un poco al pasar; el subrayado aparece. */
+.flecha {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-weight: 500;
+  color: var(--marca-texto);
+  text-decoration: none;
+}
+.flecha::after {
+  content: '';
+  width: .42em; height: .42em;
+  border-top: 2px solid currentColor; border-right: 2px solid currentColor;
+  transform: rotate(45deg);
+  margin-left: 2px;
+  transition: transform var(--dur-1) var(--sale);
+}
+.flecha:hover { text-decoration: underline; text-underline-offset: 3px; }
+.flecha:hover::after { transform: translateX(3px) rotate(45deg); }

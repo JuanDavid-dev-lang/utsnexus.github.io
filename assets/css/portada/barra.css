@@ -1,0 +1,167 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Barra local: el nombre del producto a la izquierda, las secciones en el
+   medio y la acción a la derecha. Translúcida y fina, como la barra de una
+   página de producto: acompaña sin tapar.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.barra {
+  position: sticky; top: 0; z-index: var(--z-barra);
+  background: var(--barra);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--linea);
+  view-transition-name: barra;
+}
+.barra__progreso {
+  position: absolute; left: 0; bottom: -1px;
+  width: 100%; height: 2px;
+  background: var(--lima);
+  transform: scaleX(0); transform-origin: left;
+  pointer-events: none;
+}
+.barra__interior {
+  width: min(100% - var(--margen) * 2, var(--ancho));
+  margin-inline: auto;
+  height: var(--alto-barra);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+
+.marca {
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none;
+  min-width: 0;
+}
+.marca__logo { width: 28px; height: 28px; border-radius: 8px; flex: none; }
+.marca__nombre {
+  font-size: 19px; font-weight: 700; letter-spacing: -.025em;
+  white-space: nowrap;
+}
+.marca__nombre em { font-style: normal; font-weight: 500; color: var(--tinta-2); }
+.etapa {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--marca-texto);
+  border: 1px solid currentColor; border-radius: 5px;
+  padding: 1px 5px;
+}
+
+.barra__nav { display: flex; align-items: center; gap: 18px; }
+.barra__enlaces { display: flex; gap: 22px; }
+.barra__enlaces a {
+  position: relative;
+  font-size: 13.5px; font-weight: 500;
+  color: var(--tinta-2);
+  text-decoration: none;
+  padding: 6px 0;
+  transition: color var(--dur-1) var(--suave);
+}
+.barra__enlaces a:hover,
+.barra__enlaces a[aria-current] { color: var(--tinta); }
+.barra__enlaces a[aria-current]::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: -2px;
+  height: 2px; border-radius: 2px;
+  background: var(--lima);
+}
+
+.barra__entrar {
+  font-size: 13.5px; font-weight: 500;
+  color: var(--tinta-2);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.barra__entrar:hover { color: var(--tinta); }
+
+/* ── Tema: tres posiciones ───────────────────────────────────────────────
+   Claro, oscuro y seguir al sistema. El disco que marca la elegida se
+   desliza leyendo `data-activo`, que pone `tema.js`. */
+.tema {
+  position: relative;
+  display: inline-grid; grid-auto-flow: column; grid-auto-columns: 28px;
+  padding: 2px;
+  background: var(--lienzo-alt);
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+}
+.tema__indicador {
+  position: absolute; top: 2px; left: 2px;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--tarjeta);
+  box-shadow: 0 1px 3px rgb(0 0 0 / .14);
+  transition: transform var(--dur-2) var(--sale);
+}
+.tema[data-activo="oscuro"] .tema__indicador { transform: translateX(28px); }
+.tema[data-activo="sistema"] .tema__indicador { transform: translateX(56px); }
+.tema__op {
+  position: relative;
+  display: grid; place-items: center;
+  width: 28px; height: 28px;
+  padding: 0; border: 0; border-radius: 50%;
+  background: none;
+  color: var(--tinta-2);
+  cursor: pointer;
+}
+.tema__op[aria-pressed="true"] { color: var(--tinta); }
+.tema__op svg {
+  width: 15px; height: 15px;
+  fill: none; stroke: currentColor; stroke-width: 1.9;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ── Menú de teléfono: popover nativo que cae como una hoja ─────────────── */
+.menu__boton {
+  display: none;
+  place-items: center;
+  width: 40px; height: 40px;
+  margin-right: -8px;
+  padding: 0; border: 0; border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+.menu__boton svg {
+  width: 20px; height: 20px;
+  fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round;
+}
+.menu {
+  position: fixed; inset: var(--alto-barra) 0 auto 0;
+  width: 100%; max-width: none;
+  margin: 0; padding: 12px var(--margen) 28px;
+  border: 0; border-bottom: 1px solid var(--linea);
+  background: var(--lienzo);
+  color: var(--tinta);
+  box-shadow: 0 24px 40px rgb(0 0 0 / .12);
+}
+.menu:popover-open { display: grid; }
+.menu a {
+  display: flex; align-items: center; gap: 14px;
+  min-height: 52px;
+  font-size: 22px; font-weight: 600; letter-spacing: -.025em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--linea);
+}
+.menu a:last-child { border-bottom: 0; }
+.menu svg {
+  width: 20px; height: 20px; flex: none;
+  fill: none; stroke: var(--tinta-2); stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+@supports not selector(:popover-open) {
+  .menu, .menu__boton { display: none !important; }
+}
+
+/* ── Estrecho: las secciones pasan al menú ───────────────────────────────── */
+@media (max-width: 960px) {
+  .barra__enlaces, .barra__entrar { display: none; }
+  .menu__boton { display: grid; }
+  .barra__nav { gap: 12px; }
+}
+/* En teléfono la píldora de descargar sale de la barra: el hero la trae
+   enorme justo debajo y el menú la repite. Sin esto, el nombre del producto
+   y el interruptor de tema acaban uno encima del otro. */
+@media (max-width: 600px) {
+  .barra__nav > .boton { display: none; }
+}
+@media (max-width: 480px) {
+  .marca__nombre em, .etapa { display: none; }
+}

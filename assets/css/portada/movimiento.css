@@ -1,0 +1,85 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Movimiento de la portada.
+
+   · Solo `opacity` y `transform`.
+   · Nada se esconde sin JavaScript (`html.js`).
+   · Lo atado al desplazamiento usa líneas de tiempo de CSS
+     (`animation-timeline: view()`) y solo donde existen; en el resto la
+     página se ve en su estado final, que es el que informa.
+   · `prefers-reduced-motion` apaga todo.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html.js .revela { opacity: 0; transform: translateY(24px); }
+html.js .revela.revela--visto {
+  opacity: 1; transform: none;
+  transition: opacity var(--dur-3) var(--sale), transform var(--dur-3) var(--sale);
+}
+html.js .revela.revela--visto:nth-child(2) { transition-delay: 70ms; }
+html.js .revela.revela--visto:nth-child(3) { transition-delay: 140ms; }
+html.js .revela.revela--visto:nth-child(4) { transition-delay: 210ms; }
+html.js .revela.revela--visto:nth-child(5) { transition-delay: 280ms; }
+html.js .revela.revela--visto:nth-child(6) { transition-delay: 350ms; }
+
+/* Las piezas de la galería no se mueven de sitio: solo se animan por
+   dentro (el anillo, las barras, el sello). */
+html.js .momento__visual.revela { opacity: 1; transform: none; }
+
+/* El hero entra en cuanto pinta: el texto, y la escena un poco después. */
+html.js .hero__texto { animation: entrar 900ms var(--sale) both; }
+html.js .hero__escena { animation: entrar 1100ms var(--sale) 180ms both; }
+@keyframes entrar {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Atado al desplazamiento ─────────────────────────────────────────────
+   La planilla llega recostada hacia el fondo y se endereza mientras sube,
+   como el producto que gira hacia quien mira. Los titulares de sección se
+   funden al entrar. */
+@supports (animation-timeline: view()) {
+  html.js .hero .planilla {
+    animation: enderezar linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 42%;
+  }
+  @keyframes enderezar {
+    from { transform: rotateX(22deg) scale(.9); }
+    to   { transform: none; }
+  }
+
+  html.js .seccion__cab,
+  html.js .cierre .envoltorio {
+    animation: asomar linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 30%;
+  }
+  @keyframes asomar {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+/* ── Entre páginas ─────────────────────────────────────────────────────── */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: salir-pagina var(--dur-2) var(--suave) both; }
+::view-transition-new(root) { animation: entrar-pagina var(--dur-2) var(--sale) both; }
+@keyframes salir-pagina { to { opacity: 0; } }
+@keyframes entrar-pagina { from { opacity: 0; transform: translateY(6px); } }
+::view-transition-old(barra), ::view-transition-new(barra) { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-delay: 0s !important;
+    transition-duration: .001ms !important;
+    transition-delay: 0s !important;
+  }
+  html.js .revela { opacity: 1; transform: none; }
+  html.js .hero .planilla, html.js .seccion__cab, html.js .cierre .envoltorio { animation: none; }
+  /* Lo que se repite sin fin, quieto: con la duración casi a cero, un bucle
+     infinito saltaría a un fotograma distinto en cada repintado. */
+  .fila-mini--viva::after, .equipos__enlace::after { animation: none !important; }
+  .galeria__pista { scroll-behavior: auto; }
+  @view-transition { navigation: none; }
+}

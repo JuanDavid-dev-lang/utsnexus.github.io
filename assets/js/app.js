@@ -11,6 +11,9 @@ import { iniciarPlanilla } from './planilla.js';
 import { iniciarDescargas } from './descargas.js';
 import { iniciarNovedades } from './novedades.js';
 import { iniciarPestanas } from './pestanas.js';
+import { iniciarGaleria } from './galeria.js';
+import { iniciarComparador } from './comparador.js';
+import { iniciarFoco } from './foco.js';
 
 iniciarTema();
 iniciarMenu();
@@ -18,5 +21,8 @@ iniciarBarra();
 iniciarPestanas();
 iniciarRevelar();
 iniciarPlanilla();
+iniciarGaleria();
+iniciarComparador();
+iniciarFoco();
 iniciarDescargas();
 iniciarNovedades();
